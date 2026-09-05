@@ -1,0 +1,6 @@
+@Campus_Services_Portal_HostAddress = http://localhost:5149
+
+GET {{Campus_Services_Portal_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
