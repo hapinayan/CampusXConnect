@@ -29,9 +29,17 @@
     <Folder Include="DTOs\Fees\" />
     <Folder Include="DTOs\Dashboard\" />
     <Folder Include="DTOs\Students\" />
+
     <Folder Include="Helpers\Constants\" />
     <Folder Include="Middleware\" />
     <Folder Include="Exceptions\" />
+
+    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Repositories\Implementations\" />
+
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Services\Implementations\" />
+
     <Folder Include="Security\" />
   </ItemGroup>
 
