@@ -1,9 +1,15 @@
 using Campus_Services_Portal.Data;
 using Campus_Services_Portal.Security;
+using Campus_Services_Portal.Repositories.Interfaces;
+using Campus_Services_Portal.Repositories.Implementations;
+using Campus_Services_Portal.Services.Interfaces;
+using Campus_Services_Portal.Services.Implementations;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 using System.Text;
 
 namespace Campus_Services_Portal
@@ -14,15 +20,21 @@ namespace Campus_Services_Portal
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Database Connection
+            // =========================
+            // DATABASE CONNECTION
+            // =========================
             builder.Services.AddDbContext<CampusXDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // JWT Token Service
+            // =========================
+            // JWT TOKEN SERVICE
+            // =========================
             builder.Services.AddScoped<JwtTokenService>();
 
-            // JWT Authentication
+            // =========================
+            // JWT AUTHENTICATION
+            // =========================
             var jwtKey = builder.Configuration["Jwt:Key"];
             var jwtIssuer = builder.Configuration["Jwt:Issuer"];
             var jwtAudience = builder.Configuration["Jwt:Audience"];
@@ -52,10 +64,41 @@ namespace Campus_Services_Portal
                 };
             });
 
+            // =========================
+            // CONTROLLERS
+            // =========================
             builder.Services.AddControllers();
+
+            // =========================
+            // LAB MODULE
+            // =========================
+            builder.Services.AddScoped<ILabRepository, LabRepository>();
+            builder.Services.AddScoped<ILabBookingRepository, LabBookingRepository>();
+
+            builder.Services.AddScoped<ILabService, LabService>();
+            builder.Services.AddScoped<ILabBookingService, LabBookingService>();
+
+            // =========================
+            // EVENT MODULE
+            // =========================
+            builder.Services.AddScoped<IEventRepository, EventRepository>();
+            builder.Services.AddScoped<IEventRegistrationRepository, EventRegistrationRepository>();
+
+            builder.Services.AddScoped<IEventService, EventService>();
+            builder.Services.AddScoped<IEventRegistrationService, EventRegistrationService>();
+
+            // =========================
+            // NOTIFICATION MODULE
+            // =========================
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+
+            // =========================
+            // SWAGGER / OPENAPI
+            // =========================
             builder.Services.AddEndpointsApiExplorer();
 
-            // Swagger + JWT Bearer Authentication
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -92,7 +135,9 @@ namespace Campus_Services_Portal
 
             var app = builder.Build();
 
-            // Database Migration + Seed Data
+            // =========================
+            // DATABASE MIGRATION + SEED
+            // =========================
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider
@@ -101,7 +146,9 @@ namespace Campus_Services_Portal
                 DbSeeder.SeedAsync(dbContext).GetAwaiter().GetResult();
             }
 
-            // Swagger
+            // =========================
+            // SWAGGER
+            // =========================
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -110,7 +157,9 @@ namespace Campus_Services_Portal
 
             app.UseHttpsRedirection();
 
-            // Authentication & Authorization
+            // =========================
+            // AUTHENTICATION
+            // =========================
             app.UseAuthentication();
             app.UseAuthorization();
 
