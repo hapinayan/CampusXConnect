@@ -10,7 +10,9 @@ namespace Campus_Services_Portal.Data
         {
             await context.Database.MigrateAsync();
 
-            // Seed Admin User
+            // =========================
+            // SEED ADMIN USER
+            // =========================
             if (!await context.Users.AnyAsync(u => u.Role == UserRole.Admin))
             {
                 var adminUser = new User
@@ -26,7 +28,9 @@ namespace Campus_Services_Portal.Data
                 await context.SaveChangesAsync();
             }
 
-            // Seed Hostel + Rooms
+            // =========================
+            // SEED HOSTEL + ROOMS
+            // =========================
             if (!await context.Hostels.AnyAsync())
             {
                 var hostel = new Hostel
@@ -50,6 +54,40 @@ namespace Campus_Services_Portal.Data
                 });
 
                 context.Hostels.Add(hostel);
+
+                await context.SaveChangesAsync();
+            }
+
+            // =========================
+            // SEED COMPLAINT CATEGORIES
+            // =========================
+            if (!await context.ComplaintCategories.AnyAsync())
+            {
+                var categories = new List<ComplaintCategory>
+                {
+                    new ComplaintCategory
+                    {
+                        Name = "Academic"
+                    },
+                    new ComplaintCategory
+                    {
+                        Name = "Hostel"
+                    },
+                    new ComplaintCategory
+                    {
+                        Name = "Laboratory"
+                    },
+                    new ComplaintCategory
+                    {
+                        Name = "Facilities"
+                    },
+                    new ComplaintCategory
+                    {
+                        Name = "Other"
+                    }
+                };
+
+                context.ComplaintCategories.AddRange(categories);
 
                 await context.SaveChangesAsync();
             }

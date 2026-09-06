@@ -97,8 +97,27 @@ namespace Campus_Services_Portal
             // NOTIFICATION MODULE
             // =========================
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-
             builder.Services.AddScoped<INotificationService, NotificationService>();
+
+            // =========================
+            // COMPLAINT MODULE
+            // =========================
+            builder.Services.AddScoped<IComplaintCategoryRepository, ComplaintCategoryRepository>();
+            builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
+
+            builder.Services.AddScoped<IComplaintCategoryService, ComplaintCategoryService>();
+            builder.Services.AddScoped<IComplaintService, ComplaintService>();
+
+            // =========================
+            // CERTIFICATE REQUEST MODULE
+            // =========================
+            builder.Services.AddScoped<
+                ICertificateRequestRepository,
+                CertificateRequestRepository>();
+
+            builder.Services.AddScoped<
+                ICertificateRequestService,
+                CertificateRequestService>();
 
             // =========================
             // SWAGGER / OPENAPI
