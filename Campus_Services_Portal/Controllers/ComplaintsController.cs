@@ -43,7 +43,9 @@ namespace Campus_Services_Portal.Controllers
                         studentId.Value,
                         dto);
 
-                return Ok(complaint);
+                return StatusCode(
+                    StatusCodes.Status201Created,
+                    complaint);
             }
             catch (ArgumentException ex)
             {
