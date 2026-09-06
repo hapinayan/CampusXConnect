@@ -109,6 +109,17 @@ namespace Campus_Services_Portal
             builder.Services.AddScoped<IComplaintService, ComplaintService>();
 
             // =========================
+            // CERTIFICATE REQUEST MODULE
+            // =========================
+            builder.Services.AddScoped<
+                ICertificateRequestRepository,
+                CertificateRequestRepository>();
+
+            builder.Services.AddScoped<
+                ICertificateRequestService,
+                CertificateRequestService>();
+
+            // =========================
             // SWAGGER / OPENAPI
             // =========================
             builder.Services.AddEndpointsApiExplorer();
