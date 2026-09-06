@@ -22,7 +22,8 @@ namespace Campus_Services_Portal.Services.Implementations
             int studentId,
             CreateLabBookingDto dto)
         {
-            var lab = await _labRepository.GetByIdAsync(dto.LabId);
+            var lab =
+                await _labRepository.GetByIdAsync(dto.LabId);
 
             if (lab == null)
             {
@@ -36,23 +37,27 @@ namespace Campus_Services_Portal.Services.Implementations
 
             if (dto.BookingDate.Date < DateTime.UtcNow.Date)
             {
-                throw new Exception("Booking date cannot be in the past.");
+                throw new Exception(
+                    "Booking date cannot be in the past.");
             }
 
             if (dto.StartTime >= dto.EndTime)
             {
-                throw new Exception("Start time must be before end time.");
+                throw new Exception(
+                    "Start time must be before end time.");
             }
 
-            var isBooked = await _labBookingRepository.IsSlotBookedAsync(
-                dto.LabId,
-                dto.BookingDate,
-                dto.StartTime,
-                dto.EndTime);
+            var isBooked =
+                await _labBookingRepository.IsSlotBookedAsync(
+                    dto.LabId,
+                    dto.BookingDate,
+                    dto.StartTime,
+                    dto.EndTime);
 
             if (isBooked)
             {
-                throw new Exception("This lab slot is already booked.");
+                throw new Exception(
+                    "This lab slot is already booked.");
             }
 
             var booking = new LabBooking
@@ -80,23 +85,67 @@ namespace Campus_Services_Portal.Services.Implementations
             };
         }
 
-        public async Task<IEnumerable<LabBookingResponseDto>> GetStudentBookingsAsync(
-            int studentId)
+        public async Task<IEnumerable<LabBookingResponseDto>>
+            GetStudentBookingsAsync(int studentId)
         {
             var bookings =
-                await _labBookingRepository.GetByStudentIdAsync(studentId);
+                await _labBookingRepository
+                    .GetByStudentIdAsync(studentId);
 
-            return bookings.Select(booking => new LabBookingResponseDto
-            {
-                Id = booking.Id,
-                LabId = booking.LabId,
-                LabName = booking.Lab.Name,
-                StudentId = booking.StudentId,
-                BookingDate = booking.BookingDate,
-                StartTime = booking.StartTime,
-                EndTime = booking.EndTime,
-                CreatedAt = booking.CreatedAt
-            });
+            return bookings.Select(
+                booking => new LabBookingResponseDto
+                {
+                    Id = booking.Id,
+                    LabId = booking.LabId,
+                    LabName = booking.Lab.Name,
+                    StudentId = booking.StudentId,
+                    BookingDate = booking.BookingDate,
+                    StartTime = booking.StartTime,
+                    EndTime = booking.EndTime,
+                    CreatedAt = booking.CreatedAt
+                });
+        }
+
+        public async Task<IEnumerable<LabBookingResponseDto>>
+            GetUpcomingBookingsAsync(int studentId)
+        {
+            var bookings =
+                await _labBookingRepository
+                    .GetUpcomingByStudentIdAsync(studentId);
+
+            return bookings.Select(
+                booking => new LabBookingResponseDto
+                {
+                    Id = booking.Id,
+                    LabId = booking.LabId,
+                    LabName = booking.Lab.Name,
+                    StudentId = booking.StudentId,
+                    BookingDate = booking.BookingDate,
+                    StartTime = booking.StartTime,
+                    EndTime = booking.EndTime,
+                    CreatedAt = booking.CreatedAt
+                });
+        }
+
+        public async Task<IEnumerable<LabBookingResponseDto>>
+            GetPastBookingsAsync(int studentId)
+        {
+            var bookings =
+                await _labBookingRepository
+                    .GetPastByStudentIdAsync(studentId);
+
+            return bookings.Select(
+                booking => new LabBookingResponseDto
+                {
+                    Id = booking.Id,
+                    LabId = booking.LabId,
+                    LabName = booking.Lab.Name,
+                    StudentId = booking.StudentId,
+                    BookingDate = booking.BookingDate,
+                    StartTime = booking.StartTime,
+                    EndTime = booking.EndTime,
+                    CreatedAt = booking.CreatedAt
+                });
         }
 
         public async Task<bool> CancelBookingAsync(
@@ -104,7 +153,8 @@ namespace Campus_Services_Portal.Services.Implementations
             int studentId)
         {
             var booking =
-                await _labBookingRepository.GetByIdAsync(bookingId);
+                await _labBookingRepository
+                    .GetByIdAsync(bookingId);
 
             if (booking == null)
             {
@@ -117,7 +167,8 @@ namespace Campus_Services_Portal.Services.Implementations
                     "You cannot cancel another student's booking.");
             }
 
-            await _labBookingRepository.DeleteAsync(booking);
+            await _labBookingRepository
+                .DeleteAsync(booking);
 
             return true;
         }

@@ -1,5 +1,6 @@
 ﻿using Campus_Services_Portal.DTOs.Labs;
 using Campus_Services_Portal.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Campus_Services_Portal.Controllers
@@ -15,26 +16,33 @@ namespace Campus_Services_Portal.Controllers
             _labService = labService;
         }
 
+        // Get all labs
         [HttpGet]
         public async Task<IActionResult> GetAllLabs()
         {
-            var labs = await _labService.GetAllLabsAsync();
+            var labs =
+                await _labService.GetAllLabsAsync();
+
             return Ok(labs);
         }
 
+        // Get lab by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLabById(int id)
         {
-            var lab = await _labService.GetLabByIdAsync(id);
+            var lab =
+                await _labService.GetLabByIdAsync(id);
 
             if (lab == null)
             {
-                return NotFound(new { message = "Lab not found." });
+                return NotFound(
+                    new { message = "Lab not found." });
             }
 
             return Ok(lab);
         }
 
+        // Get booked slots for a lab on a selected date
         [HttpGet("{id}/slots")]
         public async Task<IActionResult> GetLabSlots(
             int id,
@@ -42,9 +50,10 @@ namespace Campus_Services_Portal.Controllers
         {
             try
             {
-                var slots = await _labService.GetLabSlotsAsync(
-                    id,
-                    date);
+                var slots =
+                    await _labService.GetLabSlotsAsync(
+                        id,
+                        date);
 
                 return Ok(slots);
             }
@@ -61,10 +70,14 @@ namespace Campus_Services_Portal.Controllers
             }
         }
 
+        // Admin only - create lab
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateLab(CreateLabDto dto)
+        public async Task<IActionResult> CreateLab(
+            CreateLabDto dto)
         {
-            var lab = await _labService.CreateLabAsync(dto);
+            var lab =
+                await _labService.CreateLabAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetLabById),
@@ -72,12 +85,17 @@ namespace Campus_Services_Portal.Controllers
                 lab);
         }
 
+        // Admin only - update/deactivate lab
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLab(
             int id,
             UpdateLabDto dto)
         {
-            var updated = await _labService.UpdateLabAsync(id, dto);
+            var updated =
+                await _labService.UpdateLabAsync(
+                    id,
+                    dto);
 
             if (!updated)
             {
@@ -86,7 +104,10 @@ namespace Campus_Services_Portal.Controllers
             }
 
             return Ok(
-                new { message = "Lab updated successfully." });
+                new
+                {
+                    message = "Lab updated successfully."
+                });
         }
     }
 }

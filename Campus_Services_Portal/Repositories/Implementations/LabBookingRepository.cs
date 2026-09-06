@@ -25,6 +25,50 @@ namespace Campus_Services_Portal.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<LabBooking>>
+            GetUpcomingByStudentIdAsync(int studentId)
+        {
+            var today = DateTime.UtcNow.Date;
+            var currentTime = DateTime.UtcNow.TimeOfDay;
+
+            return await _context.LabBookings
+                .Include(lb => lb.Lab)
+                .Where(lb =>
+                    lb.StudentId == studentId &&
+                    (
+                        lb.BookingDate.Date > today ||
+                        (
+                            lb.BookingDate.Date == today &&
+                            lb.EndTime >= currentTime
+                        )
+                    ))
+                .OrderBy(lb => lb.BookingDate)
+                .ThenBy(lb => lb.StartTime)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<LabBooking>>
+            GetPastByStudentIdAsync(int studentId)
+        {
+            var today = DateTime.UtcNow.Date;
+            var currentTime = DateTime.UtcNow.TimeOfDay;
+
+            return await _context.LabBookings
+                .Include(lb => lb.Lab)
+                .Where(lb =>
+                    lb.StudentId == studentId &&
+                    (
+                        lb.BookingDate.Date < today ||
+                        (
+                            lb.BookingDate.Date == today &&
+                            lb.EndTime < currentTime
+                        )
+                    ))
+                .OrderByDescending(lb => lb.BookingDate)
+                .ThenByDescending(lb => lb.StartTime)
+                .ToListAsync();
+        }
+
         public async Task<LabBooking?> GetByIdAsync(int id)
         {
             return await _context.LabBookings

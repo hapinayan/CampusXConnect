@@ -8,8 +8,17 @@ namespace Campus_Services_Portal.Services.Interfaces
             int studentId,
             CreateLabBookingDto dto);
 
-        Task<IEnumerable<LabBookingResponseDto>> GetStudentBookingsAsync(
-            int studentId);
+        Task<IEnumerable<LabBookingResponseDto>>
+            GetStudentBookingsAsync(
+                int studentId);
+
+        Task<IEnumerable<LabBookingResponseDto>>
+            GetUpcomingBookingsAsync(
+                int studentId);
+
+        Task<IEnumerable<LabBookingResponseDto>>
+            GetPastBookingsAsync(
+                int studentId);
 
         Task<bool> CancelBookingAsync(
             int bookingId,

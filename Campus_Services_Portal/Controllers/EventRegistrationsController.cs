@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Campus_Services_Portal.DTOs.Events;
+﻿using Campus_Services_Portal.DTOs.Events;
+using Campus_Services_Portal.Security;
 using Campus_Services_Portal.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +12,22 @@ namespace Campus_Services_Portal.Controllers
     public class EventRegistrationsController : ControllerBase
     {
         private readonly IEventRegistrationService _eventRegistrationService;
+        private readonly CurrentUserService _currentUserService;
 
         public EventRegistrationsController(
-            IEventRegistrationService eventRegistrationService)
+            IEventRegistrationService eventRegistrationService,
+            CurrentUserService currentUserService)
         {
             _eventRegistrationService = eventRegistrationService;
+            _currentUserService = currentUserService;
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterForEvent(
             CreateEventRegistrationDto dto)
         {
-            var studentId = GetCurrentStudentId();
+            var studentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (studentId == null)
             {
@@ -70,7 +74,8 @@ namespace Campus_Services_Portal.Controllers
         public async Task<IActionResult> GetStudentRegistrations(
             int studentId)
         {
-            var currentStudentId = GetCurrentStudentId();
+            var currentStudentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (currentStudentId == null)
             {
@@ -93,7 +98,8 @@ namespace Campus_Services_Portal.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> CancelRegistration(int id)
         {
-            var studentId = GetCurrentStudentId();
+            var studentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (studentId == null)
             {
@@ -126,26 +132,6 @@ namespace Campus_Services_Portal.Controllers
             {
                 return Forbid();
             }
-        }
-
-        private int? GetCurrentStudentId()
-        {
-            var claim = User.FindFirst(
-                ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-            {
-                return null;
-            }
-
-            if (!int.TryParse(
-                claim.Value,
-                out var studentId))
-            {
-                return null;
-            }
-
-            return studentId;
         }
     }
 }

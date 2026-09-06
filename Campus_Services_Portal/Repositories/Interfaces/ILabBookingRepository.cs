@@ -4,7 +4,14 @@ namespace Campus_Services_Portal.Repositories.Interfaces
 {
     public interface ILabBookingRepository
     {
-        Task<IEnumerable<LabBooking>> GetByStudentIdAsync(int studentId);
+        Task<IEnumerable<LabBooking>> GetByStudentIdAsync(
+            int studentId);
+
+        Task<IEnumerable<LabBooking>> GetUpcomingByStudentIdAsync(
+            int studentId);
+
+        Task<IEnumerable<LabBooking>> GetPastByStudentIdAsync(
+            int studentId);
 
         Task<LabBooking?> GetByIdAsync(int id);
 
