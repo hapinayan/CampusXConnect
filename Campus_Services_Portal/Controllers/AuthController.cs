@@ -1,5 +1,5 @@
 ﻿using Campus_Services_Portal.Data;
-using Campus_Services_Portal.DTOs;
+using Campus_Services_Portal.DTOs.Auth;
 using Campus_Services_Portal.Models.Entities;
 using Campus_Services_Portal.Models.Enums;
 using Campus_Services_Portal.Security;

@@ -70,6 +70,12 @@ namespace Campus_Services_Portal
             builder.Services.AddControllers();
 
             // =========================
+            // CURRENT USER SERVICE
+            // =========================
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<CurrentUserService>();
+
+            // =========================
             // LAB MODULE
             // =========================
             builder.Services.AddScoped<ILabRepository, LabRepository>();

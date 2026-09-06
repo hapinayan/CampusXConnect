@@ -1,5 +1,6 @@
 ﻿using Campus_Services_Portal.DTOs.Events;
 using Campus_Services_Portal.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Campus_Services_Portal.Controllers
@@ -15,30 +16,39 @@ namespace Campus_Services_Portal.Controllers
             _eventService = eventService;
         }
 
+        // Get all events
         [HttpGet]
         public async Task<IActionResult> GetAllEvents()
         {
             var events = await _eventService.GetAllEventsAsync();
+
             return Ok(events);
         }
 
+        // Get event by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEventById(int id)
         {
-            var eventItem = await _eventService.GetEventByIdAsync(id);
+            var eventItem =
+                await _eventService.GetEventByIdAsync(id);
 
             if (eventItem == null)
             {
-                return NotFound(new { message = "Event not found." });
+                return NotFound(
+                    new { message = "Event not found." });
             }
 
             return Ok(eventItem);
         }
 
+        // Admin only - create event
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(CreateEventDto dto)
+        public async Task<IActionResult> CreateEvent(
+            CreateEventDto dto)
         {
-            var eventItem = await _eventService.CreateEventAsync(dto);
+            var eventItem =
+                await _eventService.CreateEventAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetEventById),
@@ -46,19 +56,29 @@ namespace Campus_Services_Portal.Controllers
                 eventItem);
         }
 
+        // Admin only - update/deactivate event
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent(
             int id,
             UpdateEventDto dto)
         {
-            var updated = await _eventService.UpdateEventAsync(id, dto);
+            var updated =
+                await _eventService.UpdateEventAsync(
+                    id,
+                    dto);
 
             if (!updated)
             {
-                return NotFound(new { message = "Event not found." });
+                return NotFound(
+                    new { message = "Event not found." });
             }
 
-            return Ok(new { message = "Event updated successfully." });
+            return Ok(
+                new
+                {
+                    message = "Event updated successfully."
+                });
         }
     }
 }

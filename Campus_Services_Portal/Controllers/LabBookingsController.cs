@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Campus_Services_Portal.DTOs.Labs;
+﻿using Campus_Services_Portal.DTOs.Labs;
+using Campus_Services_Portal.Security;
 using Campus_Services_Portal.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +12,22 @@ namespace Campus_Services_Portal.Controllers
     public class LabBookingsController : ControllerBase
     {
         private readonly ILabBookingService _labBookingService;
+        private readonly CurrentUserService _currentUserService;
 
         public LabBookingsController(
-            ILabBookingService labBookingService)
+            ILabBookingService labBookingService,
+            CurrentUserService currentUserService)
         {
             _labBookingService = labBookingService;
+            _currentUserService = currentUserService;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateBooking(
             CreateLabBookingDto dto)
         {
-            var studentId = GetCurrentStudentId();
+            var studentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (studentId == null)
             {
@@ -42,7 +46,21 @@ namespace Campus_Services_Portal.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                if (ex.Message == "Lab not found.")
+                {
+                    return NotFound(
+                        new { message = ex.Message });
+                }
+
+                if (ex.Message ==
+                    "This lab slot is already booked.")
+                {
+                    return Conflict(
+                        new { message = ex.Message });
+                }
+
+                return BadRequest(
+                    new { message = ex.Message });
             }
         }
 
@@ -50,7 +68,8 @@ namespace Campus_Services_Portal.Controllers
         public async Task<IActionResult> GetStudentBookings(
             int studentId)
         {
-            var currentStudentId = GetCurrentStudentId();
+            var currentStudentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (currentStudentId == null)
             {
@@ -64,8 +83,58 @@ namespace Campus_Services_Portal.Controllers
             }
 
             var bookings =
-                await _labBookingService.GetStudentBookingsAsync(
-                    studentId);
+                await _labBookingService
+                    .GetStudentBookingsAsync(studentId);
+
+            return Ok(bookings);
+        }
+
+        [HttpGet("student/{studentId}/upcoming")]
+        public async Task<IActionResult> GetUpcomingBookings(
+            int studentId)
+        {
+            var currentStudentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
+
+            if (currentStudentId == null)
+            {
+                return Unauthorized(
+                    new { message = "Invalid student identity." });
+            }
+
+            if (currentStudentId.Value != studentId)
+            {
+                return Forbid();
+            }
+
+            var bookings =
+                await _labBookingService
+                    .GetUpcomingBookingsAsync(studentId);
+
+            return Ok(bookings);
+        }
+
+        [HttpGet("student/{studentId}/past")]
+        public async Task<IActionResult> GetPastBookings(
+            int studentId)
+        {
+            var currentStudentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
+
+            if (currentStudentId == null)
+            {
+                return Unauthorized(
+                    new { message = "Invalid student identity." });
+            }
+
+            if (currentStudentId.Value != studentId)
+            {
+                return Forbid();
+            }
+
+            var bookings =
+                await _labBookingService
+                    .GetPastBookingsAsync(studentId);
 
             return Ok(bookings);
         }
@@ -73,7 +142,8 @@ namespace Campus_Services_Portal.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> CancelBooking(int id)
         {
-            var studentId = GetCurrentStudentId();
+            var studentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (studentId == null)
             {
@@ -95,30 +165,16 @@ namespace Campus_Services_Portal.Controllers
                 }
 
                 return Ok(
-                    new { message = "Booking cancelled successfully." });
+                    new
+                    {
+                        message =
+                            "Booking cancelled successfully."
+                    });
             }
             catch (UnauthorizedAccessException)
             {
                 return Forbid();
             }
-        }
-
-        private int? GetCurrentStudentId()
-        {
-            var claim = User.FindFirst(
-                ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-            {
-                return null;
-            }
-
-            if (!int.TryParse(claim.Value, out var studentId))
-            {
-                return null;
-            }
-
-            return studentId;
         }
     }
 }

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Auth\" />
     <Folder Include="DTOs\Hostel\" />
     <Folder Include="DTOs\Complaints\" />
     <Folder Include="DTOs\Certificates\" />
@@ -39,8 +38,6 @@
 
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Services\Implementations\" />
-
-    <Folder Include="Security\" />
   </ItemGroup>
 
 </Project>
