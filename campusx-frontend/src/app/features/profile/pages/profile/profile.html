@@ -1,0 +1,201 @@
+<div class="profile-page">
+
+  <!-- Header -->
+  <div class="profile-header">
+
+    <div>
+      <p class="page-label">STUDENT PROFILE</p>
+
+      <h1>My Profile</h1>
+
+      <p class="page-description">
+        View your personal and academic information.
+      </p>
+    </div>
+
+    <button class="back-button" (click)="goToDashboard()">
+      ← Dashboard
+    </button>
+
+  </div>
+
+
+  <!-- Profile Card -->
+  <section class="profile-card">
+
+    <!-- Profile Top -->
+    <div class="profile-top">
+
+      <div class="profile-avatar">
+        {{ student?.fullName?.charAt(0) || 'S' }}
+      </div>
+
+      <div class="profile-main-info">
+
+        <h2>
+          {{ student?.fullName || 'Loading...' }}
+        </h2>
+
+        <p>
+          Student
+        </p>
+
+        <span class="status-badge">
+          ● Active Student
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Personal Information -->
+    <div class="profile-section">
+
+      <div class="section-title">
+        <span>👤</span>
+
+        <div>
+          <h3>Personal Information</h3>
+          <p>Your registered personal details.</p>
+        </div>
+      </div>
+
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Full Name
+          </span>
+
+          <strong>
+            {{ student?.fullName || 'Loading...' }}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Email Address
+          </span>
+
+          <strong>
+            {{ student?.email || 'Loading...' }}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Contact Number
+          </span>
+
+          <strong>
+            {{ student?.contactNumber || 'Loading...' }}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            User Role
+          </span>
+
+          <strong>
+            Student
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Academic Information -->
+    <div class="profile-section">
+
+      <div class="section-title">
+        <span>🎓</span>
+
+        <div>
+          <h3>Academic Information</h3>
+          <p>Your university student information.</p>
+        </div>
+      </div>
+
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Index Number
+          </span>
+
+          <strong>
+            {{ student?.indexNumber || 'Loading...' }}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <span class="detail-label">
+            Faculty
+          </span>
+
+          <strong>
+            {{ student?.faculty || 'Loading...' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Account Status -->
+    <div class="account-status">
+
+      <div class="status-icon">
+        ✓
+      </div>
+
+      <div>
+
+        <strong>
+          Account Active
+        </strong>
+
+        <p>
+          Your CampusX student account is active and available
+          for campus services.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Logout -->
+    <button
+      class="logout-button"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+
+  </section>
+
+</div>

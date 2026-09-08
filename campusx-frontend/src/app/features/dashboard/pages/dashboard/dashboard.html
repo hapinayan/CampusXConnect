@@ -1,0 +1,659 @@
+<div class="dashboard">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+      <div class="brand-logo">CX</div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <a class="nav-item active">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+  class="nav-item"
+  routerLink="/hostel"
+>
+  <span class="nav-icon">🏨</span>
+  <span>Hostel</span>
+</a>
+
+      <a class="nav-item">
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
+      </a>
+
+      <a class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+      </a>
+
+      <a class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
+
+      <a class="nav-item">
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
+      </a>
+
+      <a class="nav-item">
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
+      </a>
+
+      <a class="nav-item">
+        <span class="nav-icon">🔔</span>
+        <span>Notifications</span>
+        <span class="notification-count">3</span>
+      </a>
+
+<a
+  class="nav-item"
+  routerLink="/profile"
+>
+  <span class="nav-icon">👤</span>
+  <span>Profile</span>
+</a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <a
+        class="nav-item logout"
+        (click)="logout()"
+      >
+        <span class="nav-icon">↪</span>
+        <span>Logout</span>
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="main-content">
+
+    <!-- ================= TOPBAR ================= -->
+    <header class="topbar">
+
+      <div class="search-box">
+        <span>⌕</span>
+
+        <input
+          type="text"
+          placeholder="Search campus services..."
+        />
+      </div>
+
+      <div class="topbar-right">
+
+        <button class="notification-btn">
+          🔔
+          <span>3</span>
+        </button>
+
+        <div
+  class="student-profile"
+  (click)="goToProfile()"
+  title="View Profile"
+>
+
+  <div class="profile-avatar">
+    {{ student?.fullName?.charAt(0) || 'S' }}
+  </div>
+
+  <div class="profile-info">
+    <strong>{{ student?.fullName || 'Student' }}</strong>
+    <small>Student</small>
+  </div>
+
+  <span class="profile-arrow">⌄</span>
+
+</div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ================= DASHBOARD CONTENT ================= -->
+    <section class="content">
+
+
+      <!-- ================= WELCOME ================= -->
+      <div class="welcome-section">
+
+        <div>
+
+          <p class="welcome-label">
+            STUDENT DASHBOARD
+          </p>
+
+          <h1>
+            Welcome back,
+            {{ student?.fullName || 'Student' }}! 👋
+          </h1>
+
+          <p class="welcome-text">
+            Here's what's happening with your campus services today.
+          </p>
+
+        </div>
+
+
+        <div class="date-box">
+
+          <strong>Today</strong>
+
+          <span>
+            Stay focused. Stay ahead.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= SERVICE CARDS ================= -->
+
+      <div class="service-grid">
+
+
+        <!-- Hostel -->
+
+        <div class="service-card">
+
+          <div class="card-icon hostel-icon">
+            🏨
+          </div>
+
+          <div class="card-content">
+
+            <span>
+              Hostel Status
+            </span>
+
+            <strong>
+              Allocated
+            </strong>
+
+            <small>
+              Room A101
+            </small>
+
+          </div>
+
+          <span class="card-arrow">
+            →
+          </span>
+
+        </div>
+
+
+        <!-- Labs -->
+
+        <div class="service-card">
+
+          <div class="card-icon lab-icon">
+            🧪
+          </div>
+
+          <div class="card-content">
+
+            <span>
+              Lab Bookings
+            </span>
+
+            <strong>
+              2 Upcoming
+            </strong>
+
+            <small>
+              Next: Tomorrow
+            </small>
+
+          </div>
+
+          <span class="card-arrow">
+            →
+          </span>
+
+        </div>
+
+
+        <!-- Events -->
+
+        <div class="service-card">
+
+          <div class="card-icon event-icon">
+            📅
+          </div>
+
+          <div class="card-content">
+
+            <span>
+              Events
+            </span>
+
+            <strong>
+              3 Registered
+            </strong>
+
+            <small>
+              View upcoming events
+            </small>
+
+          </div>
+
+          <span class="card-arrow">
+            →
+          </span>
+
+        </div>
+
+
+        <!-- Complaints -->
+
+        <div class="service-card">
+
+          <div class="card-icon complaint-icon">
+            💬
+          </div>
+
+          <div class="card-content">
+
+            <span>
+              Complaints
+            </span>
+
+            <strong>
+              1 Open
+            </strong>
+
+            <small>
+              Under review
+            </small>
+
+          </div>
+
+          <span class="card-arrow">
+            →
+          </span>
+
+        </div>
+
+
+        <!-- Certificates -->
+
+        <div class="service-card">
+
+          <div class="card-icon certificate-icon">
+            📄
+          </div>
+
+          <div class="card-content">
+
+            <span>
+              Certificates
+            </span>
+
+            <strong>
+              1 In Progress
+            </strong>
+
+            <small>
+              View requests
+            </small>
+
+          </div>
+
+          <span class="card-arrow">
+            →
+          </span>
+
+        </div>
+
+
+        <!-- Fees -->
+
+        <div class="service-card">
+
+          <div class="card-icon payment-icon">
+            💳
+          </div>
+
+          <div class="card-content">
+
+            <span>
+              Fee Status
+            </span>
+
+            <strong>
+              Paid
+            </strong>
+
+            <small>
+              No pending payments
+            </small>
+
+          </div>
+
+          <span class="card-arrow">
+            →
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= LOWER SECTION ================= -->
+
+      <div class="dashboard-grid">
+
+
+        <!-- ================= UPCOMING EVENTS ================= -->
+
+        <section class="panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <h2>
+                Upcoming Events
+              </h2>
+
+              <p>
+                Don't miss what's happening on campus.
+              </p>
+
+            </div>
+
+            <a>
+              View All
+            </a>
+
+          </div>
+
+
+          <div class="event-list">
+
+
+            <div class="event-item">
+
+              <div class="event-date">
+
+                <strong>
+                  28
+                </strong>
+
+                <span>
+                  MAY
+                </span>
+
+              </div>
+
+              <div class="event-info">
+
+                <strong>
+                  Tech Fest 2026
+                </strong>
+
+                <span>
+                  University Auditorium
+                </span>
+
+              </div>
+
+              <button>
+                View
+              </button>
+
+            </div>
+
+
+            <div class="event-item">
+
+              <div class="event-date">
+
+                <strong>
+                  30
+                </strong>
+
+                <span>
+                  MAY
+                </span>
+
+              </div>
+
+              <div class="event-info">
+
+                <strong>
+                  Career Guidance Session
+                </strong>
+
+                <span>
+                  Main Seminar Hall
+                </span>
+
+              </div>
+
+              <button>
+                View
+              </button>
+
+            </div>
+
+
+            <div class="event-item">
+
+              <div class="event-date">
+
+                <strong>
+                  02
+                </strong>
+
+                <span>
+                  JUN
+                </span>
+
+              </div>
+
+              <div class="event-info">
+
+                <strong>
+                  Student Leadership Program
+                </strong>
+
+                <span>
+                  Conference Hall
+                </span>
+
+              </div>
+
+              <button>
+                View
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= RECENT NOTIFICATIONS ================= -->
+
+        <section class="panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <h2>
+                Recent Notifications
+              </h2>
+
+              <p>
+                Your latest campus updates.
+              </p>
+
+            </div>
+
+            <a>
+              View All
+            </a>
+
+          </div>
+
+
+          <div class="notification-list">
+
+
+            <div class="notification-item">
+
+              <div class="notification-icon">
+                🧪
+              </div>
+
+              <div>
+
+                <strong>
+                  Lab booking confirmed
+                </strong>
+
+                <span>
+                  Your lab reservation was confirmed.
+                </span>
+
+                <small>
+                  2 hours ago
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+              <div class="notification-icon">
+                📅
+              </div>
+
+              <div>
+
+                <strong>
+                  Event registration successful
+                </strong>
+
+                <span>
+                  You registered for Tech Fest 2026.
+                </span>
+
+                <small>
+                  5 hours ago
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+              <div class="notification-icon">
+                📄
+              </div>
+
+              <div>
+
+                <strong>
+                  Certificate request update
+                </strong>
+
+                <span>
+                  Your request is under review.
+                </span>
+
+                <small>
+                  Yesterday
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ================= QUICK ACTIONS ================= -->
+
+      <section class="quick-actions">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Quick Actions
+            </h2>
+
+            <p>
+              Frequently used campus services.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+          <button>
+            <span>🧪</span>
+            <strong>Book a Lab</strong>
+          </button>
+
+          <button>
+            <span>📅</span>
+            <strong>Register Event</strong>
+          </button>
+
+          <button>
+            <span>💬</span>
+            <strong>Raise Complaint</strong>
+          </button>
+
+          <button>
+            <span>📄</span>
+            <strong>Request Certificate</strong>
+          </button>
+
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+</div>

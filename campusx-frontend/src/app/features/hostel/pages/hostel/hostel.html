@@ -1,0 +1,341 @@
+<div class="hostel-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+
+      <p class="page-label">
+        CAMPUS ACCOMMODATION
+      </p>
+
+      <h1>
+        Hostel
+      </h1>
+
+      <p class="page-description">
+        Manage your hostel application and accommodation status.
+      </p>
+
+    </div>
+
+    <button
+      class="back-button"
+      routerLink="/dashboard"
+    >
+      ← Dashboard
+    </button>
+
+  </div>
+
+
+  <!-- ================= LOADING ================= -->
+
+  @if (loading) {
+
+    <div class="loading">
+      Loading hostel information...
+    </div>
+
+  }
+
+
+  <!-- ================= ERROR ================= -->
+
+  @if (errorMessage) {
+
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+
+  }
+
+
+  <!-- ================= SUCCESS ================= -->
+
+  @if (successMessage) {
+
+    <div class="success-message">
+      ✓ {{ successMessage }}
+    </div>
+
+  }
+
+
+  <!-- ================= CURRENT STATUS ================= -->
+
+  <section class="status-card">
+
+    <div class="status-icon">
+      🏨
+    </div>
+
+    <div class="status-content">
+
+      <span class="status-label">
+        CURRENT HOSTEL STATUS
+      </span>
+
+      @if (application) {
+
+        <h2>
+          {{ getApplicationStatus() }}
+        </h2>
+
+        <p>
+          Your hostel application status.
+        </p>
+
+      } @else {
+
+        <h2>
+          Not Allocated
+        </h2>
+
+        <p>
+          You currently do not have a hostel room allocated.
+        </p>
+
+      }
+
+    </div>
+
+    @if (application) {
+
+      <span class="status-badge">
+        {{ getApplicationStatus() }}
+      </span>
+
+    } @else {
+
+      <span class="status-badge">
+        No Application
+      </span>
+
+    }
+
+  </section>
+
+
+  <!-- ================= HOSTEL APPLICATION ================= -->
+
+  <section class="application-card">
+
+    <div class="section-header">
+
+      <div class="section-icon">
+        📝
+      </div>
+
+      <div>
+
+        <h2>
+          Hostel Application
+        </h2>
+
+        <p>
+          Submit a request for hostel accommodation.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-grid">
+
+      <!-- ================= HOSTEL ================= -->
+
+      <div class="form-group">
+
+        <label>
+          Preferred Hostel
+        </label>
+
+        <select
+          [(ngModel)]="selectedHostelId"
+        >
+
+          <option [ngValue]="null">
+            Select hostel
+          </option>
+
+          @for (hostel of hostels; track hostel.id) {
+
+            <option [ngValue]="hostel.id">
+              {{ hostel.name }} -
+              {{ hostel.location }}
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+
+      <!-- ================= TERM ================= -->
+
+      <div class="form-group">
+
+        <label>
+          Academic Term
+        </label>
+
+        <select>
+
+          <option value="">
+            Select term
+          </option>
+
+          <option>
+            2026 - Semester 1
+          </option>
+
+          <option>
+            2026 - Semester 2
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- ================= PREFERENCES ================= -->
+
+      <div class="form-group full-width">
+
+        <label>
+          Special Requirements / Preferences
+        </label>
+
+        <textarea
+          rows="3"
+          [(ngModel)]="preferences"
+          placeholder="Enter any special accommodation requirements..."
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <div class="application-footer">
+
+      <p>
+        Your application will initially be marked as
+        <strong>Pending</strong>.
+      </p>
+
+      <button
+        class="apply-button"
+        (click)="submitApplication()"
+        [disabled]="submitting"
+      >
+
+        @if (submitting) {
+
+          Submitting...
+
+        } @else {
+
+          Submit Application
+
+        }
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= MY APPLICATION ================= -->
+
+  <section class="history-card">
+
+    <div class="section-header">
+
+      <div class="section-icon">
+        📋
+      </div>
+
+      <div>
+
+        <h2>
+          My Application
+        </h2>
+
+        <p>
+          Track your hostel application status.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    @if (application) {
+
+      <!-- Application Found -->
+
+      <div class="application-result">
+
+        <div class="result-row">
+
+          <span>
+            Application Status
+          </span>
+
+          <strong>
+            {{ application.status }}
+          </strong>
+
+        </div>
+
+        @if (application.preferences) {
+
+          <div class="result-row">
+
+            <span>
+              Preferences
+            </span>
+
+            <strong>
+              {{ application.preferences }}
+            </strong>
+
+          </div>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <!-- Empty State -->
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          🏠
+        </div>
+
+        <h3>
+          No Applications Yet
+        </h3>
+
+        <p>
+          You haven't submitted a hostel application yet.
+        </p>
+
+      </div>
+
+    }
+
+  </section>
+
+</div>
