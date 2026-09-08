@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Hostel\" />
-    <Folder Include="DTOs\Certificates\" />
     <Folder Include="DTOs\Fees\" />
     <Folder Include="DTOs\Dashboard\" />
     <Folder Include="DTOs\Students\" />
