@@ -13,9 +13,10 @@ export interface Room {
 
 export interface HostelApplication {
   id: number;
-  studentId: number;
-  hostelId: number;
+  hostelName: string;
+  preferences: string;
   status: string;
-  preferences?: string;
-  roomId?: number | null;
+  roomNumber: string | null;
+  appliedAt: string;
+  updatedAt: string | null;
 }

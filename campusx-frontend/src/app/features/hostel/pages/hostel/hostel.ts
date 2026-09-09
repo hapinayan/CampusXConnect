@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { HostelService } from '../../../../core/services/hostel.service';
-import { Hostel, HostelApplication } from '../../../../core/models/hostel';
+
+import {
+  Hostel,
+  HostelApplication
+} from '../../../../core/models/hostel';
 
 @Component({
   selector: 'app-hostel',
   standalone: true,
   imports: [
     RouterLink,
-    FormsModule
+    FormsModule,
+    DatePipe
   ],
   templateUrl: './hostel.html',
   styleUrl: './hostel.css'
@@ -23,11 +29,15 @@ export class HostelPage implements OnInit {
 
   hostels: Hostel[] = [];
 
+  hostelsLoading = true;
+
+
   // =========================
   // SELECTED HOSTEL
   // =========================
 
   selectedHostelId: number | null = null;
+
 
   // =========================
   // PREFERENCES
@@ -35,17 +45,17 @@ export class HostelPage implements OnInit {
 
   preferences = '';
 
+
   // =========================
   // APPLICATION
   // =========================
 
   application: HostelApplication | null = null;
 
+
   // =========================
   // UI STATES
   // =========================
-
-  loading = true;
 
   submitting = false;
 
@@ -53,18 +63,28 @@ export class HostelPage implements OnInit {
 
   successMessage = '';
 
+
+  // =========================
+  // CONSTRUCTOR
+  // =========================
+
   constructor(
     private hostelService: HostelService
   ) {}
+
 
   // =========================
   // INITIAL LOAD
   // =========================
 
   ngOnInit(): void {
+
     this.loadHostels();
+
     this.loadMyApplication();
+
   }
+
 
   // =========================
   // LOAD HOSTELS
@@ -72,32 +92,43 @@ export class HostelPage implements OnInit {
 
   loadHostels(): void {
 
-    this.hostelService.getHostels().subscribe({
+    this.hostelsLoading = true;
 
-      next: (data) => {
+    this.hostelService
+      .getHostels()
+      .subscribe({
 
-        this.hostels = data;
+        next: (data) => {
 
-        this.loading = false;
+          this.hostels = data;
 
-        console.log('Hostels:', data);
-      },
+          this.hostelsLoading = false;
 
-      error: (error) => {
+          console.log(
+            'Hostels:',
+            data
+          );
 
-        console.error(
-          'Failed to load hostels:',
-          error
-        );
+        },
 
-        this.loading = false;
+        error: (error) => {
 
-        this.errorMessage =
-          'Unable to load hostel information.';
-      }
+          console.error(
+            'Failed to load hostels:',
+            error
+          );
 
-    });
+          this.hostelsLoading = false;
+
+          this.errorMessage =
+            'Unable to load hostel information.';
+
+        }
+
+      });
+
   }
+
 
   // =========================
   // LOAD MY APPLICATION
@@ -105,29 +136,35 @@ export class HostelPage implements OnInit {
 
   loadMyApplication(): void {
 
-    this.hostelService.getMyApplication().subscribe({
+    this.hostelService
+      .getMyApplication()
+      .subscribe({
 
-      next: (data) => {
+        next: (data) => {
 
-        this.application = data;
+          this.application = data;
 
-        console.log(
-          'My hostel application:',
-          data
-        );
-      },
+          console.log(
+            'My hostel application:',
+            data
+          );
 
-      error: (error) => {
+        },
 
-        console.log(
-          'No hostel application found.'
-        );
+        error: (error) => {
 
-        this.application = null;
-      }
+          console.log(
+            'No hostel application found.'
+          );
 
-    });
+          this.application = null;
+
+        }
+
+      });
+
   }
+
 
   // =========================
   // SUBMIT APPLICATION
@@ -135,19 +172,48 @@ export class HostelPage implements OnInit {
 
   submitApplication(): void {
 
+    // Clear previous messages
+
     this.errorMessage = '';
+
     this.successMessage = '';
 
-    // Check hostel
+
+    // =========================
+    // CHECK HOSTEL
+    // =========================
+
     if (!this.selectedHostelId) {
 
       this.errorMessage =
         'Please select a hostel.';
 
       return;
+
     }
 
+
+    // =========================
+    // PREVENT DOUBLE CLICK
+    // =========================
+
+    if (this.submitting) {
+
+      return;
+
+    }
+
+
+    // =========================
+    // START SUBMITTING
+    // =========================
+
     this.submitting = true;
+
+
+    // =========================
+    // API CALL
+    // =========================
 
     this.hostelService
       .applyForHostel(
@@ -156,6 +222,10 @@ export class HostelPage implements OnInit {
       )
       .subscribe({
 
+        // =========================
+        // SUCCESS
+        // =========================
+
         next: (response) => {
 
           console.log(
@@ -163,18 +233,36 @@ export class HostelPage implements OnInit {
             response
           );
 
-          this.successMessage =
-            'Hostel application submitted successfully.';
+
+          // IMPORTANT
+          // Stop submitting
 
           this.submitting = false;
 
-          // Reload application
+
+          // Success message
+
+          this.successMessage =
+            'Hostel application submitted successfully.';
+
+
+          // Reload latest application
+
           this.loadMyApplication();
 
+
           // Clear form
+
           this.selectedHostelId = null;
+
           this.preferences = '';
+
         },
+
+
+        // =========================
+        // ERROR
+        // =========================
 
         error: (error) => {
 
@@ -183,7 +271,14 @@ export class HostelPage implements OnInit {
             error
           );
 
+
+          // IMPORTANT
+          // Stop submitting
+
           this.submitting = false;
+
+
+          // 400
 
           if (error.status === 400) {
 
@@ -191,21 +286,45 @@ export class HostelPage implements OnInit {
               error.error?.message ||
               'Unable to submit hostel application.';
 
-          } else if (error.status === 401) {
+          }
+
+
+          // 401
+
+          else if (error.status === 401) {
 
             this.errorMessage =
               'Your session has expired. Please login again.';
 
-          } else {
+          }
+
+
+          // 409
+
+          else if (error.status === 409) {
+
+            this.errorMessage =
+              error.error?.message ||
+              'You already have a hostel application.';
+
+          }
+
+
+          // Other errors
+
+          else {
 
             this.errorMessage =
               'Something went wrong. Please try again.';
+
           }
 
         }
 
       });
+
   }
+
 
   // =========================
   // GET APPLICATION STATUS
@@ -214,9 +333,14 @@ export class HostelPage implements OnInit {
   getApplicationStatus(): string {
 
     if (!this.application) {
+
       return 'No Application';
+
     }
 
+
     return this.application.status || 'Pending';
+
   }
+
 }
