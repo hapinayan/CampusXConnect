@@ -1,72 +1,179 @@
 <div class="dashboard">
 
   <!-- ================= SIDEBAR ================= -->
+
   <aside class="sidebar">
 
     <div class="sidebar-brand">
-      <div class="brand-logo">CX</div>
+
+      <div class="brand-logo">
+        CX
+      </div>
 
       <div>
         <h2>CampusX</h2>
         <span>Student Portal</span>
       </div>
+
     </div>
+
 
     <nav class="sidebar-nav">
 
-      <a class="nav-item active">
-        <span class="nav-icon">⌂</span>
-        <span>Dashboard</span>
-      </a>
+      <!-- Dashboard -->
 
       <a
-  class="nav-item"
-  routerLink="/hostel"
->
-  <span class="nav-icon">🏨</span>
-  <span>Hostel</span>
-</a>
+        class="nav-item active"
+        routerLink="/dashboard"
+      >
 
-      <a class="nav-item">
-        <span class="nav-icon">🧪</span>
-        <span>Lab Booking</span>
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
+
       </a>
 
-      <a class="nav-item">
-        <span class="nav-icon">📅</span>
-        <span>Events</span>
+
+      <!-- Hostel -->
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
+
       </a>
 
-      <a class="nav-item">
-        <span class="nav-icon">💬</span>
-        <span>Complaints</span>
+
+      <!-- Lab Booking -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
+
       </a>
 
-      <a class="nav-item">
-        <span class="nav-icon">📄</span>
-        <span>Certificates</span>
-      </a>
+
+      <!-- Events -->
 
       <a class="nav-item">
-        <span class="nav-icon">💳</span>
-        <span>Payments</span>
+
+        <span class="nav-icon">
+          📅
+        </span>
+
+        <span>
+          Events
+        </span>
+
       </a>
+
+
+      <!-- Complaints -->
 
       <a class="nav-item">
-        <span class="nav-icon">🔔</span>
-        <span>Notifications</span>
-        <span class="notification-count">3</span>
+
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+
       </a>
 
-<a
-  class="nav-item"
-  routerLink="/profile"
->
-  <span class="nav-icon">👤</span>
-  <span>Profile</span>
-</a>
+
+      <!-- Certificates -->
+
+      <a class="nav-item">
+
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
+
+      </a>
+
+
+      <!-- Payments -->
+
+      <a class="nav-item">
+
+        <span class="nav-icon">
+          💳
+        </span>
+
+        <span>
+          Payments
+        </span>
+
+      </a>
+
+
+      <!-- Notifications -->
+
+      <a class="nav-item">
+
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+        <span class="notification-count">
+          3
+        </span>
+
+      </a>
+
+
+      <!-- Profile -->
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
 
     </nav>
+
+
+    <!-- Sidebar Bottom -->
 
     <div class="sidebar-bottom">
 
@@ -74,8 +181,15 @@
         class="nav-item logout"
         (click)="logout()"
       >
-        <span class="nav-icon">↪</span>
-        <span>Logout</span>
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
       </a>
 
     </div>
@@ -83,58 +197,101 @@
   </aside>
 
 
+
   <!-- ================= MAIN CONTENT ================= -->
+
   <main class="main-content">
 
+
     <!-- ================= TOPBAR ================= -->
+
     <header class="topbar">
 
+
       <div class="search-box">
-        <span>⌕</span>
+
+        <span>
+          ⌕
+        </span>
 
         <input
           type="text"
           placeholder="Search campus services..."
         />
+
       </div>
+
 
       <div class="topbar-right">
 
-        <button class="notification-btn">
+
+        <!-- Notification -->
+
+        <button
+          type="button"
+          class="notification-btn"
+        >
+
           🔔
-          <span>3</span>
+
+          <span>
+            3
+          </span>
+
         </button>
 
+
+        <!-- Student Profile -->
+
         <div
-  class="student-profile"
-  (click)="goToProfile()"
-  title="View Profile"
->
+          class="student-profile"
+          (click)="goToProfile()"
+          title="View Profile"
+        >
 
-  <div class="profile-avatar">
-    {{ student?.fullName?.charAt(0) || 'S' }}
-  </div>
+          <div class="profile-avatar">
 
-  <div class="profile-info">
-    <strong>{{ student?.fullName || 'Student' }}</strong>
-    <small>Student</small>
-  </div>
+            {{ student?.fullName?.charAt(0) || 'S' }}
 
-  <span class="profile-arrow">⌄</span>
+          </div>
 
-</div>
+
+          <div class="profile-info">
+
+            <strong>
+
+              {{ student?.fullName || 'Student' }}
+
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+
+          <span class="profile-arrow">
+            
+          </span>
+
+        </div>
 
       </div>
 
     </header>
 
 
+
     <!-- ================= DASHBOARD CONTENT ================= -->
+
     <section class="content">
 
 
       <!-- ================= WELCOME ================= -->
+
       <div class="welcome-section">
+
 
         <div>
 
@@ -142,13 +299,20 @@
             STUDENT DASHBOARD
           </p>
 
+
           <h1>
+
             Welcome back,
             {{ student?.fullName || 'Student' }}! 👋
+
           </h1>
 
+
           <p class="welcome-text">
-            Here's what's happening with your campus services today.
+
+            Here's what's happening with your campus
+            services today.
+
           </p>
 
         </div>
@@ -156,7 +320,9 @@
 
         <div class="date-box">
 
-          <strong>Today</strong>
+          <strong>
+            Today
+          </strong>
 
           <span>
             Stay focused. Stay ahead.
@@ -167,6 +333,7 @@
       </div>
 
 
+
       <!-- ================= SERVICE CARDS ================= -->
 
       <div class="service-grid">
@@ -174,11 +341,15 @@
 
         <!-- Hostel -->
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          routerLink="/hostel"
+        >
 
           <div class="card-icon hostel-icon">
             🏨
           </div>
+
 
           <div class="card-content">
 
@@ -196,6 +367,7 @@
 
           </div>
 
+
           <span class="card-arrow">
             →
           </span>
@@ -203,13 +375,18 @@
         </div>
 
 
-        <!-- Labs -->
 
-        <div class="service-card">
+        <!-- Lab -->
+
+        <div
+          class="service-card"
+          routerLink="/lab-booking"
+        >
 
           <div class="card-icon lab-icon">
             🧪
           </div>
+
 
           <div class="card-content">
 
@@ -227,11 +404,13 @@
 
           </div>
 
+
           <span class="card-arrow">
             →
           </span>
 
         </div>
+
 
 
         <!-- Events -->
@@ -241,6 +420,7 @@
           <div class="card-icon event-icon">
             📅
           </div>
+
 
           <div class="card-content">
 
@@ -258,11 +438,13 @@
 
           </div>
 
+
           <span class="card-arrow">
             →
           </span>
 
         </div>
+
 
 
         <!-- Complaints -->
@@ -272,6 +454,7 @@
           <div class="card-icon complaint-icon">
             💬
           </div>
+
 
           <div class="card-content">
 
@@ -289,11 +472,13 @@
 
           </div>
 
+
           <span class="card-arrow">
             →
           </span>
 
         </div>
+
 
 
         <!-- Certificates -->
@@ -303,6 +488,7 @@
           <div class="card-icon certificate-icon">
             📄
           </div>
+
 
           <div class="card-content">
 
@@ -320,11 +506,13 @@
 
           </div>
 
+
           <span class="card-arrow">
             →
           </span>
 
         </div>
+
 
 
         <!-- Fees -->
@@ -334,6 +522,7 @@
           <div class="card-icon payment-icon">
             💳
           </div>
+
 
           <div class="card-content">
 
@@ -351,6 +540,7 @@
 
           </div>
 
+
           <span class="card-arrow">
             →
           </span>
@@ -358,6 +548,7 @@
         </div>
 
       </div>
+
 
 
       <!-- ================= LOWER SECTION ================= -->
@@ -368,6 +559,7 @@
         <!-- ================= UPCOMING EVENTS ================= -->
 
         <section class="panel">
+
 
           <div class="panel-header">
 
@@ -383,6 +575,7 @@
 
             </div>
 
+
             <a>
               View All
             </a>
@@ -390,8 +583,11 @@
           </div>
 
 
+
           <div class="event-list">
 
+
+            <!-- Event 1 -->
 
             <div class="event-item">
 
@@ -407,6 +603,7 @@
 
               </div>
 
+
               <div class="event-info">
 
                 <strong>
@@ -419,12 +616,16 @@
 
               </div>
 
-              <button>
+
+              <button type="button">
                 View
               </button>
 
             </div>
 
+
+
+            <!-- Event 2 -->
 
             <div class="event-item">
 
@@ -440,6 +641,7 @@
 
               </div>
 
+
               <div class="event-info">
 
                 <strong>
@@ -452,12 +654,16 @@
 
               </div>
 
-              <button>
+
+              <button type="button">
                 View
               </button>
 
             </div>
 
+
+
+            <!-- Event 3 -->
 
             <div class="event-item">
 
@@ -473,6 +679,7 @@
 
               </div>
 
+
               <div class="event-info">
 
                 <strong>
@@ -485,7 +692,8 @@
 
               </div>
 
-              <button>
+
+              <button type="button">
                 View
               </button>
 
@@ -496,9 +704,11 @@
         </section>
 
 
+
         <!-- ================= RECENT NOTIFICATIONS ================= -->
 
         <section class="panel">
+
 
           <div class="panel-header">
 
@@ -514,6 +724,7 @@
 
             </div>
 
+
             <a>
               View All
             </a>
@@ -521,14 +732,18 @@
           </div>
 
 
+
           <div class="notification-list">
 
+
+            <!-- Notification 1 -->
 
             <div class="notification-item">
 
               <div class="notification-icon">
                 🧪
               </div>
+
 
               <div>
 
@@ -549,11 +764,15 @@
             </div>
 
 
+
+            <!-- Notification 2 -->
+
             <div class="notification-item">
 
               <div class="notification-icon">
                 📅
               </div>
+
 
               <div>
 
@@ -574,11 +793,15 @@
             </div>
 
 
+
+            <!-- Notification 3 -->
+
             <div class="notification-item">
 
               <div class="notification-icon">
                 📄
               </div>
+
 
               <div>
 
@@ -605,9 +828,11 @@
       </div>
 
 
+
       <!-- ================= QUICK ACTIONS ================= -->
 
       <section class="quick-actions">
+
 
         <div class="panel-header">
 
@@ -626,31 +851,79 @@
         </div>
 
 
+
         <div class="quick-grid">
 
-          <button>
-            <span>🧪</span>
-            <strong>Book a Lab</strong>
+
+          <!-- Book Lab -->
+
+          <button
+            type="button"
+            routerLink="/lab-booking"
+          >
+
+            <span>
+              🧪
+            </span>
+
+            <strong>
+              Book a Lab
+            </strong>
+
           </button>
 
-          <button>
-            <span>📅</span>
-            <strong>Register Event</strong>
+
+
+          <!-- Event -->
+
+          <button type="button">
+
+            <span>
+              📅
+            </span>
+
+            <strong>
+              Register Event
+            </strong>
+
           </button>
 
-          <button>
-            <span>💬</span>
-            <strong>Raise Complaint</strong>
+
+
+          <!-- Complaint -->
+
+          <button type="button">
+
+            <span>
+              💬
+            </span>
+
+            <strong>
+              Raise Complaint
+            </strong>
+
           </button>
 
-          <button>
-            <span>📄</span>
-            <strong>Request Certificate</strong>
+
+
+          <!-- Certificate -->
+
+          <button type="button">
+
+            <span>
+              📄
+            </span>
+
+            <strong>
+              Request Certificate
+            </strong>
+
           </button>
 
         </div>
 
       </section>
+
 
     </section>
 

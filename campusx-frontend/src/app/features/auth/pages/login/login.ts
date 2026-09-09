@@ -6,74 +6,204 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoginRequest } from '../../../../core/models/auth';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
+
   imports: [
     CommonModule,
     FormsModule,
     RouterLink
   ],
+
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 export class Login {
 
   loginData: LoginRequest = {
+
     email: '',
+
     password: ''
+
   };
 
+
   loading = false;
+
   errorMessage = '';
+
   successMessage = '';
+
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
+
+  // =====================================================
+  // LOGIN
+  // =====================================================
+
   login(): void {
 
     this.errorMessage = '';
+
     this.successMessage = '';
 
-    if (!this.loginData.email || !this.loginData.password) {
-      this.errorMessage = 'Please enter email and password.';
+
+    // ===================================================
+    // VALIDATION
+    // ===================================================
+
+    if (
+      !this.loginData.email ||
+      !this.loginData.password
+    ) {
+
+      this.errorMessage =
+        'Please enter email and password.';
+
       return;
+
     }
+
 
     this.loading = true;
 
-    this.authService.login(this.loginData).subscribe({
 
-      next: (response) => {
+    // ===================================================
+    // LOGIN API
+    // ===================================================
 
-        console.log('Login successful:', response);
+    this.authService
+      .login(this.loginData)
+      .subscribe({
 
-        if (response.token) {
-          this.authService.saveToken(response.token);
+        // ===============================================
+        // SUCCESS
+        // ===============================================
+
+        next: (response) => {
+
+          console.log(
+            'Login successful:',
+            response
+          );
+
+
+          // =============================================
+          // SAVE TOKEN
+          // =============================================
+
+          if (response.token) {
+
+            this.authService.saveToken(
+              response.token
+            );
+
+          }
+
+
+          // =============================================
+          // GET CURRENT STUDENT
+          // =============================================
+
+          this.authService
+            .getCurrentStudent()
+            .subscribe({
+
+              next: (student) => {
+
+                console.log(
+                  'Current student:',
+                  student
+                );
+
+
+                // =======================================
+                // SAVE STUDENT ID
+                // =======================================
+
+                this.authService.saveStudent(
+                  student
+                );
+
+
+                console.log(
+                  'Student ID saved:',
+                  student.id
+                );
+
+
+                this.loading = false;
+
+                this.successMessage =
+                  'Login successful!';
+
+
+                // =====================================
+                // GO DASHBOARD
+                // =====================================
+
+                setTimeout(() => {
+
+                  this.router.navigate([
+                    '/dashboard'
+                  ]);
+
+                }, 500);
+
+              },
+
+
+              error: (error) => {
+
+                console.error(
+                  'Failed to get student profile:',
+                  error
+                );
+
+
+                this.loading = false;
+
+
+                this.errorMessage =
+                  'Login successful, but student profile could not be loaded.';
+
+              }
+
+            });
+
+        },
+
+
+        // ===============================================
+        // LOGIN ERROR
+        // ===============================================
+
+        error: (error) => {
+
+          console.error(
+            'Login error:',
+            error
+          );
+
+
+          this.loading = false;
+
+
+          this.errorMessage =
+            error?.error?.message ||
+            'Invalid email or password.';
+
         }
 
-        this.loading = false;
-        this.successMessage = 'Login successful!';
+      });
 
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 500);
-      },
-
-      error: (error) => {
-
-        console.error('Login error:', error);
-
-        this.loading = false;
-
-        this.errorMessage =
-          error?.error?.message ||
-          'Invalid email or password.';
-      }
-
-    });
   }
+
 }

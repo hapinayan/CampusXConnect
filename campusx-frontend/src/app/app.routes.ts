@@ -78,6 +78,14 @@ export const routes: Routes = [
   },
 
 
+  {
+  path: 'lab-booking',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/lab-booking/pages/lab-booking/lab-booking')
+      .then(m => m.LabBookingPage)
+},
+
   // =========================
   // UNKNOWN URL → LOGIN
   // =========================
