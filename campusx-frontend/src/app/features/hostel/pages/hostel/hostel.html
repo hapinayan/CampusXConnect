@@ -129,13 +129,17 @@
 
       <!-- Events -->
 
-      <a>
+      <a class="nav-item"
+      routerLink="/events"
+      >
 
-        <span>
+        <span class="nav-icon">
           📅
         </span>
 
-        Events
+        <span>
+          Events
+        </span>
 
       </a>
 
@@ -181,19 +185,21 @@
 
       <!-- Notifications -->
 
-      <a>
+     <a
+  class="nav-item"
+  routerLink="/notifications"
+  routerLinkActive="active"
+>
+  <span class="nav-icon">🔔</span>
 
-        <span>
-          🔔
-        </span>
+  <span>
+    Notifications
+  </span>
 
-        Notifications
-
-        <b>
-          3
-        </b>
-
-      </a>
+  <span class="notification-count">
+    3
+  </span>
+</a>
 
 
       <!-- Profile -->

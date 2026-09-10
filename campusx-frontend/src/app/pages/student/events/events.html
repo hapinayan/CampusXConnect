@@ -1,0 +1,899 @@
+<div class="events-page">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">🏨</span>
+        <span>Hostel</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
+      </a>
+
+
+  <a
+  class="nav-item active"
+  routerLink="/events"
+>
+  <span class="nav-icon">📅</span>
+  <span>Events</span>
+</a>
+
+      <a class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
+
+
+      <a class="nav-item">
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
+      </a>
+
+
+      <a class="nav-item">
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
+      </a>
+
+
+      <a
+  class="nav-item"
+  routerLink="/notifications"
+  routerLinkActive="active"
+>
+  <span class="nav-icon">🔔</span>
+
+  <span>
+    Notifications
+  </span>
+
+  <span class="notification-count">
+    3
+  </span>
+</a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+
+        <span class="nav-icon">👤</span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <a class="nav-item logout">
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          CAMPUS EVENTS
+        </span>
+
+      </div>
+
+
+      <div class="topbar-right">
+
+        <button
+          type="button"
+          class="notification-btn"
+        >
+
+          🔔
+
+          <span>
+            3
+          </span>
+
+        </button>
+
+
+        <div class="student-profile">
+
+          <div class="profile-avatar">
+            S
+          </div>
+
+          <div class="profile-info">
+
+            <strong>
+              Student
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+          <span>
+            ⌄
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           HERO
+      ================================================== -->
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <p>
+            CAMPUS EVENTS
+          </p>
+
+          <h1>
+            Events
+          </h1>
+
+          <span>
+            Discover campus events and register for activities.
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="back-button"
+          routerLink="/dashboard"
+        >
+
+          ← Dashboard
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           FEATURES
+      ================================================== -->
+
+      <section class="feature-row">
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            📅
+          </div>
+
+          <div>
+
+            <strong>
+              Campus Events
+            </strong>
+
+            <span>
+              Discover upcoming activities
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🎓
+          </div>
+
+          <div>
+
+            <strong>
+              Student Activities
+            </strong>
+
+            <span>
+              Join university activities
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon purple">
+            🤝
+          </div>
+
+          <div>
+
+            <strong>
+              Connect & Learn
+            </strong>
+
+            <span>
+              Meet and learn together
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           MESSAGES
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="message error">
+
+          ⚠️
+
+          {{ errorMessage }}
+
+        </div>
+
+      }
+
+
+      @if (successMessage) {
+
+        <div class="message success">
+
+          ✓
+
+          {{ successMessage }}
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           EVENTS SECTION
+      ================================================== -->
+
+      <section class="events-card">
+
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            📅
+          </div>
+
+          <div>
+
+            <h2>
+              Upcoming Events
+            </h2>
+
+            <p>
+              Explore and register for campus events.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (eventsLoading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading events...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EVENTS
+        ================================================== -->
+
+        @else if (events.length > 0) {
+
+          <div class="events-grid">
+
+
+            @for (
+              event of events;
+              track event.id
+            ) {
+
+
+              <div class="event-card">
+
+
+                <!-- ===============================
+                     EVENT ICON
+                ================================ -->
+
+                <div class="event-icon">
+
+                  📅
+
+                </div>
+
+
+
+                <!-- ===============================
+                     EVENT DETAILS
+                ================================ -->
+
+                <div class="event-content">
+
+
+                  <h3>
+
+                    {{ event.title }}
+
+                  </h3>
+
+
+                  <p class="event-description">
+
+                    {{ event.description }}
+
+                  </p>
+
+
+
+                  <!-- ===============================
+                       DATE
+                  ================================ -->
+
+                  <div class="event-detail">
+
+                    <span>
+                      📅
+                    </span>
+
+                    <span>
+
+                      {{ event.eventDate | date:'dd MMM yyyy' }}
+
+                    </span>
+
+                  </div>
+
+
+
+                  <!-- ===============================
+                       VENUE
+                  ================================ -->
+
+                  <div class="event-detail">
+
+                    <span>
+                      📍
+                    </span>
+
+                    <span>
+
+                      {{ event.venue }}
+
+                    </span>
+
+                  </div>
+
+
+
+                  <!-- ===============================
+                       CAPACITY
+                  ================================ -->
+
+                  <div class="event-detail">
+
+                    <span>
+                      👥
+                    </span>
+
+                    <span>
+
+                      Capacity:
+                      {{ event.capacity }}
+
+                    </span>
+
+                  </div>
+
+
+
+                  <!-- ===============================
+                       ACTIVE STATUS
+                  ================================ -->
+
+                  @if (!event.isActive) {
+
+                    <div class="event-inactive">
+
+                      Event is currently unavailable.
+
+                    </div>
+
+                  }
+
+
+
+                  <!-- ===============================
+                       REGISTERED
+                  ================================ -->
+
+                  @else if (isRegistered(event.id)) {
+
+                    <button
+                      type="button"
+                      class="registered-button"
+                      disabled
+                    >
+
+                      ✓ Registered
+
+                    </button>
+
+                  }
+
+
+
+                  <!-- ===============================
+                       REGISTER
+                  ================================ -->
+
+                  @else {
+
+                    <button
+                      type="button"
+                      class="register-button"
+                      [disabled]="registeringEventId === event.id"
+                      (click)="registerForEvent(event.id)"
+                    >
+
+                      @if (
+                        registeringEventId === event.id
+                      ) {
+
+                        <span class="spinner white"></span>
+
+                        Registering...
+
+                      }
+
+                      @else {
+
+                        🎟️ Register Now
+
+                      }
+
+                    </button>
+
+                  }
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             NO EVENTS
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              📅
+            </div>
+
+            <h3>
+              No Events Available
+            </h3>
+
+            <p>
+              There are currently no campus events available.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+
+
+      <!-- =================================================
+           MY REGISTRATIONS
+      ================================================== -->
+
+      <section class="registrations-card">
+
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            🎟️
+          </div>
+
+          <div>
+
+            <h2>
+              My Event Registrations
+            </h2>
+
+            <p>
+              View and manage your registered events.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (registrationsLoading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading your registrations...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             REGISTRATIONS
+        ================================================== -->
+
+        @else if (registrations.length > 0) {
+
+          <div class="registration-list">
+
+
+            @for (
+              registration of registrations;
+              track registration.id
+            ) {
+
+
+              <div class="registration-item">
+
+
+                <!-- ===============================
+                     ICON
+                ================================ -->
+
+                <div class="registration-icon">
+
+                  🎟️
+
+                </div>
+
+
+
+                <!-- ===============================
+                     DETAILS
+                ================================ -->
+
+                <div class="registration-info">
+
+
+                  <h3>
+
+                    @if (registration.eventTitle) {
+
+                      {{ registration.eventTitle }}
+
+                    }
+
+                    @else {
+
+                      Event #{{ registration.eventId }}
+
+                    }
+
+                  </h3>
+
+
+                  <p>
+
+                    🎟️
+
+                    Registration ID:
+                    {{ registration.id }}
+
+                  </p>
+
+
+                  <p>
+
+                    📅
+
+                    Registered:
+
+                    {{ registration.registeredAt | date:'dd MMM yyyy, h:mm a' }}
+
+                  </p>
+
+                </div>
+
+
+
+                <!-- ===============================
+                     CANCEL
+                ================================ -->
+
+                <button
+                  type="button"
+                  class="cancel-button"
+                  (click)="cancelRegistration(registration.id)"
+                >
+
+                  Cancel
+
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EMPTY
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              🎟️
+            </div>
+
+            <h3>
+              No Event Registrations
+            </h3>
+
+            <p>
+              You haven't registered for any event yet.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================================
+       CANCEL REGISTRATION POPUP
+  ====================================================== -->
+
+  @if (showCancelPopup) {
+
+    <div
+      class="popup-overlay"
+      (click)="closeCancelPopup()"
+    >
+
+      <div
+        class="cancel-popup"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- ===============================
+             POPUP ICON
+        ================================ -->
+
+        <div class="popup-icon">
+
+          ⚠️
+
+        </div>
+
+
+
+        <!-- ===============================
+             TITLE
+        ================================ -->
+
+        <h2>
+
+          Cancel Registration?
+
+        </h2>
+
+
+
+        <!-- ===============================
+             MESSAGE
+        ================================ -->
+
+        <p>
+
+          Are you sure you want to cancel
+          this event registration?
+
+        </p>
+
+
+
+        <span class="popup-warning">
+
+          This action cannot be undone.
+
+        </span>
+
+
+
+        <!-- ===============================
+             ACTIONS
+        ================================ -->
+
+        <div class="popup-actions">
+
+
+          <button
+            type="button"
+            class="popup-cancel"
+            (click)="closeCancelPopup()"
+          >
+
+            Keep Registration
+
+          </button>
+
+
+
+          <button
+            type="button"
+            class="popup-confirm"
+            (click)="confirmCancelRegistration()"
+          >
+
+            Yes, Cancel
+
+          </button>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

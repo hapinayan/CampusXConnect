@@ -1,0 +1,610 @@
+<div class="notifications-page">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">🏨</span>
+        <span>Hostel</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+      </a>
+
+
+      <a class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
+
+
+      <a class="nav-item">
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
+      </a>
+
+
+      <a class="nav-item">
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
+      </a>
+
+
+      <a
+  class="nav-item"
+  routerLink="/notifications"
+  routerLinkActive="active"
+>
+  <span class="nav-icon">🔔</span>
+
+  <span>
+    Notifications
+  </span>
+
+  @if (unreadCount > 0) {
+    <span class="notification-count">
+      {{ unreadCount }}
+    </span>
+  }
+</a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <a class="nav-item logout">
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          CAMPUS NOTIFICATIONS
+        </span>
+
+      </div>
+
+
+      <div class="topbar-right">
+
+        <button
+          type="button"
+          class="notification-btn"
+          (click)="refreshNotifications()"
+        >
+          🔔
+
+          @if (unreadCount > 0) {
+
+            <span>
+              {{ unreadCount }}
+            </span>
+
+          }
+
+        </button>
+
+
+        <div class="student-profile">
+
+          <div class="profile-avatar">
+            S
+          </div>
+
+          <div class="profile-info">
+
+            <strong>
+              Student
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+          <span>
+            ⌄
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           HERO
+      ================================================== -->
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <p>
+            CAMPUS NOTIFICATIONS
+          </p>
+
+          <h1>
+            Notifications
+          </h1>
+
+          <span>
+            Stay updated with important campus activities and services.
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="back-button"
+          routerLink="/dashboard"
+        >
+          ← Dashboard
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           SUMMARY
+      ================================================== -->
+
+      <section class="summary-row">
+
+
+        <div class="summary-card">
+
+          <div class="summary-icon">
+            🔔
+          </div>
+
+          <div>
+
+            <strong>
+              Total Notifications
+            </strong>
+
+            <span>
+              {{ notifications.length }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+          <div class="summary-icon unread">
+            📩
+          </div>
+
+          <div>
+
+            <strong>
+              Unread
+            </strong>
+
+            <span>
+              {{ unreadCount }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+          <div class="summary-icon purple">
+            🎓
+          </div>
+
+          <div>
+
+            <strong>
+              Campus Updates
+            </strong>
+
+            <span>
+              Stay informed
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           MESSAGES
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="message error">
+
+          ⚠️
+
+          {{ errorMessage }}
+
+        </div>
+
+      }
+
+
+      @if (successMessage) {
+
+        <div class="message success">
+
+          ✓
+
+          {{ successMessage }}
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           NOTIFICATIONS CARD
+      ================================================== -->
+
+      <section class="notifications-card">
+
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            🔔
+          </div>
+
+          <div>
+
+            <h2>
+              Your Notifications
+            </h2>
+
+            <p>
+              Important updates related to your campus activities.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="refresh-button"
+            (click)="refreshNotifications()"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (loading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading notifications...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             NOTIFICATIONS
+        ================================================== -->
+
+        @else if (notifications.length > 0) {
+
+          <div class="notification-list">
+
+
+            @for (
+              notification of notifications;
+              track notification.id
+            ) {
+
+              <div
+                class="notification-item"
+                [class.unread]="!notification.isRead"
+                (click)="markAsRead(notification)"
+              >
+
+
+                <!-- ===============================
+                     ICON
+                ================================ -->
+
+                <div class="notification-icon">
+
+                  @if (
+                    notification.type === 'Lab'
+                  ) {
+
+                    🧪
+
+                  }
+
+                  @else if (
+                    notification.type === 'Event'
+                  ) {
+
+                    📅
+
+                  }
+
+                  @else if (
+                    notification.type === 'Hostel'
+                  ) {
+
+                    🏨
+
+                  }
+
+                  @else if (
+                    notification.type === 'Payment'
+                  ) {
+
+                    💳
+
+                  }
+
+                  @else if (
+                    notification.type === 'Complaint'
+                  ) {
+
+                    💬
+
+                  }
+
+                  @else if (
+                    notification.type === 'Certificate'
+                  ) {
+
+                    📄
+
+                  }
+
+                  @else {
+
+                    🔔
+
+                  }
+
+                </div>
+
+
+
+                <!-- ===============================
+                     CONTENT
+                ================================ -->
+
+                <div class="notification-content">
+
+                  <div class="notification-top">
+
+                    <h3>
+                      {{ notification.title }}
+                    </h3>
+
+                    @if (!notification.isRead) {
+
+                      <span class="unread-badge">
+                        NEW
+                      </span>
+
+                    }
+
+                  </div>
+
+
+                  <p class="notification-message">
+                    {{ notification.message }}
+                  </p>
+
+
+                  <div class="notification-meta">
+
+                    <span>
+                      {{ notification.type }}
+                    </span>
+
+                    <span>
+                      •
+                    </span>
+
+                    <span>
+                      {{ notification.createdAt | date:'dd MMM yyyy, h:mm a' }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+                <!-- ===============================
+                     STATUS
+                ================================ -->
+
+                <div class="notification-status">
+
+                  @if (notification.isRead) {
+
+                    <span class="read-status">
+                      ✓ Read
+                    </span>
+
+                  }
+
+                  @else {
+
+                    <span class="unread-status">
+                      ● Unread
+                    </span>
+
+                  }
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EMPTY
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              🔔
+            </div>
+
+            <h3>
+              No Notifications
+            </h3>
+
+            <p>
+              You don't have any notifications at the moment.
+            </p>
+
+            <button
+              type="button"
+              class="empty-refresh-button"
+              (click)="refreshNotifications()"
+            >
+              ↻ Refresh
+            </button>
+
+          </div>
+
+        }
+
+      </section>
+
+    </section>
+
+  </main>
+
+</div>

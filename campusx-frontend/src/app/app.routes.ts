@@ -86,6 +86,30 @@ export const routes: Routes = [
       .then(m => m.LabBookingPage)
 },
 
+// =========================
+// EVENTS - PROTECTED
+// =========================
+
+{
+  path: 'events',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/student/events/events')
+      .then(m => m.Events)
+},
+
+// =========================
+// NOTIFICATIONS - PROTECTED
+// =========================
+
+{
+  path: 'notifications',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/notifications/pages/notifications/notifications')
+      .then(m => m.Notifications)
+},
+
   // =========================
   // UNKNOWN URL → LOGIN
   // =========================
