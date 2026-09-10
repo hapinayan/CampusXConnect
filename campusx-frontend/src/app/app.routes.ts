@@ -110,6 +110,22 @@ export const routes: Routes = [
       .then(m => m.Notifications)
 },
 
+{
+  path: 'complaints',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/complaints/pages/complaints/complaints')
+      .then(m => m.Complaints)
+},
+
+{
+  path: 'certificates',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/certificates/pages/certificates/certificates')
+      .then(m => m.Certificates)
+},
+
   // =========================
   // UNKNOWN URL → LOGIN
   // =========================

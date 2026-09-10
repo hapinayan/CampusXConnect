@@ -1,0 +1,906 @@
+<div class="certificates-page">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">🏨</span>
+        <span>Hostel</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
+
+
+      <a
+        class="nav-item active"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+        <span class="notification-count">
+          3
+        </span>
+
+      </a>
+
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <a class="nav-item logout">
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          DOCUMENT SERVICES
+        </span>
+
+      </div>
+
+
+      <div class="topbar-right">
+
+        <button
+          type="button"
+          class="notification-btn"
+          routerLink="/notifications"
+        >
+
+          🔔
+
+          <span>
+            3
+          </span>
+
+        </button>
+
+
+        <div class="student-profile">
+
+          <div class="profile-avatar">
+            S
+          </div>
+
+          <div class="profile-info">
+
+            <strong>
+              Student
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+          <span>
+            ⌄
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           HERO
+      ================================================== -->
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <p>
+            DOCUMENT SERVICES
+          </p>
+
+          <h1>
+            Certificates
+          </h1>
+
+          <span>
+            Request official university documents and track their approval status.
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="back-button"
+          routerLink="/dashboard"
+        >
+
+          ← Dashboard
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           FEATURES
+      ================================================== -->
+
+      <section class="feature-row">
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            📄
+          </div>
+
+          <div>
+
+            <strong>
+              Official Documents
+            </strong>
+
+            <span>
+              Request university certificates
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🔍
+          </div>
+
+          <div>
+
+            <strong>
+              Track Requests
+            </strong>
+
+            <span>
+              Monitor approval progress
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon purple">
+            🎓
+          </div>
+
+          <div>
+
+            <strong>
+              Student Services
+            </strong>
+
+            <span>
+              Access important academic documents
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           MESSAGES
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="message error">
+
+          <span>
+            ⚠️
+          </span>
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+
+      @if (successMessage) {
+
+        <div class="message success">
+
+          <span>
+            ✓
+          </span>
+
+          <span>
+            {{ successMessage }}
+          </span>
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           REQUEST FORM
+      ================================================== -->
+
+      <section class="request-card">
+
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            📄
+          </div>
+
+          <div>
+
+            <h2>
+              Request Certificates
+            </h2>
+
+            <p>
+              Select the documents you need and provide a reason for each request.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <form
+          [formGroup]="certificateForm"
+          (ngSubmit)="submitRequests()"
+        >
+
+          <div
+            class="certificate-list"
+            formArrayName="certificates"
+          >
+
+
+            @for (
+              certificate of certificates.controls;
+              track $index;
+              let i = $index
+            ) {
+
+
+              <div
+                class="certificate-row"
+                [formGroupName]="i"
+              >
+
+
+                <!-- =========================================
+                     ROW NUMBER
+                ========================================== -->
+
+                <div class="row-number">
+
+                  {{ i + 1 }}
+
+                </div>
+
+
+
+                <!-- =========================================
+                     CERTIFICATE TYPE
+                ========================================== -->
+
+                <div class="form-group type-group">
+
+                  <label>
+                    Certificate Type
+                  </label>
+
+
+                  <select
+                    formControlName="certificateType"
+                  >
+
+                    <option value="">
+                      Select certificate
+                    </option>
+
+
+                    @for (
+  type of certificateTypes;
+  track type
+) {
+
+  <option
+    [value]="type"
+    [disabled]="
+      getSelectedTypes().includes(type) &&
+      certificate.get('certificateType')?.value !== type
+    "
+  >
+
+    @if (type === 0) {
+      Enrollment Certificate
+    }
+
+    @else if (type === 1) {
+      Academic Certificate
+    }
+
+    @else if (type === 2) {
+      Character Certificate
+    }
+
+    @else {
+      Other
+    }
+
+  </option>
+
+}
+
+                  </select>
+
+
+                  @if (
+                    certificate.get('certificateType')?.touched &&
+                    certificate.get('certificateType')?.invalid
+                  ) {
+
+                    <small class="field-error">
+                      Please select a certificate type.
+                    </small>
+
+                  }
+
+
+                  @if (
+                    isDuplicateType(i)
+                  ) {
+
+                    <small class="field-error">
+                      This certificate type is already selected.
+                    </small>
+
+                  }
+
+                </div>
+
+
+
+                <!-- =========================================
+                     REASON
+                ========================================== -->
+
+                <div class="form-group reason-group">
+
+                  <label>
+                    Reason
+                  </label>
+
+                  <input
+                    type="text"
+                    formControlName="reason"
+                    placeholder="Enter reason for this request"
+                  />
+
+
+                  @if (
+                    certificate.get('reason')?.touched &&
+                    certificate.get('reason')?.invalid
+                  ) {
+
+                    <small class="field-error">
+                      Reason must be at least 5 characters.
+                    </small>
+
+                  }
+
+                </div>
+
+
+
+                <!-- =========================================
+                     COPIES
+                ========================================== -->
+
+
+
+
+                <!-- =========================================
+                     REMOVE
+                ========================================== -->
+
+                @if (
+                  certificates.length > 1
+                ) {
+
+                  <button
+                    type="button"
+                    class="remove-button"
+                    (click)="removeCertificate(i)"
+                    title="Remove certificate"
+                  >
+
+                    ×
+
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+
+          <!-- =================================================
+               ADD CERTIFICATE
+          ================================================== -->
+
+          <div class="form-actions">
+
+
+            <button
+              type="button"
+              class="add-button"
+              (click)="addCertificate()"
+              [disabled]="
+                certificates.length >= certificateTypes.length
+              "
+            >
+
+              + Add Another Certificate
+
+            </button>
+
+
+            <button
+              type="submit"
+              class="submit-button"
+              [disabled]="submitting"
+            >
+
+              @if (submitting) {
+
+                <span class="spinner white"></span>
+
+                Submitting...
+
+              }
+
+              @else {
+
+                📄 Submit Request
+
+              }
+
+            </button>
+
+          </div>
+
+
+        </form>
+
+      </section>
+
+
+
+      <!-- =================================================
+           MY REQUESTS
+      ================================================== -->
+
+      <section class="history-card">
+
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            📋
+          </div>
+
+          <div>
+
+            <h2>
+              My Certificate Requests
+            </h2>
+
+            <p>
+              View your previous requests and approval status.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="refresh-button"
+            (click)="refreshRequests()"
+            [disabled]="requestsLoading"
+          >
+
+            🔄 Refresh
+
+          </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (requestsLoading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading your certificate requests...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             REQUEST LIST
+        ================================================== -->
+
+        @else if (
+          requests.length > 0
+        ) {
+
+          <div class="request-list">
+
+
+            @for (
+              request of requests;
+              track request.id
+            ) {
+
+
+              <div class="request-item">
+
+
+                <div class="request-icon">
+                  📄
+                </div>
+
+
+                <div class="request-info">
+
+
+                  <div class="request-top">
+
+                    <div>
+
+                      <h3>
+
+                       @if (
+  request.certificateType === 'Bonafide'
+) {
+
+  Bonafide Certificate
+
+}
+
+@else if (
+  request.certificateType === 'Transcript'
+) {
+
+  Transcript
+
+}
+
+@else {
+
+  Completion Letter
+
+}
+
+                      </h3>
+
+                      <span class="request-id">
+
+                        Request #{{ request.id }}
+
+                      </span>
+
+                    </div>
+
+
+                    <span
+                      class="status-badge"
+                      [class]="
+                        getStatusClass(request.status)
+                      "
+                    >
+
+                      @if (
+                        request.status === 'Pending'
+                      ) {
+
+                        🕐
+
+                      }
+
+                      @else if (
+                        request.status === 'Approved'
+                      ) {
+
+                        ✓
+
+                      }
+
+                      @else if (
+                        request.status === 'Rejected'
+                      ) {
+
+                        ✕
+
+                      }
+
+                      @else {
+
+                        📦
+
+                      }
+
+                      {{ getStatusLabel(request.status) }}
+
+                    </span>
+
+                  </div>
+
+
+
+                  <p class="request-reason">
+
+                    <strong>
+                      Reason:
+                    </strong>
+
+                    {{ request.reason }}
+
+                  </p>
+
+
+
+                  <div class="request-meta">
+
+                   
+
+
+                    <span>
+
+                      📅
+
+                      Requested:
+
+                      {{ request.requestedAt | date:'dd MMM yyyy, h:mm a' }}
+
+                    </span>
+
+                  </div>
+
+
+
+                  @if (
+                    request.adminNote
+                  ) {
+
+                    <div class="admin-note">
+
+                      <strong>
+                        📝 Admin Note
+                      </strong>
+
+                      <p>
+                        {{ request.adminNote }}
+                      </p>
+
+                    </div>
+
+                  }
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EMPTY
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              📄
+            </div>
+
+            <h3>
+              No Certificate Requests
+            </h3>
+
+            <p>
+              You haven't submitted any certificate requests yet.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    </section>
+
+  </main>
+
+</div>
