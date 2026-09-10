@@ -1,4 +1,4 @@
-<div class="certificates-page">
+<div class="payments-page">
 
   <!-- =====================================================
        SIDEBAR
@@ -22,7 +22,7 @@
 
     <nav class="sidebar-nav">
 
-      <!-- DASHBOARD -->
+      <!-- Dashboard -->
 
       <a
         class="nav-item"
@@ -33,7 +33,7 @@
       </a>
 
 
-      <!-- HOSTEL -->
+      <!-- Hostel -->
 
       <a
         class="nav-item"
@@ -44,7 +44,7 @@
       </a>
 
 
-      <!-- LAB BOOKING -->
+      <!-- Lab Booking -->
 
       <a
         class="nav-item"
@@ -55,7 +55,7 @@
       </a>
 
 
-      <!-- EVENTS -->
+      <!-- Events -->
 
       <a
         class="nav-item"
@@ -66,7 +66,7 @@
       </a>
 
 
-      <!-- COMPLAINTS -->
+      <!-- Complaints -->
 
       <a
         class="nav-item"
@@ -77,10 +77,10 @@
       </a>
 
 
-      <!-- CERTIFICATES -->
+      <!-- Certificates -->
 
       <a
-        class="nav-item active"
+        class="nav-item"
         routerLink="/certificates"
       >
         <span class="nav-icon">📄</span>
@@ -88,10 +88,10 @@
       </a>
 
 
-      <!-- PAYMENTS -->
+      <!-- Payments -->
 
       <a
-        class="nav-item"
+        class="nav-item active"
         routerLink="/payments"
       >
         <span class="nav-icon">💳</span>
@@ -99,7 +99,7 @@
       </a>
 
 
-      <!-- NOTIFICATIONS -->
+      <!-- Notifications -->
 
       <a
         class="nav-item"
@@ -117,7 +117,7 @@
       </a>
 
 
-      <!-- PROFILE -->
+      <!-- Profile -->
 
       <a
         class="nav-item"
@@ -137,7 +137,9 @@
     </nav>
 
 
-    <!-- SIDEBAR BOTTOM -->
+    <!-- =================================================
+         LOGOUT
+    ================================================== -->
 
     <div class="sidebar-bottom">
 
@@ -178,7 +180,7 @@
       <div class="topbar-title">
 
         <span class="page-label">
-          DOCUMENT SERVICES
+          FINANCIAL SERVICES
         </span>
 
       </div>
@@ -186,7 +188,7 @@
 
       <div class="topbar-right">
 
-        <!-- NOTIFICATION -->
+        <!-- Notification -->
 
         <button
           type="button"
@@ -199,7 +201,7 @@
         </button>
 
 
-        <!-- STUDENT PROFILE -->
+        <!-- Student Profile -->
 
         <div class="student-profile">
 
@@ -247,15 +249,15 @@
         <div class="hero-content">
 
           <p>
-            DOCUMENT SERVICES
+            FINANCIAL SERVICES
           </p>
 
           <h1>
-            Certificates
+            Payments
           </h1>
 
           <span>
-            Request official university documents and track their approval status.
+            Make your university fee payments and view your payment history.
           </span>
 
         </div>
@@ -276,7 +278,7 @@
 
 
       <!-- =================================================
-           FEATURES
+           FEATURE CARDS
       ================================================== -->
 
       <section class="feature-row">
@@ -287,17 +289,17 @@
         <div class="feature-card">
 
           <div class="feature-icon">
-            📄
+            💳
           </div>
 
           <div>
 
             <strong>
-              Official Documents
+              Secure Payments
             </strong>
 
             <span>
-              Request university certificates
+              Pay your university fees
             </span>
 
           </div>
@@ -311,17 +313,17 @@
         <div class="feature-card">
 
           <div class="feature-icon">
-            🔍
+            🧾
           </div>
 
           <div>
 
             <strong>
-              Track Requests
+              Digital Receipts
             </strong>
 
             <span>
-              Monitor approval progress
+              Keep track of payment receipts
             </span>
 
           </div>
@@ -335,17 +337,17 @@
         <div class="feature-card">
 
           <div class="feature-icon purple">
-            🎓
+            📊
           </div>
 
           <div>
 
             <strong>
-              Student Services
+              Payment History
             </strong>
 
             <span>
-              Access important academic documents
+              View your previous payments
             </span>
 
           </div>
@@ -401,28 +403,25 @@
 
 
       <!-- =================================================
-           REQUEST CARD
+           PAYMENT FORM
       ================================================== -->
 
-      <section class="request-card">
-
-
-        <!-- SECTION HEADER -->
+      <section class="payment-card">
 
         <div class="section-header">
 
           <div class="section-icon">
-            📄
+            💳
           </div>
 
           <div>
 
             <h2>
-              Request Certificates
+              Make a Payment
             </h2>
 
             <p>
-              Select the certificate you need and provide a reason.
+              Enter your fee details to complete a payment.
             </p>
 
           </div>
@@ -430,193 +429,110 @@
         </div>
 
 
-
-        <!-- =================================================
-             FORM
-        ================================================== -->
-
         <form
-          [formGroup]="certificateForm"
-          (ngSubmit)="submitRequests()"
+          [formGroup]="paymentForm"
+          (ngSubmit)="makePayment()"
         >
 
-          <div
-            class="certificate-list"
-            formArrayName="certificates"
-          >
+          <div class="payment-form-grid">
 
 
-            @for (
-              certificate of certificates.controls;
-              track $index;
-              let i = $index
-            ) {
+            <!-- FEE TYPE -->
+
+            <div class="form-group">
+
+              <label for="feeType">
+                Fee Type
+              </label>
+
+              <input
+                id="feeType"
+                type="text"
+                formControlName="feeType"
+                placeholder="e.g. Registration Fee"
+              />
 
 
-              <div
-                class="certificate-row"
-                [formGroupName]="i"
-              >
+              @if (
+                paymentForm.get('feeType')?.touched &&
+                paymentForm.get('feeType')?.invalid
+              ) {
 
+                <small class="field-error">
+                  Please enter the fee type.
+                </small>
 
-                <!-- ROW NUMBER -->
+              }
 
-                <div class="row-number">
-
-                  {{ i + 1 }}
-
-                </div>
-
-
-
-                <!-- CERTIFICATE TYPE -->
-
-                <div class="form-group type-group">
-
-                  <label>
-                    Certificate Type
-                  </label>
-
-
-                  <select
-                    formControlName="certificateType"
-                  >
-
-                    <option value="">
-                      Select certificate
-                    </option>
-
-
-                    @for (
-                      type of certificateTypes;
-                      track type
-                    ) {
-
-                      <option
-                        [value]="type"
-                        [disabled]="
-                          getSelectedTypes().includes(type) &&
-                          certificate.get('certificateType')?.value !== type
-                        "
-                      >
-
-                        {{ getCertificateTypeLabel(type) }}
-
-                      </option>
-
-                    }
-
-                  </select>
-
-
-                  @if (
-                    certificate.get('certificateType')?.touched &&
-                    certificate.get('certificateType')?.invalid
-                  ) {
-
-                    <small class="field-error">
-                      Please select a certificate type.
-                    </small>
-
-                  }
-
-
-                  @if (
-                    isDuplicateType(i)
-                  ) {
-
-                    <small class="field-error">
-                      This certificate type is already selected.
-                    </small>
-
-                  }
-
-                </div>
+            </div>
 
 
 
-                <!-- REASON -->
+            <!-- AMOUNT -->
 
-                <div class="form-group reason-group">
+            <div class="form-group">
 
-                  <label>
-                    Reason
-                  </label>
+              <label for="amount">
+                Amount (LKR)
+              </label>
 
-
-                  <input
-                    type="text"
-                    formControlName="reason"
-                    placeholder="Enter reason for this request"
-                  />
-
-
-                  @if (
-                    certificate.get('reason')?.touched &&
-                    certificate.get('reason')?.invalid
-                  ) {
-
-                    <small class="field-error">
-                      Reason must be at least 5 characters.
-                    </small>
-
-                  }
-
-                </div>
+              <input
+                id="amount"
+                type="number"
+                formControlName="amount"
+                min="1"
+                placeholder="Enter amount"
+              />
 
 
+              @if (
+                paymentForm.get('amount')?.touched &&
+                paymentForm.get('amount')?.invalid
+              ) {
 
-                <!-- REMOVE -->
+                <small class="field-error">
+                  Please enter an amount greater than 0.
+                </small>
 
-                @if (
-                  certificates.length > 1
-                ) {
+              }
 
-                  <button
-                    type="button"
-                    class="remove-button"
-                    (click)="removeCertificate(i)"
-                    title="Remove certificate"
-                  >
-
-                    ×
-
-                  </button>
-
-                }
-
-              </div>
-
-            }
+            </div>
 
           </div>
 
 
 
           <!-- =================================================
-               FORM ACTIONS
+               PAYMENT INFORMATION
+          ================================================== -->
+
+          <div class="payment-note">
+
+            <span>
+              ℹ️
+            </span>
+
+            <div>
+
+              <strong>
+                Payment Information
+              </strong>
+
+              <p>
+                Please verify the fee type and amount before submitting your payment.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================================
+               SUBMIT
           ================================================== -->
 
           <div class="form-actions">
-
-
-            <!-- ADD ANOTHER -->
-
-            <button
-              type="button"
-              class="add-button"
-              (click)="addCertificate()"
-              [disabled]="
-                certificates.length >= certificateTypes.length
-              "
-            >
-
-              + Add Another Certificate
-
-            </button>
-
-
-            <!-- SUBMIT -->
 
             <button
               type="submit"
@@ -628,13 +544,13 @@
 
                 <span class="spinner white"></span>
 
-                Submitting...
+                Processing...
 
               }
 
               @else {
 
-                📄 Submit Request
+                💳 Make Payment
 
               }
 
@@ -649,13 +565,138 @@
 
 
       <!-- =================================================
-           MY REQUESTS
+           LAST PAYMENT RECEIPT
+      ================================================== -->
+
+      @if (lastPayment) {
+
+        <section class="receipt-card">
+
+          <div class="receipt-header">
+
+            <div class="receipt-icon">
+              ✓
+            </div>
+
+            <div>
+
+              <h2>
+                Payment Successful
+              </h2>
+
+              <p>
+                Your payment has been completed successfully.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="receipt-details">
+
+            <!-- PAYMENT ID -->
+
+            <div class="receipt-item">
+
+              <span>
+                Payment ID
+              </span>
+
+              <strong>
+                #{{ lastPayment.id }}
+              </strong>
+
+            </div>
+
+
+            <!-- FEE TYPE -->
+
+            <div class="receipt-item">
+
+              <span>
+                Fee Type
+              </span>
+
+              <strong>
+                {{ lastPayment.feeType }}
+              </strong>
+
+            </div>
+
+
+            <!-- AMOUNT -->
+
+            <div class="receipt-item">
+
+              <span>
+                Amount
+              </span>
+
+              <strong>
+                LKR {{ formatAmount(lastPayment.amount) }}
+              </strong>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="receipt-item">
+
+              <span>
+                Status
+              </span>
+
+              <strong class="receipt-status">
+                {{ lastPayment.status }}
+              </strong>
+
+            </div>
+
+
+            <!-- RECEIPT NUMBER -->
+
+            <div class="receipt-item">
+
+              <span>
+                Receipt Number
+              </span>
+
+              <strong>
+                {{ lastPayment.receiptNumber }}
+              </strong>
+
+            </div>
+
+
+            <!-- PAID AT -->
+
+            <div class="receipt-item">
+
+              <span>
+                Paid At
+              </span>
+
+              <strong>
+                {{ lastPayment.paidAt | date:'dd MMM yyyy, h:mm a' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+
+      <!-- =================================================
+           PAYMENT HISTORY
       ================================================== -->
 
       <section class="history-card">
-
-
-        <!-- HEADER -->
 
         <div class="section-header">
 
@@ -666,11 +707,11 @@
           <div>
 
             <h2>
-              My Certificate Requests
+              My Payment History
             </h2>
 
             <p>
-              View your previous requests and approval status.
+              View your previous university fee payments.
             </p>
 
           </div>
@@ -681,8 +722,8 @@
           <button
             type="button"
             class="refresh-button"
-            (click)="refreshRequests()"
-            [disabled]="requestsLoading"
+            (click)="refreshPayments()"
+            [disabled]="paymentsLoading"
           >
 
             🔄 Refresh
@@ -697,13 +738,13 @@
              LOADING
         ================================================== -->
 
-        @if (requestsLoading) {
+        @if (paymentsLoading) {
 
           <div class="loading-box">
 
             <span class="spinner"></span>
 
-            Loading your certificate requests...
+            Loading your payment history...
 
           </div>
 
@@ -712,79 +753,56 @@
 
 
         <!-- =================================================
-             REQUEST LIST
+             PAYMENT LIST
         ================================================== -->
 
-        @else if (
-          requests.length > 0
-        ) {
+        @else if (payments.length > 0) {
 
-          <div class="request-list">
-
+          <div class="payment-list">
 
             @for (
-              request of requests;
-              track request.id
+              payment of payments;
+              track payment.id
             ) {
 
+              <div class="payment-item">
 
-              <div class="request-item">
 
+                <!-- PAYMENT ICON -->
 
-                <!-- ICON -->
-
-                <div class="request-icon">
-
-                  📄
-
+                <div class="payment-icon">
+                  💳
                 </div>
 
 
+                <!-- PAYMENT INFO -->
 
-                <!-- REQUEST INFO -->
+                <div class="payment-info">
 
-                <div class="request-info">
-
-
-                  <div class="request-top">
-
+                  <div class="payment-top">
 
                     <div>
 
                       <h3>
-
-                        {{ getCertificateTypeLabel(request.type) }}
-
+                        {{ payment.feeType }}
                       </h3>
 
-
-                      <span class="request-id">
-
-                        Request #{{ request.id }}
-
+                      <span class="payment-id">
+                        Payment #{{ payment.id }}
                       </span>
 
                     </div>
-
 
 
                     <!-- STATUS -->
 
                     <span
                       class="status-badge"
-                      [class]="getStatusClass(request.status)"
+                      [class]="getPaymentStatusClass(payment.status)"
                     >
 
                       @if (
-                        request.status === 'Pending'
-                      ) {
-
-                        🕐
-
-                      }
-
-                      @else if (
-                        request.status === 'Approved'
+                        payment.status === 'Paid'
                       ) {
 
                         ✓
@@ -792,7 +810,15 @@
                       }
 
                       @else if (
-                        request.status === 'Rejected'
+                        payment.status === 'Pending'
+                      ) {
+
+                        🕐
+
+                      }
+
+                      @else if (
+                        payment.status === 'Failed'
                       ) {
 
                         ✕
@@ -805,39 +831,46 @@
 
                       }
 
-                      {{ getStatusLabel(request.status) }}
+                      {{ getPaymentStatusLabel(payment.status) }}
 
                     </span>
 
                   </div>
 
 
+                  <!-- AMOUNT -->
 
-                  <!-- REASON -->
+                  <div class="payment-amount">
 
-                  <p class="request-reason">
+                    <span>
+                      Amount Paid
+                    </span>
 
                     <strong>
-                      Reason:
+                      LKR {{ formatAmount(payment.amount) }}
                     </strong>
 
-                    {{ request.reason }}
-
-                  </p>
+                  </div>
 
 
+                  <!-- META -->
 
-                  <!-- DATE -->
-
-                  <div class="request-meta">
+                  <div class="payment-meta">
 
                     <span>
 
-                      📅
+                      📅 Paid:
 
-                      Requested:
+                      {{ payment.paidAt | date:'dd MMM yyyy, h:mm a' }}
 
-                      {{ request.requestedAt | date:'dd MMM yyyy, h:mm a' }}
+                    </span>
+
+
+                    <span>
+
+                      🧾 Receipt:
+
+                      {{ getReceiptNumber(payment) }}
 
                     </span>
 
@@ -864,15 +897,15 @@
           <div class="empty-state">
 
             <div class="empty-icon">
-              📄
+              💳
             </div>
 
             <h3>
-              No Certificate Requests
+              No Payment History
             </h3>
 
             <p>
-              You haven't submitted any certificate requests yet.
+              You haven't made any payments yet.
             </p>
 
           </div>

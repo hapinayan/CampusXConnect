@@ -20,25 +20,38 @@
 
     <div class="header-right">
 
-      <div class="notification">
+      <!-- ================= NOTIFICATION ================= -->
+
+      <div
+        class="notification"
+        routerLink="/notifications"
+        title="Notifications"
+      >
 
         🔔
-
-        <span>3</span>
 
       </div>
 
 
-      <div class="student-mini">
+      <!-- ================= STUDENT PROFILE ================= -->
+
+      <div
+        class="student-mini"
+        routerLink="/profile"
+        title="View Profile"
+      >
 
         <div class="avatar">
-          S
+
+          {{ student?.fullName?.charAt(0)?.toUpperCase() || 'S' }}
+
         </div>
 
-        <div>
+
+        <div class="student-mini-info">
 
           <strong>
-            Student
+            {{ student?.fullName || 'Student' }}
           </strong>
 
           <small>
@@ -47,8 +60,9 @@
 
         </div>
 
-        <span>
-          ⌄
+
+        <span class="profile-arrow">
+          →
         </span>
 
       </div>
@@ -62,6 +76,8 @@
   <!-- ================= SIDEBAR ================= -->
 
   <aside class="sidebar">
+
+    <!-- ================= SIDEBAR BRAND ================= -->
 
     <div class="sidebar-brand">
 
@@ -84,53 +100,73 @@
     </div>
 
 
+    <!-- ================= NAVIGATION ================= -->
+
     <nav>
 
-      <!-- Dashboard -->
+
+      <!-- DASHBOARD -->
 
       <a
+        class="nav-item"
         routerLink="/dashboard"
       >
 
-        <span>
+        <span class="nav-icon">
           ⌂
         </span>
 
-        Dashboard
+        <span>
+          Dashboard
+        </span>
 
       </a>
 
 
-      <!-- Hostel -->
+
+      <!-- HOSTEL -->
 
       <a
-        class="active"
+        class="nav-item active"
         routerLink="/hostel"
       >
 
-        <span>
+        <span class="nav-icon">
           🏨
         </span>
 
-        Hostel
+        <span>
+          Hostel
+        </span>
 
       </a>
 
 
-      <!-- Lab -->
-<a
-  class="nav-item"
-  routerLink="/lab-booking"
->
-  <span class="nav-icon">🧪</span>
-  <span>Lab Booking</span>
-</a>
+
+      <!-- LAB BOOKING -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
+
+      </a>
 
 
-      <!-- Events -->
 
-      <a class="nav-item"
-      routerLink="/events"
+      <!-- EVENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/events"
       >
 
         <span class="nav-icon">
@@ -144,91 +180,124 @@
       </a>
 
 
-      <!-- Complaints -->
 
-     <a
-  class="nav-item"
-  routerLink="/complaints"
-  routerLinkActive="active"
->
-  <span class="nav-icon">💬</span>
-  <span>Complaints</span>
-</a>
+      <!-- COMPLAINTS -->
 
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
 
-      <!-- Certificates -->
-
-      <a>
+        <span class="nav-icon">
+          💬
+        </span>
 
         <span>
+          Complaints
+        </span>
+
+      </a>
+
+
+
+      <!-- CERTIFICATES -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+
+        <span class="nav-icon">
           📄
         </span>
 
-        Certificates
+        <span>
+          Certificates
+        </span>
 
       </a>
 
 
-      <!-- Payments -->
 
-      <a>
+      <!-- PAYMENTS -->
 
-        <span>
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+
+        <span class="nav-icon">
           💳
         </span>
 
-        Payments
+        <span>
+          Payments
+        </span>
 
       </a>
 
 
-      <!-- Notifications -->
 
-     <a
-  class="nav-item"
-  routerLink="/notifications"
-  routerLinkActive="active"
->
-  <span class="nav-icon">🔔</span>
-
-  <span>
-    Notifications
-  </span>
-
-  <span class="notification-count">
-    3
-  </span>
-</a>
-
-
-      <!-- Profile -->
+      <!-- NOTIFICATIONS -->
 
       <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+        <span class="notification-count">
+          3
+        </span>
+
+      </a>
+
+
+
+      <!-- PROFILE -->
+
+      <a
+        class="nav-item"
         routerLink="/profile"
       >
 
-        <span>
+        <span class="nav-icon">
           👤
         </span>
 
-        Profile
+        <span>
+          Profile
+        </span>
 
       </a>
 
     </nav>
 
 
-    <!-- Sidebar Bottom -->
+
+    <!-- ================= SIDEBAR BOTTOM ================= -->
 
     <div class="sidebar-bottom">
 
-      <a>
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
 
-        <span>
+        <span class="nav-icon">
           ↪
         </span>
 
-        Logout
+        <span>
+          Logout
+        </span>
 
       </a>
 
@@ -290,7 +359,7 @@
     <section class="feature-row">
 
 
-      <!-- Feature 1 -->
+      <!-- FEATURE 1 -->
 
       <div class="feature-card">
 
@@ -313,7 +382,8 @@
       </div>
 
 
-      <!-- Feature 2 -->
+
+      <!-- FEATURE 2 -->
 
       <div class="feature-card">
 
@@ -336,7 +406,8 @@
       </div>
 
 
-      <!-- Feature 3 -->
+
+      <!-- FEATURE 3 -->
 
       <div class="feature-card">
 
@@ -418,6 +489,8 @@
 
 
 
+      <!-- STATUS BADGE -->
+
       @if (application) {
 
         <span class="status-badge">
@@ -448,6 +521,8 @@
 
       <div class="message error">
 
+        ⚠️
+
         {{ errorMessage }}
 
       </div>
@@ -462,7 +537,9 @@
 
       <div class="message success">
 
-        ✓ {{ successMessage }}
+        ✓
+
+        {{ successMessage }}
 
       </div>
 
@@ -476,10 +553,12 @@
 
 
 
-      <!-- ================= APPLICATION ================= -->
+      <!-- ================= APPLICATION CARD ================= -->
 
       <section class="application-card">
 
+
+        <!-- CARD HEADER -->
 
         <div class="card-heading">
 
@@ -505,10 +584,12 @@
 
 
 
+        <!-- ================= FORM GRID ================= -->
+
         <div class="form-grid">
 
 
-          <!-- ================= HOSTEL ================= -->
+          <!-- ================= PREFERRED HOSTEL ================= -->
 
           <div class="form-group">
 
@@ -572,7 +653,7 @@
 
 
 
-          <!-- ================= TERM ================= -->
+          <!-- ================= ACADEMIC TERM ================= -->
 
           <div class="form-group">
 
@@ -626,7 +707,7 @@
 
 
 
-        <!-- ================= FOOTER ================= -->
+        <!-- ================= APPLICATION FOOTER ================= -->
 
         <div class="application-footer">
 
@@ -649,8 +730,9 @@
             [disabled]="submitting || hostelsLoading"
           >
 
-
             @if (submitting) {
+
+              <span class="spinner white"></span>
 
               Submitting...
 
@@ -661,7 +743,6 @@
               ✈ Submit Application
 
             }
-
 
           </button>
 
@@ -675,6 +756,8 @@
 
       <section class="my-application-card">
 
+
+        <!-- CARD HEADER -->
 
         <div class="card-heading">
 
@@ -700,15 +783,15 @@
 
 
 
+        <!-- ================= APPLICATION EXISTS ================= -->
+
         @if (application) {
 
-
-          <!-- Application Details -->
 
           <div class="application-details">
 
 
-            <!-- Hostel -->
+            <!-- HOSTEL NAME -->
 
             <div class="detail-row">
 
@@ -725,7 +808,7 @@
 
 
 
-            <!-- Status -->
+            <!-- STATUS -->
 
             <div class="detail-row">
 
@@ -744,7 +827,7 @@
 
 
 
-            <!-- Preferences -->
+            <!-- PREFERENCES -->
 
             @if (application.preferences) {
 
@@ -765,7 +848,7 @@
 
 
 
-            <!-- Room -->
+            <!-- ROOM NUMBER -->
 
             <div class="detail-row">
 
@@ -784,7 +867,7 @@
 
 
 
-            <!-- Applied Date -->
+            <!-- APPLIED DATE -->
 
             <div class="detail-row">
 
@@ -803,7 +886,7 @@
 
 
 
-            <!-- Updated Date -->
+            <!-- UPDATED DATE -->
 
             @if (application.updatedAt) {
 
@@ -828,7 +911,7 @@
 
 
 
-          <!-- Application Note -->
+          <!-- ================= APPLICATION NOTE ================= -->
 
           <div class="application-note">
 
@@ -858,10 +941,10 @@
         }
 
 
+
+        <!-- ================= EMPTY STATE ================= -->
+
         @else {
-
-
-          <!-- Empty State -->
 
           <div class="empty-state">
 
@@ -887,9 +970,7 @@
 
       </section>
 
-
     </div>
-
 
   </main>
 

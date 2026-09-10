@@ -24,6 +24,13 @@ import {
 export class HostelPage implements OnInit {
 
   // =========================
+  // STUDENT
+  // =========================
+
+  student: any = null;
+
+
+  // =========================
   // HOSTELS
   // =========================
 
@@ -79,9 +86,56 @@ export class HostelPage implements OnInit {
 
   ngOnInit(): void {
 
+    this.loadStudent();
+
     this.loadHostels();
 
     this.loadMyApplication();
+
+  }
+
+
+  // =========================
+  // LOAD STUDENT
+  // =========================
+
+  loadStudent(): void {
+
+    /*
+     * Get logged-in student information
+     * from localStorage.
+     *
+     * This supports different possible
+     * storage names used by the project.
+     */
+
+    const storedStudent =
+      localStorage.getItem('student');
+
+    if (storedStudent) {
+
+      try {
+
+        this.student =
+          JSON.parse(storedStudent);
+
+        console.log(
+          'Logged-in student:',
+          this.student
+        );
+
+      }
+      catch {
+
+        console.error(
+          'Invalid student data in localStorage.'
+        );
+
+        this.student = null;
+
+      }
+
+    }
 
   }
 
@@ -234,7 +288,6 @@ export class HostelPage implements OnInit {
           );
 
 
-          // IMPORTANT
           // Stop submitting
 
           this.submitting = false;
@@ -272,7 +325,6 @@ export class HostelPage implements OnInit {
           );
 
 
-          // IMPORTANT
           // Stop submitting
 
           this.submitting = false;

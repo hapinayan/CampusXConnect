@@ -6,6 +6,8 @@
 
   <aside class="sidebar">
 
+    <!-- BRAND -->
+
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -20,100 +22,168 @@
     </div>
 
 
+    <!-- ===================================================
+         NAVIGATION
+    ==================================================== -->
+
     <nav class="sidebar-nav">
+
+      <!-- DASHBOARD -->
 
       <a
         class="nav-item"
         routerLink="/dashboard"
       >
-        <span class="nav-icon">⌂</span>
-        <span>Dashboard</span>
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
       </a>
 
+
+      <!-- HOSTEL -->
 
       <a
         class="nav-item"
         routerLink="/hostel"
       >
-        <span class="nav-icon">🏨</span>
-        <span>Hostel</span>
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
       </a>
 
+
+      <!-- LAB BOOKING -->
 
       <a
         class="nav-item"
         routerLink="/lab-booking"
       >
-        <span class="nav-icon">🧪</span>
-        <span>Lab Booking</span>
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
       </a>
 
 
-  <a
-  class="nav-item active"
-  routerLink="/events"
->
-  <span class="nav-icon">📅</span>
-  <span>Events</span>
-</a>
-<a
-  class="nav-item"
-  routerLink="/complaints"
-  routerLinkActive="active"
->
-  <span class="nav-icon">💬</span>
-  <span>Complaints</span>
-</a>
-
-
-      <a class="nav-item">
-        <span class="nav-icon">📄</span>
-        <span>Certificates</span>
-      </a>
-
-
-      <a class="nav-item">
-        <span class="nav-icon">💳</span>
-        <span>Payments</span>
-      </a>
-
+      <!-- EVENTS -->
 
       <a
-  class="nav-item"
-  routerLink="/notifications"
-  routerLinkActive="active"
->
-  <span class="nav-icon">🔔</span>
+        class="nav-item active"
+        routerLink="/events"
+      >
+        <span class="nav-icon">
+          📅
+        </span>
 
-  <span>
-    Notifications
-  </span>
+        <span>
+          Events
+        </span>
+      </a>
 
-  <span class="notification-count">
-    3
-  </span>
-</a>
 
+      <!-- COMPLAINTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+      </a>
+
+
+      <!-- CERTIFICATES -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
+      </a>
+
+
+      <!-- PAYMENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">
+          💳
+        </span>
+
+        <span>
+          Payments
+        </span>
+      </a>
+
+
+      <!-- NOTIFICATIONS -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+      </a>
+
+
+      <!-- PROFILE -->
 
       <a
         class="nav-item"
         routerLink="/profile"
       >
-
-        <span class="nav-icon">👤</span>
+        <span class="nav-icon">
+          👤
+        </span>
 
         <span>
           Profile
         </span>
-
       </a>
 
     </nav>
 
 
+    <!-- ===================================================
+         SIDEBAR BOTTOM
+    ==================================================== -->
+
     <div class="sidebar-bottom">
 
-      <a class="nav-item logout">
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
 
         <span class="nav-icon">
           ↪
@@ -144,6 +214,8 @@
 
     <header class="topbar">
 
+      <!-- PAGE TITLE -->
+
       <div class="topbar-title">
 
         <span class="page-label">
@@ -153,32 +225,55 @@
       </div>
 
 
+      <!-- TOPBAR RIGHT -->
+
       <div class="topbar-right">
+
+
+        <!-- =================================================
+             NOTIFICATION
+        ================================================== -->
 
         <button
           type="button"
           class="notification-btn"
+          routerLink="/notifications"
+          title="Notifications"
         >
 
           🔔
 
-          <span>
-            3
-          </span>
-
         </button>
 
 
-        <div class="student-profile">
+
+        <!-- =================================================
+             STUDENT PROFILE
+             SAME STYLE AS DASHBOARD
+        ================================================== -->
+
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
+
+
+          <!-- AVATAR -->
 
           <div class="profile-avatar">
-            S
+
+            {{ getStudentInitial() }}
+
           </div>
+
+
+          <!-- STUDENT INFO -->
 
           <div class="profile-info">
 
             <strong>
-              Student
+              {{ studentName }}
             </strong>
 
             <small>
@@ -187,9 +282,13 @@
 
           </div>
 
-          <span>
+
+          <!-- ARROW -->
+
+          <span class="profile-arrow">
             ⌄
           </span>
+
 
         </div>
 
@@ -212,6 +311,7 @@
 
       <section class="hero">
 
+
         <div class="hero-content">
 
           <p>
@@ -228,6 +328,8 @@
 
         </div>
 
+
+        <!-- BACK TO DASHBOARD -->
 
         <button
           type="button"
@@ -249,6 +351,8 @@
 
       <section class="feature-row">
 
+
+        <!-- FEATURE 1 -->
 
         <div class="feature-card">
 
@@ -272,6 +376,8 @@
 
 
 
+        <!-- FEATURE 2 -->
+
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -293,6 +399,8 @@
         </div>
 
 
+
+        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -319,7 +427,7 @@
 
 
       <!-- =================================================
-           MESSAGES
+           ERROR MESSAGE
       ================================================== -->
 
       @if (errorMessage) {
@@ -334,6 +442,11 @@
 
       }
 
+
+
+      <!-- =================================================
+           SUCCESS MESSAGE
+      ================================================== -->
 
       @if (successMessage) {
 
@@ -355,6 +468,8 @@
 
       <section class="events-card">
 
+
+        <!-- SECTION HEADER -->
 
         <div class="section-header">
 
@@ -414,43 +529,36 @@
               <div class="event-card">
 
 
-                <!-- ===============================
-                     EVENT ICON
-                ================================ -->
+                <!-- EVENT ICON -->
 
                 <div class="event-icon">
-
                   📅
-
                 </div>
 
 
 
-                <!-- ===============================
-                     EVENT DETAILS
-                ================================ -->
+                <!-- EVENT DETAILS -->
 
                 <div class="event-content">
 
 
+                  <!-- TITLE -->
+
                   <h3>
-
                     {{ event.title }}
-
                   </h3>
 
 
+
+                  <!-- DESCRIPTION -->
+
                   <p class="event-description">
-
                     {{ event.description }}
-
                   </p>
 
 
 
-                  <!-- ===============================
-                       DATE
-                  ================================ -->
+                  <!-- DATE -->
 
                   <div class="event-detail">
 
@@ -459,18 +567,14 @@
                     </span>
 
                     <span>
-
                       {{ event.eventDate | date:'dd MMM yyyy' }}
-
                     </span>
 
                   </div>
 
 
 
-                  <!-- ===============================
-                       VENUE
-                  ================================ -->
+                  <!-- VENUE -->
 
                   <div class="event-detail">
 
@@ -479,18 +583,14 @@
                     </span>
 
                     <span>
-
                       {{ event.venue }}
-
                     </span>
 
                   </div>
 
 
 
-                  <!-- ===============================
-                       CAPACITY
-                  ================================ -->
+                  <!-- CAPACITY -->
 
                   <div class="event-detail">
 
@@ -499,19 +599,15 @@
                     </span>
 
                     <span>
-
                       Capacity:
                       {{ event.capacity }}
-
                     </span>
 
                   </div>
 
 
 
-                  <!-- ===============================
-                       ACTIVE STATUS
-                  ================================ -->
+                  <!-- INACTIVE EVENT -->
 
                   @if (!event.isActive) {
 
@@ -525,9 +621,7 @@
 
 
 
-                  <!-- ===============================
-                       REGISTERED
-                  ================================ -->
+                  <!-- ALREADY REGISTERED -->
 
                   @else if (isRegistered(event.id)) {
 
@@ -545,9 +639,7 @@
 
 
 
-                  <!-- ===============================
-                       REGISTER
-                  ================================ -->
+                  <!-- REGISTER -->
 
                   @else {
 
@@ -625,6 +717,8 @@
       <section class="registrations-card">
 
 
+        <!-- SECTION HEADER -->
+
         <div class="section-header">
 
           <div class="section-icon">
@@ -683,21 +777,15 @@
               <div class="registration-item">
 
 
-                <!-- ===============================
-                     ICON
-                ================================ -->
+                <!-- ICON -->
 
                 <div class="registration-icon">
-
                   🎟️
-
                 </div>
 
 
 
-                <!-- ===============================
-                     DETAILS
-                ================================ -->
+                <!-- DETAILS -->
 
                 <div class="registration-info">
 
@@ -719,6 +807,8 @@
                   </h3>
 
 
+                  <!-- REGISTRATION ID -->
+
                   <p>
 
                     🎟️
@@ -728,6 +818,8 @@
 
                   </p>
 
+
+                  <!-- REGISTERED DATE -->
 
                   <p>
 
@@ -743,9 +835,7 @@
 
 
 
-                <!-- ===============================
-                     CANCEL
-                ================================ -->
+                <!-- CANCEL -->
 
                 <button
                   type="button"
@@ -768,7 +858,7 @@
 
 
         <!-- =================================================
-             EMPTY
+             EMPTY STATE
         ================================================== -->
 
         @else {
@@ -816,57 +906,45 @@
       >
 
 
-        <!-- ===============================
-             POPUP ICON
-        ================================ -->
+        <!-- POPUP ICON -->
 
         <div class="popup-icon">
-
           ⚠️
-
         </div>
 
 
 
-        <!-- ===============================
-             TITLE
-        ================================ -->
+        <!-- TITLE -->
 
         <h2>
-
           Cancel Registration?
-
         </h2>
 
 
 
-        <!-- ===============================
-             MESSAGE
-        ================================ -->
+        <!-- MESSAGE -->
 
         <p>
-
           Are you sure you want to cancel
           this event registration?
-
         </p>
 
 
 
+        <!-- WARNING -->
+
         <span class="popup-warning">
-
           This action cannot be undone.
-
         </span>
 
 
 
-        <!-- ===============================
-             ACTIONS
-        ================================ -->
+        <!-- ACTIONS -->
 
         <div class="popup-actions">
 
+
+          <!-- KEEP -->
 
           <button
             type="button"
@@ -879,6 +957,8 @@
           </button>
 
 
+
+          <!-- CONFIRM -->
 
           <button
             type="button"

@@ -6,7 +6,12 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+
+import {
+  RouterLink,
+  RouterLinkActive
+} from '@angular/router';
+
 import { finalize } from 'rxjs';
 
 import { LabService } from '../../../../core/services/lab.service';
@@ -26,13 +31,23 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
 
   templateUrl: './lab-booking.html',
   styleUrl: './lab-booking.css'
 })
 export class LabBookingPage implements OnInit {
+
+  // =====================================================
+  // STUDENT PROFILE
+  // =====================================================
+
+  student: {
+    fullName: string;
+  } | null = null;
+
 
   // =====================================================
   // LABS
@@ -120,6 +135,10 @@ export class LabBookingPage implements OnInit {
     );
 
 
+    // Load logged-in student
+    this.loadStudentProfile();
+
+
     // Load laboratories
     this.loadLabs();
 
@@ -131,6 +150,144 @@ export class LabBookingPage implements OnInit {
 
     // Load student's bookings
     this.loadStudentBookings();
+
+  }
+
+
+  // =====================================================
+  // LOAD STUDENT PROFILE
+  // =====================================================
+
+  loadStudentProfile(): void {
+
+    try {
+
+      /*
+       * First try complete student object
+       */
+
+      const storedStudent =
+        localStorage.getItem('student');
+
+
+      if (storedStudent) {
+
+        const parsedStudent =
+          JSON.parse(storedStudent);
+
+
+        if (
+          parsedStudent &&
+          parsedStudent.fullName
+        ) {
+
+          this.student = {
+            fullName:
+              parsedStudent.fullName
+          };
+
+
+          console.log(
+            'Student loaded:',
+            this.student
+          );
+
+
+          this.cdr.detectChanges();
+
+          return;
+
+        }
+
+      }
+
+
+      /*
+       * Try direct fullName
+       */
+
+      const fullName =
+        localStorage.getItem('fullName');
+
+
+      if (fullName) {
+
+        this.student = {
+          fullName: fullName
+        };
+
+
+        console.log(
+          'Student name loaded from localStorage:',
+          fullName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      /*
+       * Try studentName
+       */
+
+      const studentName =
+        localStorage.getItem('studentName');
+
+
+      if (studentName) {
+
+        this.student = {
+          fullName: studentName
+        };
+
+
+        console.log(
+          'Student name loaded:',
+          studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      /*
+       * No name found
+       */
+
+      this.student = null;
+
+
+      console.warn(
+        'Student name not found in localStorage.'
+      );
+
+
+      this.cdr.detectChanges();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Failed to load student profile:',
+        error
+      );
+
+
+      this.student = null;
+
+
+      this.cdr.detectChanges();
+
+    }
 
   }
 
@@ -452,11 +609,6 @@ export class LabBookingPage implements OnInit {
           }
 
           else {
-
-            /*
-             * Backend may return an empty array.
-             * Show default booking periods.
-             */
 
             this.availableSlots =
               this.labService

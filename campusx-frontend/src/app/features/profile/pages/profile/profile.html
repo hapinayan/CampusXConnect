@@ -1,201 +1,531 @@
 <div class="profile-page">
 
-  <!-- Header -->
-  <div class="profile-header">
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
 
-    <div>
-      <p class="page-label">STUDENT PROFILE</p>
+  <aside class="sidebar">
 
-      <h1>My Profile</h1>
+    <!-- BRAND -->
 
-      <p class="page-description">
-        View your personal and academic information.
-      </p>
-    </div>
+    <div class="sidebar-brand">
 
-    <button class="back-button" (click)="goToDashboard()">
-      ← Dashboard
-    </button>
-
-  </div>
-
-
-  <!-- Profile Card -->
-  <section class="profile-card">
-
-    <!-- Profile Top -->
-    <div class="profile-top">
-
-      <div class="profile-avatar">
-        {{ student?.fullName?.charAt(0) || 'S' }}
+      <div class="brand-logo">
+        CX
       </div>
 
-      <div class="profile-main-info">
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
 
-        <h2>
-          {{ student?.fullName || 'Loading...' }}
-        </h2>
+    </div>
 
-        <p>
-          Student
-        </p>
 
-        <span class="status-badge">
-          ● Active Student
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+      <!-- Dashboard -->
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+
+      <!-- Hostel -->
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">🏨</span>
+        <span>Hostel</span>
+      </a>
+
+
+      <!-- Lab Booking -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
+      </a>
+
+
+      <!-- Events -->
+
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+      </a>
+
+
+      <!-- Complaints -->
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
+
+
+      <!-- Certificates -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
+      </a>
+
+
+      <!-- Payments -->
+
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
+      </a>
+
+
+      <!-- Notifications -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+      </a>
+
+
+      <!-- Profile -->
+
+      <a
+        class="nav-item active"
+        routerLink="/profile"
+      >
+
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
+
+    </nav>
+
+
+    <!-- SIDEBAR BOTTOM -->
+
+    <div class="sidebar-bottom">
+
+      <a
+        class="nav-item logout"
+        (click)="logout()"
+      >
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          STUDENT PROFILE
         </span>
 
       </div>
 
-    </div>
+
+      <div class="topbar-right">
 
 
-    <!-- Personal Information -->
-    <div class="profile-section">
+        <!-- Notification -->
 
-      <div class="section-title">
-        <span>👤</span>
+        <button
+          type="button"
+          class="notification-btn"
+          routerLink="/notifications"
+        >
+
+          🔔
+
+        </button>
+
+
+        <!-- Student -->
+
+        <div class="student-profile">
+
+          <div class="profile-avatar">
+
+            {{ student?.fullName?.charAt(0) || 'S' }}
+
+          </div>
+
+
+          <div class="profile-info">
+
+            <strong>
+              {{ student?.fullName || 'Student' }}
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           PROFILE HEADER
+      ================================================== -->
+
+      <div class="profile-header">
 
         <div>
-          <h3>Personal Information</h3>
-          <p>Your registered personal details.</p>
+
+          <p class="page-label">
+            STUDENT PROFILE
+          </p>
+
+          <h1>
+            My Profile
+          </h1>
+
+          <p class="page-description">
+            View your personal and academic information.
+          </p>
+
         </div>
+
+
+        <button
+          type="button"
+          class="back-button"
+          (click)="goToDashboard()"
+        >
+
+          ← Dashboard
+
+        </button>
+
       </div>
 
 
-      <div class="details-grid">
 
-        <div class="detail-item">
+      <!-- =================================================
+           PROFILE CARD
+      ================================================== -->
 
-          <span class="detail-label">
-            Full Name
-          </span>
-
-          <strong>
-            {{ student?.fullName || 'Loading...' }}
-          </strong>
-
-        </div>
+      <section class="profile-card">
 
 
-        <div class="detail-item">
+        <!-- PROFILE TOP -->
 
-          <span class="detail-label">
-            Email Address
-          </span>
+        <div class="profile-top">
 
-          <strong>
-            {{ student?.email || 'Loading...' }}
-          </strong>
+          <div class="profile-avatar">
 
-        </div>
+            {{ student?.fullName?.charAt(0) || 'S' }}
+
+          </div>
 
 
-        <div class="detail-item">
+          <div class="profile-main-info">
 
-          <span class="detail-label">
-            Contact Number
-          </span>
+            <h2>
+              {{ student?.fullName || 'Loading...' }}
+            </h2>
 
-          <strong>
-            {{ student?.contactNumber || 'Loading...' }}
-          </strong>
+            <p>
+              Student
+            </p>
+
+            <span class="status-badge">
+              ● Active Student
+            </span>
+
+          </div>
 
         </div>
 
 
-        <div class="detail-item">
 
-          <span class="detail-label">
-            User Role
-          </span>
+        <!-- =================================================
+             PERSONAL INFORMATION
+        ================================================== -->
 
-          <strong>
-            Student
-          </strong>
+        <div class="profile-section">
+
+
+          <div class="section-title">
+
+            <span>
+              👤
+            </span>
+
+            <div>
+
+              <h3>
+                Personal Information
+              </h3>
+
+              <p>
+                Your registered personal details.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="details-grid">
+
+
+            <!-- FULL NAME -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Full Name
+              </span>
+
+              <strong>
+                {{ student?.fullName || 'Loading...' }}
+              </strong>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Email Address
+              </span>
+
+              <strong>
+                {{ student?.email || 'Loading...' }}
+              </strong>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Contact Number
+              </span>
+
+              <strong>
+                {{ student?.contactNumber || 'Loading...' }}
+              </strong>
+
+            </div>
+
+
+            <!-- ROLE -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                User Role
+              </span>
+
+              <strong>
+                Student
+              </strong>
+
+            </div>
+
+          </div>
 
         </div>
 
-      </div>
-
-    </div>
 
 
-    <!-- Academic Information -->
-    <div class="profile-section">
+        <!-- =================================================
+             ACADEMIC INFORMATION
+        ================================================== -->
 
-      <div class="section-title">
-        <span>🎓</span>
+        <div class="profile-section">
 
-        <div>
-          <h3>Academic Information</h3>
-          <p>Your university student information.</p>
+
+          <div class="section-title">
+
+            <span>
+              🎓
+            </span>
+
+            <div>
+
+              <h3>
+                Academic Information
+              </h3>
+
+              <p>
+                Your university student information.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="details-grid">
+
+
+            <!-- INDEX NUMBER -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Index Number
+              </span>
+
+              <strong>
+                {{ student?.indexNumber || 'Loading...' }}
+              </strong>
+
+            </div>
+
+
+            <!-- FACULTY -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Faculty
+              </span>
+
+              <strong>
+                {{ student?.faculty || 'Loading...' }}
+              </strong>
+
+            </div>
+
+          </div>
+
         </div>
-      </div>
 
 
-      <div class="details-grid">
 
-        <div class="detail-item">
+        <!-- =================================================
+             ACCOUNT STATUS
+        ================================================== -->
 
-          <span class="detail-label">
-            Index Number
-          </span>
+        <div class="account-status">
 
-          <strong>
-            {{ student?.indexNumber || 'Loading...' }}
-          </strong>
+          <div class="status-icon">
+            ✓
+          </div>
 
-        </div>
+          <div>
 
+            <strong>
+              Account Active
+            </strong>
 
-        <div class="detail-item">
+            <p>
+              Your CampusX student account is active and available
+              for campus services.
+            </p>
 
-          <span class="detail-label">
-            Faculty
-          </span>
-
-          <strong>
-            {{ student?.faculty || 'Loading...' }}
-          </strong>
+          </div>
 
         </div>
 
-      </div>
-
-    </div>
 
 
-    <!-- Account Status -->
-    <div class="account-status">
+        <!-- =================================================
+             LOGOUT
+        ================================================== -->
 
-      <div class="status-icon">
-        ✓
-      </div>
+        <button
+          type="button"
+          class="logout-button"
+          (click)="logout()"
+        >
 
-      <div>
+          Logout
 
-        <strong>
-          Account Active
-        </strong>
+        </button>
 
-        <p>
-          Your CampusX student account is active and available
-          for campus services.
-        </p>
+      </section>
 
-      </div>
+    </section>
 
-    </div>
-
-
-    <!-- Logout -->
-    <button
-      class="logout-button"
-      (click)="logout()"
-    >
-      Logout
-    </button>
-
-  </section>
+  </main>
 
 </div>

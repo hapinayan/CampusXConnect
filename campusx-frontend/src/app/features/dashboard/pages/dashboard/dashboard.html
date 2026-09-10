@@ -76,8 +76,9 @@
 
       <!-- Events -->
 
-      <a class="nav-item"
-      routerLink="/events"
+      <a
+        class="nav-item"
+        routerLink="/events"
       >
 
         <span class="nav-icon">
@@ -93,19 +94,28 @@
 
       <!-- Complaints -->
 
-    <a
-  class="nav-item"
-  routerLink="/complaints"
-  routerLinkActive="active"
->
-  <span class="nav-icon">💬</span>
-  <span>Complaints</span>
-</a>
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+
+      </a>
 
 
       <!-- Certificates -->
 
-      <a class="nav-item">
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
 
         <span class="nav-icon">
           📄
@@ -120,7 +130,10 @@
 
       <!-- Payments -->
 
-      <a class="nav-item">
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
 
         <span class="nav-icon">
           💳
@@ -134,21 +147,21 @@
 
 
       <!-- Notifications -->
-<a
-  class="nav-item"
-  routerLink="/notifications"
-  routerLinkActive="active"
->
-  <span class="nav-icon">🔔</span>
 
-  <span>
-    Notifications
-  </span>
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
 
-  <span class="notification-count">
-    3
-  </span>
-</a>
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+      </a>
 
 
       <!-- Profile -->
@@ -228,13 +241,10 @@
         <button
           type="button"
           class="notification-btn"
+          routerLink="/notifications"
         >
 
           🔔
-
-          <span>
-            3
-          </span>
 
         </button>
 
@@ -270,7 +280,7 @@
 
 
           <span class="profile-arrow">
-            
+            →
           </span>
 
         </div>
@@ -413,7 +423,10 @@
 
         <!-- Events -->
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          routerLink="/events"
+        >
 
           <div class="card-icon event-icon">
             📅
@@ -447,7 +460,10 @@
 
         <!-- Complaints -->
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          routerLink="/complaints"
+        >
 
           <div class="card-icon complaint-icon">
             💬
@@ -481,7 +497,10 @@
 
         <!-- Certificates -->
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          routerLink="/certificates"
+        >
 
           <div class="card-icon certificate-icon">
             📄
@@ -513,9 +532,12 @@
 
 
 
-        <!-- Fees -->
+        <!-- Payments -->
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          routerLink="/payments"
+        >
 
           <div class="card-icon payment-icon">
             💳
@@ -574,7 +596,9 @@
             </div>
 
 
-            <a>
+            <a
+              routerLink="/events"
+            >
               View All
             </a>
 
@@ -615,7 +639,10 @@
               </div>
 
 
-              <button type="button">
+              <button
+                type="button"
+                routerLink="/events"
+              >
                 View
               </button>
 
@@ -653,7 +680,10 @@
               </div>
 
 
-              <button type="button">
+              <button
+                type="button"
+                routerLink="/events"
+              >
                 View
               </button>
 
@@ -691,7 +721,10 @@
               </div>
 
 
-              <button type="button">
+              <button
+                type="button"
+                routerLink="/events"
+              >
                 View
               </button>
 
@@ -723,7 +756,9 @@
             </div>
 
 
-            <a>
+            <a
+              routerLink="/notifications"
+            >
               View All
             </a>
 
@@ -872,9 +907,12 @@
 
 
 
-          <!-- Event -->
+          <!-- Register Event -->
 
-          <button type="button">
+          <button
+            type="button"
+            routerLink="/events"
+          >
 
             <span>
               📅
@@ -888,9 +926,12 @@
 
 
 
-          <!-- Complaint -->
+          <!-- Raise Complaint -->
 
-          <button type="button">
+          <button
+            type="button"
+            routerLink="/complaints"
+          >
 
             <span>
               💬
@@ -904,9 +945,12 @@
 
 
 
-          <!-- Certificate -->
+          <!-- Request Certificate -->
 
-          <button type="button">
+          <button
+            type="button"
+            routerLink="/certificates"
+          >
 
             <span>
               📄

@@ -22,6 +22,7 @@
 
     <nav class="sidebar-nav">
 
+      <!-- Dashboard -->
       <a
         class="nav-item"
         routerLink="/dashboard"
@@ -31,6 +32,7 @@
       </a>
 
 
+      <!-- Hostel -->
       <a
         class="nav-item"
         routerLink="/hostel"
@@ -40,6 +42,7 @@
       </a>
 
 
+      <!-- Lab Booking -->
       <a
         class="nav-item"
         routerLink="/lab-booking"
@@ -49,6 +52,7 @@
       </a>
 
 
+      <!-- Events -->
       <a
         class="nav-item"
         routerLink="/events"
@@ -58,61 +62,91 @@
       </a>
 
 
+      <!-- Complaints -->
       <a
-  class="nav-item"
-  routerLink="/complaints"
-  routerLinkActive="active"
->
-  <span class="nav-icon">💬</span>
-  <span>Complaints</span>
-</a>
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
 
 
-      <a class="nav-item">
+      <!-- Certificates -->
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+        routerLinkActive="active"
+      >
         <span class="nav-icon">📄</span>
         <span>Certificates</span>
       </a>
 
 
-      <a class="nav-item">
+      <!-- Payments -->
+      <a
+        class="nav-item"
+        routerLink="/payments"
+        routerLinkActive="active"
+      >
         <span class="nav-icon">💳</span>
         <span>Payments</span>
       </a>
 
 
+      <!-- Notifications -->
       <a
-  class="nav-item"
-  routerLink="/notifications"
-  routerLinkActive="active"
->
-  <span class="nav-icon">🔔</span>
+        class="nav-item"
+        routerLink="/notifications"
+        routerLinkActive="active"
+      >
 
-  <span>
-    Notifications
-  </span>
+        <span class="nav-icon">
+          🔔
+        </span>
 
-  @if (unreadCount > 0) {
-    <span class="notification-count">
-      {{ unreadCount }}
-    </span>
-  }
-</a>
+        <span>
+          Notifications
+        </span>
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
+      </a>
 
 
+      <!-- Profile -->
       <a
         class="nav-item"
         routerLink="/profile"
       >
-        <span class="nav-icon">👤</span>
-        <span>Profile</span>
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
       </a>
 
     </nav>
 
 
+    <!-- =================================================
+         LOGOUT
+    ================================================== -->
+
     <div class="sidebar-bottom">
 
-      <a class="nav-item logout">
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
 
         <span class="nav-icon">
           ↪
@@ -159,6 +193,7 @@
           class="notification-btn"
           (click)="refreshNotifications()"
         >
+
           🔔
 
           @if (unreadCount > 0) {
@@ -414,7 +449,6 @@
 
           <div class="notification-list">
 
-
             @for (
               notification of notifications;
               track notification.id
@@ -427,9 +461,7 @@
               >
 
 
-                <!-- ===============================
-                     ICON
-                ================================ -->
+                <!-- ICON -->
 
                 <div class="notification-icon">
 
@@ -491,9 +523,7 @@
 
 
 
-                <!-- ===============================
-                     CONTENT
-                ================================ -->
+                <!-- CONTENT -->
 
                 <div class="notification-content">
 
@@ -539,9 +569,7 @@
 
 
 
-                <!-- ===============================
-                     STATUS
-                ================================ -->
+                <!-- STATUS -->
 
                 <div class="notification-status">
 

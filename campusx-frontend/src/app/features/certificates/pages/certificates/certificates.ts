@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+
 import {
   FormArray,
   FormBuilder,
@@ -12,7 +13,9 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+
 import { RouterLink } from '@angular/router';
+
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
@@ -26,6 +29,7 @@ import {
 
 @Component({
   selector: 'app-certificates',
+
   standalone: true,
 
   imports: [
@@ -35,6 +39,7 @@ import {
   ],
 
   templateUrl: './certificates.html',
+
   styleUrl: './certificates.css'
 })
 export class Certificates implements OnInit {
@@ -43,12 +48,18 @@ export class Certificates implements OnInit {
   // CERTIFICATE TYPES
   // =====================================================
 
-certificateTypes: CertificateType[] = [
-  CertificateType.Enrollment,
-  CertificateType.Academic,
-  CertificateType.Character,
-  CertificateType.Other
-];
+  certificateTypes: CertificateType[] = [
+
+    CertificateType.Enrollment,
+
+    CertificateType.Academic,
+
+    CertificateType.Character,
+
+    CertificateType.Other
+
+  ];
+
 
   // =====================================================
   // FORM
@@ -82,9 +93,13 @@ certificateTypes: CertificateType[] = [
   // =====================================================
 
   constructor(
+
     private fb: FormBuilder,
+
     private certificateService: CertificateService,
+
     private cdr: ChangeDetectorRef
+
   ) {
 
     this.certificateForm =
@@ -114,7 +129,7 @@ certificateTypes: CertificateType[] = [
     this.addCertificate();
 
 
-    // Load student's requests
+    // Load student's certificate requests
 
     this.loadMyRequests();
 
@@ -142,25 +157,25 @@ certificateTypes: CertificateType[] = [
     return this.fb.group({
 
       certificateType: [
+
         '',
+
         Validators.required
+
       ],
 
       reason: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(5)
-        ]
-      ],
 
-      copies: [
-        1,
+        '',
+
         [
+
           Validators.required,
-          Validators.min(1),
-          Validators.max(5)
+
+          Validators.minLength(5)
+
         ]
+
       ]
 
     });
@@ -174,11 +189,11 @@ certificateTypes: CertificateType[] = [
 
   addCertificate(): void {
 
-    // Maximum 3 supported types
-
     if (
+
       this.certificates.length >=
       this.certificateTypes.length
+
     ) {
 
       this.errorMessage =
@@ -191,8 +206,11 @@ certificateTypes: CertificateType[] = [
 
     this.errorMessage = '';
 
+
     this.certificates.push(
+
       this.createCertificateRow()
+
     );
 
   }
@@ -206,10 +224,10 @@ certificateTypes: CertificateType[] = [
     index: number
   ): void {
 
-    // Keep at least one row
-
     if (
+
       this.certificates.length === 1
+
     ) {
 
       this.errorMessage =
@@ -222,7 +240,94 @@ certificateTypes: CertificateType[] = [
 
     this.errorMessage = '';
 
+
     this.certificates.removeAt(index);
+
+  }
+
+
+  // =====================================================
+  // NORMALIZE CERTIFICATE TYPE
+  // =====================================================
+
+  private normalizeCertificateType(
+    value: unknown
+  ): CertificateType | null {
+
+    if (
+
+      value === null ||
+      value === undefined ||
+      value === ''
+
+    ) {
+
+      return null;
+
+    }
+
+
+    // Backend may return enum as number
+
+    if (
+
+      typeof value === 'number'
+
+    ) {
+
+      if (
+
+        value >= CertificateType.Enrollment &&
+        value <= CertificateType.Other
+
+      ) {
+
+        return value as CertificateType;
+
+      }
+
+      return null;
+
+    }
+
+
+    // Backend may return enum as string
+
+    switch (
+
+      String(value).toLowerCase()
+
+    ) {
+
+      case '0':
+      case 'enrollment':
+
+        return CertificateType.Enrollment;
+
+
+      case '1':
+      case 'academic':
+
+        return CertificateType.Academic;
+
+
+      case '2':
+      case 'character':
+
+        return CertificateType.Character;
+
+
+      case '3':
+      case 'other':
+
+        return CertificateType.Other;
+
+
+      default:
+
+        return null;
+
+    }
 
   }
 
@@ -231,15 +336,31 @@ certificateTypes: CertificateType[] = [
   // GET SELECTED TYPES
   // =====================================================
 
- getSelectedTypes(): CertificateType[] {
+  getSelectedTypes(): CertificateType[] {
 
-  return this.certificates.controls
-    .map(control =>
-      control.get('certificateType')?.value
-    )
-    .filter(value => value !== null && value !== '');
+    return this.certificates.controls
 
-}
+      .map(control =>
+
+        this.normalizeCertificateType(
+
+          control
+            .get('certificateType')
+            ?.value
+
+        )
+
+      )
+
+      .filter(
+
+        (value): value is CertificateType =>
+
+          value !== null
+
+      );
+
+  }
 
 
   // =====================================================
@@ -251,13 +372,22 @@ certificateTypes: CertificateType[] = [
   ): boolean {
 
     const currentType =
-      this.certificates
-        .at(index)
-        .get('certificateType')
-        ?.value;
+
+      this.normalizeCertificateType(
+
+        this.certificates
+          .at(index)
+          .get('certificateType')
+          ?.value
+
+      );
 
 
-    if (!currentType) {
+    if (
+
+      currentType === null
+
+    ) {
 
       return false;
 
@@ -265,22 +395,38 @@ certificateTypes: CertificateType[] = [
 
 
     return this.certificates.controls
-      .some((control, currentIndex) => {
 
-        if (
-          currentIndex === index
-        ) {
+      .some(
 
-          return false;
+        (control, currentIndex) => {
+
+          if (
+
+            currentIndex === index
+
+          ) {
+
+            return false;
+
+          }
+
+
+          const otherType =
+
+            this.normalizeCertificateType(
+
+              control
+                .get('certificateType')
+                ?.value
+
+            );
+
+
+          return otherType === currentType;
 
         }
 
-
-        return control
-          .get('certificateType')
-          ?.value === currentType;
-
-      });
+      );
 
   }
 
@@ -294,29 +440,95 @@ certificateTypes: CertificateType[] = [
   ): CertificateType[] {
 
     const selectedTypes =
+
       this.certificates.controls
-        .map((control, currentIndex) => {
 
-          if (
-            currentIndex === index
-          ) {
+        .map(
 
-            return null;
+          (control, currentIndex) => {
+
+            if (
+
+              currentIndex === index
+
+            ) {
+
+              return null;
+
+            }
+
+
+            return this.normalizeCertificateType(
+
+              control
+                .get('certificateType')
+                ?.value
+
+            );
 
           }
 
-          return control
-            .get('certificateType')
-            ?.value;
+        )
 
-        })
-        .filter(value => value);
+        .filter(
+
+          (value): value is CertificateType =>
+
+            value !== null
+
+        );
 
 
     return this.certificateTypes.filter(
+
       type =>
+
         !selectedTypes.includes(type)
+
     );
+
+  }
+
+
+  // =====================================================
+  // CERTIFICATE TYPE LABEL
+  // =====================================================
+
+  getCertificateTypeLabel(
+    type: CertificateType | string | number
+  ): string {
+
+    switch (
+
+      this.normalizeCertificateType(type)
+
+    ) {
+
+      case CertificateType.Enrollment:
+
+        return 'Enrollment Certificate';
+
+
+      case CertificateType.Academic:
+
+        return 'Academic Certificate';
+
+
+      case CertificateType.Character:
+
+        return 'Character Certificate';
+
+
+      case CertificateType.Other:
+
+        return 'Other Certificate';
+
+
+      default:
+
+        return 'Certificate';
+
+    }
 
   }
 
@@ -327,49 +539,13 @@ certificateTypes: CertificateType[] = [
 
   loadMyRequests(): void {
 
-    const storedStudentId =
-      localStorage.getItem(
-        'studentId'
-      );
-
-
-    console.log(
-      'Stored Student ID:',
-      storedStudentId
-    );
-
-
-    if (!storedStudentId) {
-
-      this.requests = [];
-
-      this.requestsLoading = false;
-
-      return;
-
-    }
-
-
-    const studentId =
-      Number(storedStudentId);
-
-
-    if (!studentId) {
-
-      this.requests = [];
-
-      this.requestsLoading = false;
-
-      return;
-
-    }
-
-
     this.requestsLoading = true;
 
 
     this.certificateService
-  .getMyRequests()
+
+      .getMyRequests()
+
       .pipe(
 
         finalize(() => {
@@ -381,37 +557,47 @@ certificateTypes: CertificateType[] = [
         })
 
       )
+
       .subscribe({
 
-        // ===============================================
+        // =================================================
         // SUCCESS
-        // ===============================================
+        // =================================================
 
         next: (data) => {
 
           console.log(
+
             'My certificate requests:',
+
             data
+
           );
 
 
           this.requests =
+
             Array.isArray(data)
+
               ? data
+
               : [];
 
         },
 
 
-        // ===============================================
+        // =================================================
         // ERROR
-        // ===============================================
+        // =================================================
 
         error: (error) => {
 
           console.error(
+
             'Failed to load certificate requests:',
+
             error
+
           );
 
 
@@ -419,10 +605,15 @@ certificateTypes: CertificateType[] = [
 
 
           if (
+
             error.status !== 404
+
           ) {
 
             this.errorMessage =
+
+              error.error?.message ||
+
               'Unable to load your certificate requests.';
 
           }
@@ -446,16 +637,34 @@ certificateTypes: CertificateType[] = [
 
 
     // ===================================================
+    // PREVENT DOUBLE SUBMISSION
+    // ===================================================
+
+    if (
+
+      this.submitting
+
+    ) {
+
+      return;
+
+    }
+
+
+    // ===================================================
     // FORM VALIDATION
     // ===================================================
 
     if (
+
       this.certificateForm.invalid
+
     ) {
 
       this.certificateForm.markAllAsTouched();
 
       this.errorMessage =
+
         'Please complete all certificate details correctly.';
 
       return;
@@ -468,16 +677,23 @@ certificateTypes: CertificateType[] = [
     // ===================================================
 
     for (
+
       let i = 0;
+
       i < this.certificates.length;
+
       i++
+
     ) {
 
       if (
+
         this.isDuplicateType(i)
+
       ) {
 
         this.errorMessage =
+
           'The same certificate type cannot be requested twice.';
 
         return;
@@ -488,43 +704,96 @@ certificateTypes: CertificateType[] = [
 
 
     // ===================================================
-    // PREVENT DOUBLE SUBMISSION
+    // BUILD REQUESTS
     // ===================================================
 
-    if (this.submitting) {
+    const requests =
+
+      this.certificates.controls
+
+        .map(control => {
+
+          const type =
+
+            this.normalizeCertificateType(
+
+              control
+                .get('certificateType')
+                ?.value
+
+            );
+
+
+          const reason =
+
+            String(
+
+              control
+                .get('reason')
+                ?.value ?? ''
+
+            ).trim();
+
+
+          return {
+
+            type,
+
+            reason
+
+          };
+
+        });
+
+
+    // ===================================================
+    // EXTRA VALIDATION
+    // ===================================================
+
+    const invalidRequest =
+
+      requests.some(
+
+        request =>
+
+          request.type === null ||
+
+          request.reason.length < 5
+
+      );
+
+
+    if (
+
+      invalidRequest
+
+    ) {
+
+      this.certificateForm.markAllAsTouched();
+
+      this.errorMessage =
+
+        'Please complete all certificate details correctly.';
 
       return;
 
     }
 
 
-    this.submitting = true;
-
-
-    // ===================================================
-    // BUILD REQUESTS
-    // ===================================================
-
-const requests =
-  this.certificates.controls.map(
-    control => ({
-
-      type:
-        Number(
-          control.get('certificateType')?.value
-        ),
-
-      reason:
-        control.get('reason')?.value.trim()
-
-    })
-  );
-
-
     console.log(
+
       'Certificate requests:',
+
       requests
+
     );
+
+
+    // ===================================================
+    // START SUBMISSION
+    // ===================================================
+
+    this.submitting = true;
 
 
     // ===================================================
@@ -532,13 +801,24 @@ const requests =
     // ===================================================
 
     const apiRequests =
+
       requests.map(request =>
+
         this.certificateService
-          .createRequest(request)
+
+          .createRequest({
+
+            type: request.type as CertificateType,
+
+            reason: request.reason
+
+          })
+
       );
 
 
     forkJoin(apiRequests)
+
       .pipe(
 
         finalize(() => {
@@ -550,34 +830,41 @@ const requests =
         })
 
       )
+
       .subscribe({
 
-        // ===============================================
+        // =================================================
         // SUCCESS
-        // ===============================================
+        // =================================================
 
         next: (responses) => {
 
           console.log(
+
             'Certificate requests submitted:',
+
             responses
+
           );
 
 
           this.errorMessage = '';
 
           this.successMessage =
+
             'Certificate request submitted successfully.';
 
 
-          // ---------------------------------------------
+          // ===============================================
           // RESET FORM
-          // ---------------------------------------------
+          // ===============================================
 
           this.certificateForm =
+
             this.fb.group({
 
               certificates:
+
                 this.fb.array([])
 
             });
@@ -586,9 +873,9 @@ const requests =
           this.addCertificate();
 
 
-          // ---------------------------------------------
+          // ===============================================
           // REFRESH HISTORY
-          // ---------------------------------------------
+          // ===============================================
 
           this.loadMyRequests();
 
@@ -596,9 +883,9 @@ const requests =
           this.cdr.detectChanges();
 
 
-          // ---------------------------------------------
+          // ===============================================
           // HIDE SUCCESS MESSAGE
-          // ---------------------------------------------
+          // ===============================================
 
           setTimeout(() => {
 
@@ -611,94 +898,135 @@ const requests =
         },
 
 
-        // ===============================================
+        // =================================================
         // ERROR
-        // ===============================================
+        // =================================================
 
         error: (error) => {
 
           console.error(
+
             'Certificate request failed:',
+
             error
+
           );
 
 
           this.successMessage = '';
 
 
+          // ===============================================
           // 400
+          // ===============================================
 
           if (
+
             error.status === 400
+
           ) {
 
             this.errorMessage =
+
               error.error?.message ||
+
               error.error?.title ||
+
               'Invalid certificate request.';
 
           }
 
 
+          // ===============================================
           // 401
+          // ===============================================
 
           else if (
+
             error.status === 401
+
           ) {
 
             this.errorMessage =
+
               'Your session has expired. Please login again.';
 
           }
 
 
+          // ===============================================
           // 403
+          // ===============================================
 
           else if (
+
             error.status === 403
+
           ) {
 
             this.errorMessage =
+
               'You are not allowed to submit this request.';
 
           }
 
 
+          // ===============================================
           // 404
+          // ===============================================
 
           else if (
+
             error.status === 404
+
           ) {
 
             this.errorMessage =
+
               'Certificate service could not find the requested resource.';
 
           }
 
 
+          // ===============================================
           // 409
+          // ===============================================
 
           else if (
+
             error.status === 409
+
           ) {
 
             this.errorMessage =
-              error.error?.message ||
-              'A pending request already exists for this certificate type.';
 
-            this.loadMyRequests();
+              error.error?.message ||
+
+              'A pending request already exists for this certificate type.';
 
           }
 
 
+          // ===============================================
           // OTHER
+          // ===============================================
 
           else {
 
             this.errorMessage =
+
+              error.error?.message ||
+
               'Unable to submit certificate request.';
 
           }
+
+
+          // ===============================================
+          // REFRESH HISTORY
+          // ===============================================
+
+          this.loadMyRequests();
 
 
           this.cdr.detectChanges();
@@ -718,21 +1046,34 @@ const requests =
     status: string
   ): string {
 
-    switch (status) {
+    switch (
+
+      status
+
+    ) {
 
       case 'Pending':
+
         return 'status-pending';
 
+
       case 'Approved':
+
         return 'status-approved';
 
+
       case 'Rejected':
+
         return 'status-rejected';
 
+
       case 'ReadyForCollection':
+
         return 'status-ready';
 
+
       default:
+
         return 'status-default';
 
     }
@@ -748,15 +1089,24 @@ const requests =
     status: string
   ): string {
 
-    switch (status) {
+    switch (
+
+      status
+
+    ) {
 
       case 'ReadyForCollection':
+
         return 'Ready for Collection';
 
+
       case 'InProgress':
+
         return 'In Progress';
 
+
       default:
+
         return status;
 
     }
@@ -765,7 +1115,7 @@ const requests =
 
 
   // =====================================================
-  // REFRESH
+  // REFRESH REQUESTS
   // =====================================================
 
   refreshRequests(): void {

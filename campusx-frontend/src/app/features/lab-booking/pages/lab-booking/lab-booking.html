@@ -6,6 +6,8 @@
 
   <aside class="sidebar">
 
+    <!-- BRAND -->
+
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -20,39 +22,67 @@
     </div>
 
 
+    <!-- ===================================================
+         NAVIGATION
+    ==================================================== -->
+
     <nav class="sidebar-nav">
+
+      <!-- DASHBOARD -->
 
       <a
         class="nav-item"
         routerLink="/dashboard"
       >
-        <span class="nav-icon">⌂</span>
-        <span>Dashboard</span>
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
       </a>
 
+
+      <!-- HOSTEL -->
 
       <a
         class="nav-item"
         routerLink="/hostel"
       >
-        <span class="nav-icon">🏨</span>
-        <span>Hostel</span>
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
       </a>
 
+
+      <!-- LAB BOOKING -->
 
       <a
-        class="nav-item active"
+        class="nav-item"
+        routerLink="/lab-booking"
+        routerLinkActive="active"
       >
-        <span class="nav-icon">🧪</span>
-        <span>Lab Booking</span>
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
       </a>
 
 
-      
-      <a class="nav-item"
-      routerLink="/events"
-      >
+      <!-- EVENTS -->
 
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
         <span class="nav-icon">
           📅
         </span>
@@ -60,52 +90,79 @@
         <span>
           Events
         </span>
-
       </a>
+
+
+      <!-- COMPLAINTS -->
 
       <a
-  class="nav-item"
-  routerLink="/complaints"
-  routerLinkActive="active"
->
-  <span class="nav-icon">💬</span>
-  <span>Complaints</span>
-</a>
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">
+          💬
+        </span>
 
-
-      <a class="nav-item">
-        <span class="nav-icon">📄</span>
-        <span>Certificates</span>
+        <span>
+          Complaints
+        </span>
       </a>
 
 
-      <a class="nav-item">
-        <span class="nav-icon">💳</span>
-        <span>Payments</span>
+      <!-- CERTIFICATES -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
       </a>
 
-<a
-  class="nav-item"
-  routerLink="/notifications"
-  routerLinkActive="active"
->
-  <span class="nav-icon">🔔</span>
 
-  <span>
-    Notifications
-  </span>
+      <!-- PAYMENTS -->
 
-  <span class="notification-count">
-    3
-  </span>
-</a>
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">
+          💳
+        </span>
 
+        <span>
+          Payments
+        </span>
+      </a>
+
+
+      <!-- NOTIFICATIONS -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+      </a>
+
+
+      <!-- PROFILE -->
 
       <a
         class="nav-item"
         routerLink="/profile"
       >
-
         <span class="nav-icon">
           👤
         </span>
@@ -113,16 +170,21 @@
         <span>
           Profile
         </span>
-
       </a>
 
     </nav>
 
 
+    <!-- ===================================================
+         SIDEBAR BOTTOM
+    ==================================================== -->
+
     <div class="sidebar-bottom">
 
-      <a class="nav-item logout">
-
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
         <span class="nav-icon">
           ↪
         </span>
@@ -130,7 +192,6 @@
         <span>
           Logout
         </span>
-
       </a>
 
     </div>
@@ -151,6 +212,8 @@
 
     <header class="topbar">
 
+      <!-- PAGE TITLE -->
+
       <div class="topbar-title">
 
         <span class="page-label">
@@ -160,32 +223,56 @@
       </div>
 
 
+      <!-- TOPBAR RIGHT -->
+
       <div class="topbar-right">
+
+
+        <!-- NOTIFICATION -->
 
         <button
           type="button"
           class="notification-btn"
+          routerLink="/notifications"
+          title="Notifications"
         >
-
           🔔
-
-          <span>
-            3
-          </span>
-
         </button>
 
 
-        <div class="student-profile">
+        <!-- =================================================
+             STUDENT PROFILE
+        ================================================== -->
+
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
+
+          <!-- AVATAR -->
 
           <div class="profile-avatar">
-            S
+
+            {{
+              student?.fullName?.charAt(0)?.toUpperCase()
+              || 'S'
+            }}
+
           </div>
+
+
+          <!-- NAME + ROLE -->
 
           <div class="profile-info">
 
             <strong>
-              Student
+
+              {{
+                student?.fullName
+                || 'Student'
+              }}
+
             </strong>
 
             <small>
@@ -194,8 +281,11 @@
 
           </div>
 
-          <span>
-            ⌄
+
+          <!-- ARROW -->
+
+          <span class="profile-arrow">
+            →
           </span>
 
         </div>
@@ -235,14 +325,14 @@
         </div>
 
 
+        <!-- BACK BUTTON -->
+
         <button
           type="button"
           class="back-button"
           routerLink="/dashboard"
         >
-
           ← Dashboard
-
         </button>
 
       </section>
@@ -254,6 +344,8 @@
 
       <section class="feature-row">
 
+
+        <!-- FEATURE 1 -->
 
         <div class="feature-card">
 
@@ -276,6 +368,8 @@
         </div>
 
 
+        <!-- FEATURE 2 -->
+
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -296,6 +390,8 @@
 
         </div>
 
+
+        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -388,7 +484,7 @@
 
 
           <!-- =================================================
-               FORM
+               BOOKING FORM
           ================================================== -->
 
           <div class="form-grid">
@@ -401,7 +497,6 @@
               <label>
                 Laboratory
               </label>
-
 
               <select
                 [(ngModel)]="selectedLabId"
@@ -443,7 +538,6 @@
                 Booking Date
               </label>
 
-
               <input
                 type="date"
                 [(ngModel)]="bookingDate"
@@ -461,7 +555,6 @@
                 Start Time
               </label>
 
-
               <input
                 type="time"
                 [(ngModel)]="startTime"
@@ -477,7 +570,6 @@
               <label>
                 End Time
               </label>
-
 
               <input
                 type="time"
@@ -495,7 +587,6 @@
 
           <div class="slots-section">
 
-
             <div class="slots-header">
 
               <div>
@@ -505,7 +596,7 @@
                 </h3>
 
                 <p>
-                  Choose a time slot like selecting a movie show time.
+                  Choose an available laboratory time slot.
                 </p>
 
               </div>
@@ -528,7 +619,7 @@
             }
 
 
-            <!-- SLOTS -->
+            <!-- AVAILABLE SLOTS -->
 
             @else if (
               availableSlots.length > 0
@@ -536,12 +627,10 @@
 
               <div class="slots-grid">
 
-
                 @for (
                   slot of availableSlots;
                   track $index
                 ) {
-
 
                   <button
                     type="button"
@@ -564,8 +653,6 @@
                     </span>
 
 
-                    <!-- CAPACITY -->
-
                     @if (
                       slot.capacity !== undefined
                     ) {
@@ -583,16 +670,12 @@
                     }
 
 
-                    <!-- FULL -->
-
                     @if (
                       slot.isAvailable === false
                     ) {
 
                       <span class="slot-full">
-
                         FULL
-
                       </span>
 
                     }
@@ -742,23 +825,24 @@
 
             <div class="booking-list">
 
-
               @for (
                 booking of bookings;
                 track booking.id
               ) {
 
-
                 <div class="booking-item">
 
+
+                  <!-- ICON -->
 
                   <div class="booking-item-icon">
                     🧪
                   </div>
 
 
-                  <div class="booking-info">
+                  <!-- INFO -->
 
+                  <div class="booking-info">
 
                     <h3>
 
@@ -869,40 +953,24 @@
         (click)="$event.stopPropagation()"
       >
 
-
-        <!-- ICON -->
-
         <div class="popup-icon">
           ⚠️
         </div>
 
-
-        <!-- TITLE -->
-
         <h2>
           Cancel Booking?
         </h2>
-
-
-        <!-- MESSAGE -->
 
         <p>
           Are you sure you want to cancel this
           laboratory booking?
         </p>
 
-
-        <!-- WARNING -->
-
         <span class="popup-warning">
           This action cannot be undone.
         </span>
 
-
-        <!-- ACTION BUTTONS -->
-
         <div class="popup-actions">
-
 
           <button
             type="button"
@@ -914,7 +982,6 @@
 
           </button>
 
-
           <button
             type="button"
             class="popup-confirm"
@@ -924,7 +991,6 @@
             Yes, Cancel
 
           </button>
-
 
         </div>
 

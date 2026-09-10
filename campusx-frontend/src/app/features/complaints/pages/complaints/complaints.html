@@ -6,6 +6,8 @@
 
   <aside class="sidebar">
 
+    <!-- BRAND -->
+
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -20,6 +22,10 @@
     </div>
 
 
+    <!-- ===================================================
+         NAVIGATION
+    ==================================================== -->
+
     <nav class="sidebar-nav">
 
       <!-- DASHBOARD -->
@@ -28,8 +34,15 @@
         class="nav-item"
         routerLink="/dashboard"
       >
-        <span class="nav-icon">⌂</span>
-        <span>Dashboard</span>
+
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
+
       </a>
 
 
@@ -39,19 +52,33 @@
         class="nav-item"
         routerLink="/hostel"
       >
-        <span class="nav-icon">🏨</span>
-        <span>Hostel</span>
+
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
+
       </a>
 
 
-      <!-- LAB -->
+      <!-- LAB BOOKING -->
 
       <a
         class="nav-item"
         routerLink="/lab-booking"
       >
-        <span class="nav-icon">🧪</span>
-        <span>Lab Booking</span>
+
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
+
       </a>
 
 
@@ -61,8 +88,15 @@
         class="nav-item"
         routerLink="/events"
       >
-        <span class="nav-icon">📅</span>
-        <span>Events</span>
+
+        <span class="nav-icon">
+          📅
+        </span>
+
+        <span>
+          Events
+        </span>
+
       </a>
 
 
@@ -72,8 +106,15 @@
         class="nav-item active"
         routerLink="/complaints"
       >
-        <span class="nav-icon">💬</span>
-        <span>Complaints</span>
+
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+
       </a>
 
 
@@ -83,8 +124,15 @@
         class="nav-item"
         routerLink="/certificates"
       >
-        <span class="nav-icon">📄</span>
-        <span>Certificates</span>
+
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
+
       </a>
 
 
@@ -94,8 +142,15 @@
         class="nav-item"
         routerLink="/payments"
       >
-        <span class="nav-icon">💳</span>
-        <span>Payments</span>
+
+        <span class="nav-icon">
+          💳
+        </span>
+
+        <span>
+          Payments
+        </span>
+
       </a>
 
 
@@ -112,10 +167,6 @@
 
         <span>
           Notifications
-        </span>
-
-        <span class="notification-count">
-          3
         </span>
 
       </a>
@@ -141,11 +192,16 @@
     </nav>
 
 
-    <!-- SIDEBAR BOTTOM -->
+    <!-- ===================================================
+         SIDEBAR BOTTOM
+    ==================================================== -->
 
     <div class="sidebar-bottom">
 
-      <a class="nav-item logout">
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
 
         <span class="nav-icon">
           ↪
@@ -187,6 +243,9 @@
 
       <div class="topbar-right">
 
+
+        <!-- NOTIFICATION -->
+
         <button
           type="button"
           class="notification-btn"
@@ -195,12 +254,10 @@
 
           🔔
 
-          <span>
-            3
-          </span>
-
         </button>
 
+
+        <!-- STUDENT PROFILE -->
 
         <div class="student-profile">
 
@@ -471,7 +528,9 @@
                   <option
                     [ngValue]="null"
                   >
+
                     Select complaint category
+
                   </option>
 
 

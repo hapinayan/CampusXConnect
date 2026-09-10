@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
@@ -16,9 +16,18 @@ export class NotificationService {
   private readonly notificationUrl =
     `${environment.apiUrl}/notifications`;
 
+
+  // =====================================================
+  // SHARED UNREAD COUNT
+  // =====================================================
+
+  unreadCount = 0;
+
+
   constructor(
     private http: HttpClient
   ) {}
+
 
   // =====================================================
   // GET STUDENT NOTIFICATIONS
@@ -29,9 +38,32 @@ export class NotificationService {
     studentId: number
   ): Observable<Notification[]> {
 
-    return this.http.get<Notification[]>(
-      `${this.notificationUrl}/student/${studentId}`
-    );
+    return this.http
+      .get<Notification[]>(
+        `${this.notificationUrl}/student/${studentId}`
+      )
+      .pipe(
+
+        tap((notifications) => {
+
+          // Calculate unread notifications
+          this.unreadCount =
+            Array.isArray(notifications)
+              ? notifications.filter(
+                  notification =>
+                    !notification.isRead
+                ).length
+              : 0;
+
+          console.log(
+            'Shared unread count:',
+            this.unreadCount
+          );
+
+        })
+
+      );
+
   }
 
 
@@ -44,10 +76,31 @@ export class NotificationService {
     notificationId: number
   ): Observable<any> {
 
-    return this.http.put<any>(
-      `${this.notificationUrl}/${notificationId}/read`,
-      {}
-    );
+    return this.http
+      .put<any>(
+        `${this.notificationUrl}/${notificationId}/read`,
+        {}
+      )
+      .pipe(
+
+        tap(() => {
+
+          // Decrease unread count
+          if (this.unreadCount > 0) {
+
+            this.unreadCount--;
+
+          }
+
+          console.log(
+            'Updated shared unread count:',
+            this.unreadCount
+          );
+
+        })
+
+      );
+
   }
 
 }

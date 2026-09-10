@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { EventService } from '../../../core/services/event.service';
+
 import {
   Event,
   EventRegistration
@@ -28,6 +29,12 @@ import {
   styleUrl: './events.css'
 })
 export class Events implements OnInit {
+
+  // =====================================================
+  // STUDENT PROFILE
+  // =====================================================
+
+  studentName = 'Student';
 
 
   // =====================================================
@@ -89,6 +96,10 @@ export class Events implements OnInit {
     );
 
 
+    // Load real student name
+    this.loadStudentProfile();
+
+
     // Load all events
     this.loadEvents();
 
@@ -100,12 +111,76 @@ export class Events implements OnInit {
 
 
   // =====================================================
+  // LOAD STUDENT PROFILE
+  // =====================================================
+
+  loadStudentProfile(): void {
+
+    const storedStudentName =
+      localStorage.getItem('studentName');
+
+
+    if (
+      storedStudentName &&
+      storedStudentName.trim()
+    ) {
+
+      this.studentName =
+        storedStudentName.trim();
+
+    }
+
+    else {
+
+      this.studentName =
+        'Student';
+
+    }
+
+
+    console.log(
+      'Logged-in student:',
+      this.studentName
+    );
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // GET STUDENT INITIAL
+  // =====================================================
+
+  getStudentInitial(): string {
+
+    if (
+      !this.studentName ||
+      this.studentName === 'Student'
+    ) {
+
+      return 'S';
+
+    }
+
+
+    return this.studentName
+      .trim()
+      .charAt(0)
+      .toUpperCase();
+
+  }
+
+
+  // =====================================================
   // LOAD EVENTS
   // =====================================================
 
   loadEvents(): void {
 
     this.eventsLoading = true;
+
 
     this.eventService
       .getEvents()
@@ -151,8 +226,10 @@ export class Events implements OnInit {
 
           this.events = [];
 
+
           this.errorMessage =
             'Unable to load events.';
+
 
           this.cdr.detectChanges();
 
@@ -181,6 +258,10 @@ export class Events implements OnInit {
     );
 
 
+    // ===================================================
+    // NO STUDENT ID
+    // ===================================================
+
     if (!storedStudentId) {
 
       this.registrations = [];
@@ -198,6 +279,10 @@ export class Events implements OnInit {
       Number(storedStudentId);
 
 
+    // ===================================================
+    // INVALID STUDENT ID
+    // ===================================================
+
     if (!studentId) {
 
       this.registrations = [];
@@ -210,6 +295,10 @@ export class Events implements OnInit {
 
     }
 
+
+    // ===================================================
+    // LOAD REGISTRATIONS
+    // ===================================================
 
     this.registrationsLoading = true;
 
@@ -258,6 +347,8 @@ export class Events implements OnInit {
 
           this.registrations = [];
 
+
+          // 404 means no registrations
 
           if (
             error.status !== 404
@@ -323,7 +414,9 @@ export class Events implements OnInit {
     this.successMessage = '';
 
 
-    // Prevent double click
+    // ===================================================
+    // PREVENT DOUBLE CLICK
+    // ===================================================
 
     if (
       this.registeringEventId !== null
@@ -334,7 +427,9 @@ export class Events implements OnInit {
     }
 
 
-    // Already registered
+    // ===================================================
+    // ALREADY REGISTERED
+    // ===================================================
 
     if (
       this.isRegistered(eventId)
@@ -348,6 +443,10 @@ export class Events implements OnInit {
     }
 
 
+    // ===================================================
+    // START REGISTERING
+    // ===================================================
+
     this.registeringEventId =
       eventId;
 
@@ -358,7 +457,9 @@ export class Events implements OnInit {
 
     this.eventService
       .registerForEvent({
+
         eventId: eventId
+
       })
       .pipe(
 
@@ -387,13 +488,12 @@ export class Events implements OnInit {
 
           this.errorMessage = '';
 
+
           this.successMessage =
             'Event registration successful!';
 
 
-          // ---------------------------------------------
-          // REFRESH REGISTRATIONS
-          // ---------------------------------------------
+          // Refresh registrations
 
           this.loadMyRegistrations();
 
@@ -401,9 +501,7 @@ export class Events implements OnInit {
           this.cdr.detectChanges();
 
 
-          // ---------------------------------------------
-          // HIDE SUCCESS
-          // ---------------------------------------------
+          // Hide success message
 
           setTimeout(() => {
 
@@ -475,7 +573,7 @@ export class Events implements OnInit {
           }
 
 
-          // Other
+          // Other errors
 
           else {
 
@@ -541,6 +639,10 @@ export class Events implements OnInit {
 
   confirmCancelRegistration(): void {
 
+    // ===================================================
+    // CHECK REGISTRATION
+    // ===================================================
+
     if (
       this.selectedRegistrationId === null
     ) {
@@ -554,7 +656,9 @@ export class Events implements OnInit {
       this.selectedRegistrationId;
 
 
-    // Close popup
+    // ===================================================
+    // CLOSE POPUP
+    // ===================================================
 
     this.showCancelPopup = false;
 
@@ -612,7 +716,7 @@ export class Events implements OnInit {
           this.cdr.detectChanges();
 
 
-          // Hide message
+          // Hide success message
 
           setTimeout(() => {
 
@@ -637,6 +741,8 @@ export class Events implements OnInit {
           );
 
 
+          // 401
+
           if (
             error.status === 401
           ) {
@@ -645,6 +751,9 @@ export class Events implements OnInit {
               'Your session has expired. Please login again.';
 
           }
+
+
+          // 403
 
           else if (
             error.status === 403
@@ -655,6 +764,9 @@ export class Events implements OnInit {
 
           }
 
+
+          // 404
+
           else if (
             error.status === 404
           ) {
@@ -663,6 +775,9 @@ export class Events implements OnInit {
               'Registration not found.';
 
           }
+
+
+          // Other
 
           else {
 
