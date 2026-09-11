@@ -1,0 +1,484 @@
+<div class="lab-management-page">
+
+  <!-- ================================================= -->
+  <!-- PAGE HEADER -->
+  <!-- ================================================= -->
+
+  <div class="page-header">
+
+    <div>
+      <p class="page-subtitle">CampusX Admin</p>
+
+      <h1>Lab Management</h1>
+
+      <p class="page-description">
+        Manage laboratories, capacities and availability.
+      </p>
+    </div>
+
+    <div class="header-badge">
+      {{ labs.length }} Labs
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- ALERT MESSAGES -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="message"
+    class="alert alert-success"
+  >
+    {{ message }}
+  </div>
+
+  <div
+    *ngIf="errorMessage"
+    class="alert alert-error"
+  >
+    {{ errorMessage }}
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- SUMMARY CARDS -->
+  <!-- ================================================= -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🧪
+      </div>
+
+      <div>
+        <span>Total Laboratories</span>
+
+        <strong>
+          {{ labs.length }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon active-icon">
+        ✓
+      </div>
+
+      <div>
+        <span>Active Labs</span>
+
+        <strong>
+          {{ activeLabCount }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon inactive-icon">
+        !
+      </div>
+
+      <div>
+        <span>Inactive Labs</span>
+
+        <strong>
+          {{ inactiveLabCount }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- CREATE LAB -->
+  <!-- ================================================= -->
+
+  <section class="content-card">
+
+    <div class="card-header">
+
+      <div>
+        <h2>Add Laboratory</h2>
+
+        <p>
+          Create a new laboratory for student reservations.
+        </p>
+      </div>
+
+    </div>
+
+
+    <form
+      class="lab-form"
+      (ngSubmit)="createLab()"
+    >
+
+      <div class="form-group">
+
+        <label for="labName">
+          Laboratory Name
+        </label>
+
+        <input
+          id="labName"
+          name="labName"
+          type="text"
+          placeholder="Example: Computer Lab 01"
+          [(ngModel)]="newLab.name"
+        />
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="labLocation">
+          Location
+        </label>
+
+        <input
+          id="labLocation"
+          name="labLocation"
+          type="text"
+          placeholder="Example: Block A - First Floor"
+          [(ngModel)]="newLab.location"
+        />
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="labCapacity">
+          Capacity
+        </label>
+
+        <input
+          id="labCapacity"
+          name="labCapacity"
+          type="number"
+          min="1"
+          [(ngModel)]="newLab.capacity"
+        />
+
+      </div>
+
+
+      <div class="form-action">
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          + Add Laboratory
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- LAB LIST -->
+  <!-- ================================================= -->
+
+  <section class="content-card">
+
+    <div class="card-header">
+
+      <div>
+        <h2>Laboratories</h2>
+
+        <p>
+          View, edit, activate or deactivate laboratories.
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- Loading -->
+
+    <div
+      *ngIf="isLoading"
+      class="state-message"
+    >
+      Loading laboratories...
+    </div>
+
+
+    <!-- Empty -->
+
+    <div
+      *ngIf="!isLoading && labs.length === 0"
+      class="state-message"
+    >
+      No laboratories found.
+    </div>
+
+
+    <!-- Table -->
+
+    <div
+      *ngIf="!isLoading && labs.length > 0"
+      class="table-wrapper"
+    >
+
+      <table class="lab-table">
+
+        <thead>
+
+          <tr>
+            <th>ID</th>
+            <th>Laboratory</th>
+            <th>Location</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let lab of labs"
+          >
+
+            <td>
+              #{{ lab.id }}
+            </td>
+
+            <td>
+
+              <div class="lab-name-cell">
+
+                <div class="lab-avatar">
+                  {{ lab.name.charAt(0).toUpperCase() }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{ lab.name }}
+                  </strong>
+
+                  <span>
+                    Campus Laboratory
+                  </span>
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{ lab.location }}
+            </td>
+
+            <td>
+              {{ lab.capacity }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.active]="lab.isActive"
+                [class.inactive]="!lab.isActive"
+              >
+                {{ lab.isActive ? 'Active' : 'Inactive' }}
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  type="button"
+                  class="btn btn-edit"
+                  (click)="selectLabForEdit(lab)"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  type="button"
+                  class="btn"
+                  [class.btn-danger]="lab.isActive"
+                  [class.btn-success]="!lab.isActive"
+                  (click)="toggleLabStatus(lab)"
+                >
+                  {{
+                    lab.isActive
+                      ? 'Deactivate'
+                      : 'Activate'
+                  }}
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- EDIT LAB MODAL -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="selectedLab"
+    class="modal-backdrop"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <div>
+          <h2>Edit Laboratory</h2>
+
+          <p>
+            Update laboratory information and status.
+          </p>
+        </div>
+
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="cancelEdit()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form
+        class="edit-form"
+        (ngSubmit)="updateLab()"
+      >
+
+        <div class="form-group">
+
+          <label>
+            Laboratory Name
+          </label>
+
+          <input
+            name="editName"
+            type="text"
+            [(ngModel)]="editLab.name"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <input
+            name="editLocation"
+            type="text"
+            [(ngModel)]="editLab.location"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Capacity
+          </label>
+
+          <input
+            name="editCapacity"
+            type="number"
+            min="1"
+            [(ngModel)]="editLab.capacity"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Status
+          </label>
+
+          <select
+            name="editStatus"
+            [(ngModel)]="editLab.isActive"
+          >
+
+            <option [ngValue]="true">
+              Active
+            </option>
+
+            <option [ngValue]="false">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelEdit()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

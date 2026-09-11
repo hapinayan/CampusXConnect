@@ -23,11 +23,8 @@ import { LoginRequest } from '../../../../core/models/auth';
 export class Login {
 
   loginData: LoginRequest = {
-
     email: '',
-
     password: ''
-
   };
 
 
@@ -51,7 +48,6 @@ export class Login {
   login(): void {
 
     this.errorMessage = '';
-
     this.successMessage = '';
 
 
@@ -109,7 +105,51 @@ export class Login {
 
 
           // =============================================
-          // GET CURRENT STUDENT
+          // GET ROLE FROM JWT TOKEN
+          // =============================================
+
+          const role =
+            this.getRoleFromToken(
+              response.token
+            );
+
+
+          console.log(
+            'Logged in role:',
+            role
+          );
+
+
+          // =============================================
+          // ADMIN LOGIN
+          // =============================================
+
+          if (
+            role?.toLowerCase() === 'admin'
+          ) {
+
+            this.loading = false;
+
+            this.successMessage =
+              'Admin login successful!';
+
+
+            setTimeout(() => {
+
+              this.router.navigate([
+                '/admin/labs'
+              ]);
+
+            }, 500);
+
+
+            return;
+
+          }
+
+
+          // =============================================
+          // STUDENT LOGIN
           // =============================================
 
           this.authService
@@ -125,7 +165,7 @@ export class Login {
 
 
                 // =======================================
-                // SAVE STUDENT ID
+                // SAVE STUDENT
                 // =======================================
 
                 this.authService.saveStudent(
@@ -145,9 +185,9 @@ export class Login {
                   'Login successful!';
 
 
-                // =====================================
+                // =======================================
                 // GO DASHBOARD
-                // =====================================
+                // =======================================
 
                 setTimeout(() => {
 
@@ -203,6 +243,61 @@ export class Login {
         }
 
       });
+
+  }
+
+
+  // =====================================================
+  // GET ROLE FROM JWT
+  // =====================================================
+
+  private getRoleFromToken(
+    token: string | undefined
+  ): string | null {
+
+    if (!token) {
+
+      return null;
+
+    }
+
+
+    try {
+
+      const payload =
+        token.split('.')[1];
+
+
+      const decodedPayload =
+        JSON.parse(
+          atob(
+            payload
+              .replace(/-/g, '+')
+              .replace(/_/g, '/')
+          )
+        );
+
+
+      return (
+        decodedPayload.role ||
+        decodedPayload[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ] ||
+        null
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        'Unable to decode JWT token:',
+        error
+      );
+
+
+      return null;
+
+    }
 
   }
 

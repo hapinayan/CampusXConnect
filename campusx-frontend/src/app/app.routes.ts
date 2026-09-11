@@ -157,6 +157,19 @@ export const routes: Routes = [
 
 
   // =========================
+  // ADMIN - LAB MANAGEMENT
+  // =========================
+
+  {
+    path: 'admin/labs',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/admin/lab-management/lab-management')
+        .then(m => m.LabManagement)
+  },
+
+
+  // =========================
   // UNKNOWN URL → LOGIN
   // =========================
 

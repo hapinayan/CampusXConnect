@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, shareReplay } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
@@ -8,7 +8,9 @@ import {
   Lab,
   LabBooking,
   CreateLabBooking,
-  AvailableSlot
+  AvailableSlot,
+  CreateLab,
+  UpdateLab
 } from '../models/lab';
 
 
@@ -29,13 +31,6 @@ export class LabService {
 
 
   // =====================================================
-  // LAB CACHE
-  // =====================================================
-
-  private labsCache$?: Observable<Lab[]>;
-
-
-  // =====================================================
   // CONSTRUCTOR
   // =====================================================
 
@@ -50,17 +45,9 @@ export class LabService {
 
   getLabs(): Observable<Lab[]> {
 
-    if (!this.labsCache$) {
-
-      this.labsCache$ = this.http
-        .get<Lab[]>(this.labUrl)
-        .pipe(
-          shareReplay(1)
-        );
-
-    }
-
-    return this.labsCache$;
+    return this.http.get<Lab[]>(
+      this.labUrl
+    );
 
   }
 
@@ -71,7 +58,7 @@ export class LabService {
 
   clearLabsCache(): void {
 
-    this.labsCache$ = undefined;
+    // No cache used currently
 
   }
 
@@ -106,7 +93,6 @@ export class LabService {
         date
       );
 
-
     return this.http.get<AvailableSlot[]>(
       `${this.labUrl}/${labId}/slots`,
       {
@@ -120,17 +106,6 @@ export class LabService {
   // =====================================================
   // DEFAULT TIME SLOTS
   // =====================================================
-
-  /*
-   * These slots are displayed when:
-   *
-   * 1. Page is opened
-   * 2. No laboratory is selected
-   * 3. No booking date is selected
-   *
-   * Once a laboratory + date are selected,
-   * the backend API becomes the source of truth.
-   */
 
   getDefaultTimeSlots(): AvailableSlot[] {
 
@@ -190,7 +165,6 @@ export class LabService {
       booking
     );
 
-
     return this.http.post<LabBooking>(
       this.bookingUrl,
       booking
@@ -224,6 +198,39 @@ export class LabService {
 
     return this.http.delete<any>(
       `${this.bookingUrl}/${bookingId}`
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - CREATE LAB
+  // =====================================================
+
+  createLab(
+    lab: CreateLab
+  ): Observable<Lab> {
+
+    return this.http.post<Lab>(
+      this.labUrl,
+      lab
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - UPDATE LAB
+  // =====================================================
+
+  updateLab(
+    id: number,
+    lab: UpdateLab
+  ): Observable<any> {
+
+    return this.http.put<any>(
+      `${this.labUrl}/${id}`,
+      lab
     );
 
   }

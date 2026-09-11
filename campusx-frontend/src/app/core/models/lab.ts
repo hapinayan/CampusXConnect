@@ -3,17 +3,11 @@
 // =====================================================
 
 export interface Lab {
-
   id: number;
-
   name: string;
-
   location: string;
-
   capacity: number;
-
   isActive: boolean;
-
 }
 
 
@@ -22,9 +16,7 @@ export interface Lab {
 // =====================================================
 
 export interface AvailableSlot {
-
   startTime: string;
-
   endTime: string;
 
   // Number of students already booked
@@ -35,7 +27,6 @@ export interface AvailableSlot {
 
   // Whether this slot can still be booked
   isAvailable?: boolean;
-
 }
 
 
@@ -44,23 +35,14 @@ export interface AvailableSlot {
 // =====================================================
 
 export interface LabBooking {
-
   id: number;
-
   labId: number;
-
   labName?: string;
-
   studentId: number;
-
   bookingDate: string;
-
   startTime: string;
-
   endTime: string;
-
   createdAt: string;
-
 }
 
 
@@ -69,13 +51,31 @@ export interface LabBooking {
 // =====================================================
 
 export interface CreateLabBooking {
-
   labId: number;
-
   bookingDate: string;
-
   startTime: string;
-
   endTime: string;
+}
 
+
+// =====================================================
+// ADMIN - CREATE LAB
+// =====================================================
+
+export interface CreateLab {
+  name: string;
+  location: string;
+  capacity: number;
+}
+
+
+// =====================================================
+// ADMIN - UPDATE LAB
+// =====================================================
+
+export interface UpdateLab {
+  name: string;
+  location: string;
+  capacity: number;
+  isActive: boolean;
 }
