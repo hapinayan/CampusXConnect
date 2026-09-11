@@ -1,4 +1,4 @@
-﻿namespace Campus_Services_Portal.DTOs
+﻿namespace Campus_Services_Portal.DTOs.Auth
 {
     public class LoginDto
     {

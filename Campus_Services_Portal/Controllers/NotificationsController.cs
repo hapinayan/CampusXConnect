@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿using Campus_Services_Portal.Security;
 using Campus_Services_Portal.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +11,22 @@ namespace Campus_Services_Portal.Controllers
     public class NotificationsController : ControllerBase
     {
         private readonly INotificationService _notificationService;
+        private readonly CurrentUserService _currentUserService;
 
         public NotificationsController(
-            INotificationService notificationService)
+            INotificationService notificationService,
+            CurrentUserService currentUserService)
         {
             _notificationService = notificationService;
+            _currentUserService = currentUserService;
         }
 
         [HttpGet("student/{studentId}")]
         public async Task<IActionResult> GetStudentNotifications(
             int studentId)
         {
-            var currentStudentId = GetCurrentStudentId();
+            var currentStudentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (currentStudentId == null)
             {
@@ -45,7 +49,8 @@ namespace Campus_Services_Portal.Controllers
         [HttpPut("{id}/read")]
         public async Task<IActionResult> MarkAsRead(int id)
         {
-            var studentId = GetCurrentStudentId();
+            var studentId =
+                await _currentUserService.GetCurrentStudentIdAsync();
 
             if (studentId == null)
             {
@@ -73,24 +78,6 @@ namespace Campus_Services_Portal.Controllers
             {
                 return Forbid();
             }
-        }
-
-        private int? GetCurrentStudentId()
-        {
-            var claim = User.FindFirst(
-                ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-            {
-                return null;
-            }
-
-            if (!int.TryParse(claim.Value, out var studentId))
-            {
-                return null;
-            }
-
-            return studentId;
         }
     }
 }
