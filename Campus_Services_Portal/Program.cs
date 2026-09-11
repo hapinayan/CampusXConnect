@@ -69,6 +69,23 @@ namespace Campus_Services_Portal
             // =========================
             builder.Services.AddControllers();
 
+
+            // =========================
+            // CORS
+            // =========================
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngular", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+
+
             // =========================
             // CURRENT USER SERVICE
             // =========================
@@ -181,6 +198,8 @@ namespace Campus_Services_Portal
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowAngular");
 
             // =========================
             // AUTHENTICATION
