@@ -4,18 +4,12 @@ import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
 
-  // =========================
-  // DEFAULT → LOGIN
-  // =========================
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
 
-  // =========================
-  // LOGIN
-  // =========================
   {
     path: 'login',
     loadComponent: () =>
@@ -23,9 +17,6 @@ export const routes: Routes = [
         .then(m => m.Login)
   },
 
-  // =========================
-  // REGISTER
-  // =========================
   {
     path: 'register',
     loadComponent: () =>
@@ -33,9 +24,6 @@ export const routes: Routes = [
         .then(m => m.Register)
   },
 
-  // =========================
-  // DASHBOARD - PROTECTED
-  // =========================
   {
     path: 'dashboard',
     canActivate: [authGuard],
@@ -44,9 +32,6 @@ export const routes: Routes = [
         .then(m => m.Dashboard)
   },
 
-  // =========================
-  // PROFILE - PROTECTED
-  // =========================
   {
     path: 'profile',
     canActivate: [authGuard],
@@ -55,9 +40,6 @@ export const routes: Routes = [
         .then(m => m.Profile)
   },
 
-  // =========================
-  // HOSTEL - PROTECTED
-  // =========================
   {
     path: 'hostel',
     canActivate: [authGuard],
@@ -66,9 +48,6 @@ export const routes: Routes = [
         .then(m => m.HostelPage)
   },
 
-  // =========================
-  // LAB BOOKING - PROTECTED
-  // =========================
   {
     path: 'lab-booking',
     canActivate: [authGuard],
@@ -77,9 +56,6 @@ export const routes: Routes = [
         .then(m => m.LabBookingPage)
   },
 
-  // =========================
-  // EVENTS - PROTECTED
-  // =========================
   {
     path: 'events',
     canActivate: [authGuard],
@@ -88,9 +64,6 @@ export const routes: Routes = [
         .then(m => m.Events)
   },
 
-  // =========================
-  // NOTIFICATIONS - PROTECTED
-  // =========================
   {
     path: 'notifications',
     canActivate: [authGuard],
@@ -99,9 +72,6 @@ export const routes: Routes = [
         .then(m => m.Notifications)
   },
 
-  // =========================
-  // COMPLAINTS - PROTECTED
-  // =========================
   {
     path: 'complaints',
     canActivate: [authGuard],
@@ -110,9 +80,6 @@ export const routes: Routes = [
         .then(m => m.Complaints)
   },
 
-  // =========================
-  // CERTIFICATES - PROTECTED
-  // =========================
   {
     path: 'certificates',
     canActivate: [authGuard],
@@ -121,9 +88,6 @@ export const routes: Routes = [
         .then(m => m.Certificates)
   },
 
-  // =========================
-  // PAYMENTS - PROTECTED
-  // =========================
   {
     path: 'payments',
     canActivate: [authGuard],
@@ -132,16 +96,21 @@ export const routes: Routes = [
         .then(m => m.Payments)
   },
 
-  // =========================
-  // ADMIN AREA
-  // =========================
+
+  // =====================================================
+  // ADMIN ROUTES
+  // =====================================================
+
   {
     path: 'admin',
+    canActivate: [authGuard],
+
     loadComponent: () =>
       import('./features/admin/layout/admin-layout/admin-layout')
         .then(m => m.AdminLayout),
 
     children: [
+
       {
         path: '',
         redirectTo: 'dashboard',
@@ -160,13 +129,37 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/admin/pages/admin-students/admin-students')
             .then(m => m.AdminStudents)
+      },
+
+      {
+        path: 'labs',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-labs/admin-labs')
+            .then(m => m.AdminLabs)
+      },
+
+      {
+        path: 'events',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-events/admin-events')
+            .then(m => m.AdminEvents)
+      },
+
+      {
+        path: 'notifications',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-notifications/admin-notifications')
+            .then(m => m.AdminNotifications)
       }
+
     ]
   },
 
-  // =========================
-  // UNKNOWN URL → LOGIN
-  // =========================
+
+  // =====================================================
+  // FALLBACK
+  // =====================================================
+
   {
     path: '**',
     redirectTo: 'login'

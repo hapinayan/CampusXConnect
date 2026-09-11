@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  computed
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 
 import {
@@ -9,48 +15,52 @@ import {
 @Component({
   selector: 'app-admin-students',
   standalone: true,
+
   imports: [
     CommonModule
   ],
+
   templateUrl: './admin-students.html',
   styleUrl: './admin-students.css'
 })
 export class AdminStudents implements OnInit {
 
   // =========================
-  // STUDENT DATA
+  // DATA
   // =========================
 
-  students: Student[] = [];
+  students = signal<Student[]>([]);
 
-  isLoading = false;
+  isLoading = signal(false);
 
-  errorMessage = '';
+  errorMessage = signal('');
 
 
   // =========================
   // COUNTS
   // =========================
 
-  totalStudents = 0;
+  totalStudents = computed(() =>
+    this.students().length
+  );
 
-  activeStudents = 0;
+  activeStudents = computed(() =>
+    this.students().filter(
+      student => student.isActive === true
+    ).length
+  );
 
-  inactiveStudents = 0;
+  inactiveStudents = computed(() =>
+    this.students().filter(
+      student => student.isActive === false
+    ).length
+  );
 
-
-  // =========================
-  // CONSTRUCTOR
-  // =========================
 
   constructor(
     private studentService: StudentService
   ) {}
 
-
-  // =========================
-  // PAGE LOAD
-  // =========================
 
   ngOnInit(): void {
     this.loadStudents();
@@ -58,53 +68,48 @@ export class AdminStudents implements OnInit {
 
 
   // =========================
-  // LOAD ALL STUDENTS
+  // LOAD STUDENTS
   // =========================
 
   loadStudents(): void {
 
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
 
-    this.studentService.getStudents().subscribe({
+    this.errorMessage.set('');
 
-      next: (students) => {
+    this.studentService
+      .getStudents()
+      .subscribe({
 
-        this.students = students;
+        next: (students) => {
 
-        this.totalStudents =
-          students.length;
+          this.students.set(students);
 
-        this.activeStudents =
-          students.filter(student =>
-            student.isActive === true
-          ).length;
+          this.isLoading.set(false);
 
-        this.inactiveStudents =
-          students.filter(student =>
-            student.isActive === false
-          ).length;
+          console.log(
+            'Students loaded:',
+            students
+          );
+        },
 
-        this.isLoading = false;
 
-        console.log(
-          'Students loaded:',
-          students
-        );
-      },
+        error: (error) => {
 
-      error: (error) => {
+          console.error(
+            'Error loading students:',
+            error
+          );
 
-        console.error(
-          'Error loading students:',
-          error
-        );
+          this.errorMessage.set(
+            'Unable to load students.'
+          );
 
-        this.errorMessage =
-          'Unable to load students.';
+          this.isLoading.set(false);
+        }
 
-        this.isLoading = false;
-      }
-    });
+      });
+
   }
+
 }

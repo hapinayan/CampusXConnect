@@ -46,7 +46,6 @@ export class NotificationService {
 
         tap((notifications) => {
 
-          // Calculate unread notifications
           this.unreadCount =
             Array.isArray(notifications)
               ? notifications.filter(
@@ -63,6 +62,21 @@ export class NotificationService {
         })
 
       );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - GET ALL NOTIFICATIONS
+  // GET: api/notifications/admin/all
+  // =====================================================
+
+  getAllNotifications():
+    Observable<any[]> {
+
+    return this.http.get<any[]>(
+      `${this.notificationUrl}/admin/all`
+    );
 
   }
 
@@ -85,7 +99,6 @@ export class NotificationService {
 
         tap(() => {
 
-          // Decrease unread count
           if (this.unreadCount > 0) {
 
             this.unreadCount--;

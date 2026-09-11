@@ -2,9 +2,16 @@
 
   <!-- PAGE HEADER -->
   <div class="page-header">
+
     <div>
-      <p class="page-label">CAMPUSX ADMINISTRATION</p>
-      <h1>Student Management</h1>
+      <p class="page-label">
+        CAMPUSX ADMINISTRATION
+      </p>
+
+      <h1>
+        Student Management
+      </h1>
+
       <p class="page-description">
         View and manage registered student accounts.
       </p>
@@ -14,6 +21,7 @@
       <span>+</span>
       Add Student
     </button>
+
   </div>
 
 
@@ -21,61 +29,122 @@
   <div class="student-stats">
 
     <div class="stat-card">
-      <div class="stat-icon">ST</div>
+
+      <div class="stat-icon">
+        ST
+      </div>
+
       <div>
         <p>Total Students</p>
-        <h2>{{ totalStudents }}</h2>
-        <span>Registered students</span>
+
+        <h2>
+          {{ totalStudents() }}
+        </h2>
+
+        <span>
+          Registered students
+        </span>
       </div>
+
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon">AC</div>
+
+      <div class="stat-icon">
+        AC
+      </div>
+
       <div>
         <p>Active Students</p>
-        <h2>{{ activeStudents }}</h2>
-        <span>Currently active</span>
+
+        <h2>
+          {{ activeStudents() }}
+        </h2>
+
+        <span>
+          Currently active
+        </span>
       </div>
+
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon">IN</div>
+
+      <div class="stat-icon">
+        IN
+      </div>
+
       <div>
         <p>Inactive Students</p>
-        <h2>{{ inactiveStudents }}</h2>
-        <span>Inactive accounts</span>
+
+        <h2>
+          {{ inactiveStudents() }}
+        </h2>
+
+        <span>
+          Inactive accounts
+        </span>
       </div>
+
     </div>
 
   </div>
 
 
-  <!-- STUDENT TABLE SECTION -->
+  <!-- STUDENTS CARD -->
   <div class="students-card">
 
     <div class="table-header">
 
       <div>
-        <h2>Students</h2>
-        <p>All registered CampusX students</p>
+        <h2>
+          Students
+        </h2>
+
+        <p>
+          All registered CampusX students
+        </p>
       </div>
+
 
       <div class="table-actions">
 
         <div class="search-box">
-          <span>⌕</span>
+
+          <span>
+            ⌕
+          </span>
+
           <input
             type="text"
             placeholder="Search students..."
           />
+
         </div>
 
+
         <select>
-          <option>All Faculties</option>
-          <option>Computing</option>
-          <option>Business</option>
-          <option>Engineering</option>
-          <option>Science</option>
+          <option>
+            All Faculties
+          </option>
+
+          <option>
+            Computing
+          </option>
+
+          <option>
+            Business
+          </option>
+
+          <option>
+            Engineering
+          </option>
+
+          <option>
+            Science
+          </option>
         </select>
 
       </div>
@@ -84,41 +153,76 @@
 
 
     <!-- LOADING -->
-    <div *ngIf="isLoading" style="padding: 20px;">
+    <div
+      *ngIf="isLoading()"
+      style="padding: 20px;"
+    >
       Loading students...
     </div>
 
 
     <!-- ERROR -->
-    <div *ngIf="errorMessage && !isLoading" style="padding: 20px;">
-      {{ errorMessage }}
+    <div
+      *ngIf="errorMessage() && !isLoading()"
+      style="padding: 20px;"
+    >
+      {{ errorMessage() }}
     </div>
 
 
     <!-- TABLE -->
     <div
       class="table-wrapper"
-      *ngIf="!isLoading && !errorMessage"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        students().length > 0
+      "
     >
 
       <table>
 
         <thead>
+
           <tr>
-            <th>STUDENT</th>
-            <th>INDEX NUMBER</th>
-            <th>FACULTY</th>
-            <th>CONTACT</th>
-            <th>STATUS</th>
-            <th>ACTION</th>
+
+            <th>
+              STUDENT
+            </th>
+
+            <th>
+              INDEX NUMBER
+            </th>
+
+            <th>
+              FACULTY
+            </th>
+
+            <th>
+              CONTACT
+            </th>
+
+            <th>
+              STATUS
+            </th>
+
+            <th>
+              ACTION
+            </th>
+
           </tr>
+
         </thead>
+
 
         <tbody>
 
-          <tr *ngFor="let student of students">
+          <tr
+            *ngFor="let student of students()"
+          >
 
             <td>
+
               <div class="student-info">
 
                 <div class="student-avatar">
@@ -126,6 +230,7 @@
                 </div>
 
                 <div>
+
                   <strong>
                     {{ student.fullName }}
                   </strong>
@@ -133,37 +238,54 @@
                   <span>
                     {{ student.email }}
                   </span>
+
                 </div>
 
               </div>
+
             </td>
+
 
             <td>
               {{ student.indexNumber }}
             </td>
 
+
             <td>
               {{ student.faculty }}
             </td>
+
 
             <td>
               {{ student.contactNumber }}
             </td>
 
+
             <td>
+
               <span
                 class="status"
                 [class.active]="student.isActive"
                 [class.inactive]="!student.isActive"
               >
-                {{ student.isActive ? 'Active' : 'Inactive' }}
+
+                {{
+                  student.isActive
+                    ? 'Active'
+                    : 'Inactive'
+                }}
+
               </span>
+
             </td>
 
+
             <td>
+
               <button class="action-btn">
                 •••
               </button>
+
             </td>
 
           </tr>
@@ -178,9 +300,9 @@
     <!-- NO STUDENTS -->
     <div
       *ngIf="
-        !isLoading &&
-        !errorMessage &&
-        students.length === 0
+        !isLoading() &&
+        !errorMessage() &&
+        students().length === 0
       "
       style="padding: 20px;"
     >
@@ -188,25 +310,39 @@
     </div>
 
 
-    <!-- TABLE FOOTER -->
+    <!-- FOOTER -->
     <div
       class="table-footer"
       *ngIf="
-        !isLoading &&
-        !errorMessage &&
-        students.length > 0
+        !isLoading() &&
+        !errorMessage() &&
+        students().length > 0
       "
     >
 
       <p>
-        Showing {{ students.length }}
-        of {{ totalStudents }} students
+        Showing
+        {{ students().length }}
+        of
+        {{ totalStudents() }}
+        students
       </p>
 
+
       <div class="pagination">
-        <button>‹</button>
-        <button class="current-page">1</button>
-        <button>›</button>
+
+        <button>
+          ‹
+        </button>
+
+        <button class="current-page">
+          1
+        </button>
+
+        <button>
+          ›
+        </button>
+
       </div>
 
     </div>

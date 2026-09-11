@@ -1,0 +1,162 @@
+<div class="labs-page">
+
+  <div class="page-header">
+    <div>
+      <p class="page-label">CAMPUSX ADMINISTRATION</p>
+      <h1>Lab Management</h1>
+      <p class="page-description">
+        Manage laboratories, capacities and availability.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- SUMMARY -->
+  <div class="lab-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon">LB</div>
+      <div>
+        <p>Total Laboratories</p>
+        <h2>{{ totalLabs() }}</h2>
+        <span>Campus laboratories</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">AC</div>
+      <div>
+        <p>Active Labs</p>
+        <h2>{{ activeLabs() }}</h2>
+        <span>Available laboratories</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">IN</div>
+      <div>
+        <p>Inactive Labs</p>
+        <h2>{{ inactiveLabs() }}</h2>
+        <span>Unavailable laboratories</span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- LAB TABLE -->
+  <div class="labs-card">
+
+    <div class="table-header">
+      <div>
+        <h2>Laboratories</h2>
+        <p>All CampusX laboratories</p>
+      </div>
+    </div>
+
+
+    <div
+      *ngIf="isLoading()"
+      class="message"
+    >
+      Loading laboratories...
+    </div>
+
+
+    <div
+      *ngIf="errorMessage() && !isLoading()"
+      class="message error"
+    >
+      {{ errorMessage() }}
+    </div>
+
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        labs().length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>LABORATORY</th>
+            <th>LOCATION</th>
+            <th>CAPACITY</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let lab of labs()">
+
+            <td>
+              #{{ lab.id }}
+            </td>
+
+            <td>
+              <div class="lab-info">
+
+                <div class="lab-avatar">
+                  {{ lab.name?.charAt(0) || 'L' }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{ lab.name }}
+                  </strong>
+                  <span>
+                    Campus Laboratory
+                  </span>
+                </div>
+
+              </div>
+            </td>
+
+            <td>
+              {{ lab.location }}
+            </td>
+
+            <td>
+              {{ lab.capacity }}
+            </td>
+
+            <td>
+              <span
+                class="status"
+                [class.active]="lab.isActive"
+                [class.inactive]="!lab.isActive"
+              >
+                {{ lab.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <div
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        labs().length === 0
+      "
+      class="message"
+    >
+      No laboratories found.
+    </div>
+
+  </div>
+
+</div>

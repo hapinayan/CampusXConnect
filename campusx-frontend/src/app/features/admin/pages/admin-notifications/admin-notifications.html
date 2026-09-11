@@ -1,0 +1,289 @@
+<div class="notifications-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <p class="page-label">
+        CAMPUSX ADMINISTRATION
+      </p>
+
+      <h1>
+        Notification Management
+      </h1>
+
+      <p class="page-description">
+        View notifications sent to students.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- SUMMARY CARDS -->
+  <div class="notification-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        NT
+      </div>
+
+      <div>
+        <p>
+          Total Notifications
+        </p>
+
+        <h2>
+          {{ totalNotifications() }}
+        </h2>
+
+        <span>
+          All notifications
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        UN
+      </div>
+
+      <div>
+        <p>
+          Unread Notifications
+        </p>
+
+        <h2>
+          {{ unreadNotifications() }}
+        </h2>
+
+        <span>
+          Not read yet
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        RD
+      </div>
+
+      <div>
+        <p>
+          Read Notifications
+        </p>
+
+        <h2>
+          {{ readNotifications() }}
+        </h2>
+
+        <span>
+          Already read
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- NOTIFICATION TABLE CARD -->
+  <div class="notifications-card">
+
+    <div class="table-header">
+      <div>
+        <h2>
+          Notifications
+        </h2>
+
+        <p>
+          All CampusX student notifications
+        </p>
+      </div>
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="isLoading()"
+      class="message"
+    >
+      Loading notifications...
+    </div>
+
+
+    <!-- ERROR -->
+    <div
+      *ngIf="
+        errorMessage() &&
+        !isLoading()
+      "
+      class="message error"
+    >
+      {{ errorMessage() }}
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        notifications().length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>
+              ID
+            </th>
+
+            <th>
+              STUDENT
+            </th>
+
+            <th>
+              NOTIFICATION
+            </th>
+
+            <th>
+              TYPE
+            </th>
+
+            <th>
+              DATE
+            </th>
+
+            <th>
+              STATUS
+            </th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let notification
+              of notifications()
+            "
+          >
+
+            <td>
+              #{{ notification.id }}
+            </td>
+
+
+            <td>
+
+              <div class="student-info">
+
+                <div class="student-avatar">
+                  {{
+                    notification.studentName
+                      ?.charAt(0) || 'S'
+                  }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{
+                      notification.studentName
+                    }}
+                  </strong>
+
+                  <span>
+                    Student ID:
+                    {{
+                      notification.studentId
+                    }}
+                  </span>
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="notification-info">
+
+                <strong>
+                  {{ notification.title }}
+                </strong>
+
+                <span>
+                  {{ notification.message }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              <span class="type-badge">
+                {{ notification.type }}
+              </span>
+            </td>
+
+
+            <td>
+              {{
+                notification.createdAt
+                  | date:'medium'
+              }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="status"
+                [class.read]="
+                  notification.isRead
+                "
+                [class.unread]="
+                  !notification.isRead
+                "
+              >
+
+                {{
+                  notification.isRead
+                    ? 'Read'
+                    : 'Unread'
+                }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        notifications().length === 0
+      "
+      class="message"
+    >
+      No notifications found.
+    </div>
+
+  </div>
+
+</div>

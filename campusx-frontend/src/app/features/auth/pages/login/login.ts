@@ -6,7 +6,6 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoginRequest } from '../../../../core/models/auth';
 
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,20 +22,13 @@ import { LoginRequest } from '../../../../core/models/auth';
 export class Login {
 
   loginData: LoginRequest = {
-
     email: '',
-
     password: ''
-
   };
 
-
   loading = false;
-
   errorMessage = '';
-
   successMessage = '';
-
 
   constructor(
     private authService: AuthService,
@@ -51,9 +43,7 @@ export class Login {
   login(): void {
 
     this.errorMessage = '';
-
     this.successMessage = '';
-
 
     // ===================================================
     // VALIDATION
@@ -68,9 +58,7 @@ export class Login {
         'Please enter email and password.';
 
       return;
-
     }
-
 
     this.loading = true;
 
@@ -84,7 +72,7 @@ export class Login {
       .subscribe({
 
         // ===============================================
-        // SUCCESS
+        // LOGIN SUCCESS
         // ===============================================
 
         next: (response) => {
@@ -109,7 +97,26 @@ export class Login {
 
 
           // =============================================
-          // GET CURRENT STUDENT
+          // ADMIN LOGIN
+          // =============================================
+
+          if (response.role === 'Admin') {
+
+            this.loading = false;
+
+            this.successMessage =
+              'Admin login successful!';
+
+            this.router.navigate([
+              '/admin/dashboard'
+            ]);
+
+            return;
+          }
+
+
+          // =============================================
+          // STUDENT LOGIN
           // =============================================
 
           this.authService
@@ -125,13 +132,12 @@ export class Login {
 
 
                 // =======================================
-                // SAVE STUDENT ID
+                // SAVE STUDENT
                 // =======================================
 
                 this.authService.saveStudent(
                   student
                 );
-
 
                 console.log(
                   'Student ID saved:',
@@ -145,17 +151,13 @@ export class Login {
                   'Login successful!';
 
 
-                // =====================================
-                // GO DASHBOARD
-                // =====================================
+                // =======================================
+                // STUDENT DASHBOARD
+                // =======================================
 
-                setTimeout(() => {
-
-                  this.router.navigate([
-                    '/dashboard'
-                  ]);
-
-                }, 500);
+                this.router.navigate([
+                  '/dashboard'
+                ]);
 
               },
 
@@ -167,9 +169,7 @@ export class Login {
                   error
                 );
 
-
                 this.loading = false;
-
 
                 this.errorMessage =
                   'Login successful, but student profile could not be loaded.';
@@ -192,9 +192,7 @@ export class Login {
             error
           );
 
-
           this.loading = false;
-
 
           this.errorMessage =
             error?.error?.message ||
