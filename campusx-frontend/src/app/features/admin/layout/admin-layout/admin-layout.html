@@ -1,0 +1,141 @@
+<div class="admin-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+
+    <div class="brand">
+      <div class="brand-logo">CX</div>
+
+      <div class="brand-text">
+        <h2>CampusX</h2>
+        <span>Admin Portal</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        routerLink="/admin/students"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">♙</span>
+        <span>Students</span>
+      </a>
+
+      <a
+        routerLink="/admin/hostels"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">⌂</span>
+        <span>Hostels</span>
+      </a>
+
+      <a
+        routerLink="/admin/fees"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">$</span>
+        <span>Fee Management</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <!-- Member 2 modules -->
+      <a
+        routerLink="/admin/labs"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">▣</span>
+        <span>Labs</span>
+      </a>
+
+      <a
+        routerLink="/admin/events"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">□</span>
+        <span>Events</span>
+      </a>
+
+      <a
+        routerLink="/admin/complaints"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">!</span>
+        <span>Complaints</span>
+      </a>
+
+      <a
+        routerLink="/admin/certificates"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">▤</span>
+        <span>Certificates</span>
+      </a>
+
+      <a
+        routerLink="/admin/notifications"
+        routerLinkActive="active"
+        class="nav-item">
+        <span class="nav-icon">●</span>
+        <span>Notifications</span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+      <span>CampusX</span>
+      <small>Campus Services Portal</small>
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN AREA -->
+  <div class="admin-main">
+
+    <!-- TOPBAR -->
+    <header class="admin-topbar">
+
+      <div class="topbar-title">
+        <h1>Administration</h1>
+        <span>Campus Services Portal</span>
+      </div>
+
+      <a
+        routerLink="/admin/profile"
+        class="admin-profile">
+
+        <div class="profile-avatar">
+          M
+        </div>
+
+        <div class="profile-info">
+          <strong>Admin</strong>
+          <span>Administrator</span>
+        </div>
+
+        <span class="profile-arrow">⌄</span>
+
+      </a>
+
+    </header>
+
+
+    <!-- ADMIN PAGE CONTENT -->
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>

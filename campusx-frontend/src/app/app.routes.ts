@@ -7,18 +7,15 @@ export const routes: Routes = [
   // =========================
   // DEFAULT → LOGIN
   // =========================
-
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
 
-
   // =========================
   // LOGIN
   // =========================
-
   {
     path: 'login',
     loadComponent: () =>
@@ -26,11 +23,9 @@ export const routes: Routes = [
         .then(m => m.Login)
   },
 
-
   // =========================
   // REGISTER
   // =========================
-
   {
     path: 'register',
     loadComponent: () =>
@@ -38,11 +33,9 @@ export const routes: Routes = [
         .then(m => m.Register)
   },
 
-
   // =========================
   // DASHBOARD - PROTECTED
   // =========================
-
   {
     path: 'dashboard',
     canActivate: [authGuard],
@@ -51,11 +44,9 @@ export const routes: Routes = [
         .then(m => m.Dashboard)
   },
 
-
   // =========================
   // PROFILE - PROTECTED
   // =========================
-
   {
     path: 'profile',
     canActivate: [authGuard],
@@ -64,11 +55,9 @@ export const routes: Routes = [
         .then(m => m.Profile)
   },
 
-
   // =========================
   // HOSTEL - PROTECTED
   // =========================
-
   {
     path: 'hostel',
     canActivate: [authGuard],
@@ -77,11 +66,9 @@ export const routes: Routes = [
         .then(m => m.HostelPage)
   },
 
-
   // =========================
   // LAB BOOKING - PROTECTED
   // =========================
-
   {
     path: 'lab-booking',
     canActivate: [authGuard],
@@ -90,11 +77,9 @@ export const routes: Routes = [
         .then(m => m.LabBookingPage)
   },
 
-
   // =========================
   // EVENTS - PROTECTED
   // =========================
-
   {
     path: 'events',
     canActivate: [authGuard],
@@ -103,11 +88,9 @@ export const routes: Routes = [
         .then(m => m.Events)
   },
 
-
   // =========================
   // NOTIFICATIONS - PROTECTED
   // =========================
-
   {
     path: 'notifications',
     canActivate: [authGuard],
@@ -116,11 +99,9 @@ export const routes: Routes = [
         .then(m => m.Notifications)
   },
 
-
   // =========================
   // COMPLAINTS - PROTECTED
   // =========================
-
   {
     path: 'complaints',
     canActivate: [authGuard],
@@ -129,11 +110,9 @@ export const routes: Routes = [
         .then(m => m.Complaints)
   },
 
-
   // =========================
   // CERTIFICATES - PROTECTED
   // =========================
-
   {
     path: 'certificates',
     canActivate: [authGuard],
@@ -142,11 +121,9 @@ export const routes: Routes = [
         .then(m => m.Certificates)
   },
 
-
   // =========================
   // PAYMENTS - PROTECTED
   // =========================
-
   {
     path: 'payments',
     canActivate: [authGuard],
@@ -155,11 +132,41 @@ export const routes: Routes = [
         .then(m => m.Payments)
   },
 
+  // =========================
+  // ADMIN AREA
+  // =========================
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./features/admin/layout/admin-layout/admin-layout')
+        .then(m => m.AdminLayout),
+
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-dashboard/admin-dashboard')
+            .then(m => m.AdminDashboard)
+      },
+
+      {
+        path: 'students',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-students/admin-students')
+            .then(m => m.AdminStudents)
+      }
+    ]
+  },
 
   // =========================
   // UNKNOWN URL → LOGIN
   // =========================
-
   {
     path: '**',
     redirectTo: 'login'

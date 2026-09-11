@@ -1,0 +1,82 @@
+<div class="labs-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Lab Booking</h1>
+      <p>Select a lab and book your preferred time slot.</p>
+    </div>
+
+    <div class="date-box">
+      <label for="bookingDate">Booking Date</label>
+      <input
+        id="bookingDate"
+        type="date"
+        [(ngModel)]="selectedDate"
+      />
+    </div>
+  </div>
+
+
+  <div class="labs-grid">
+
+    <div
+      class="lab-card"
+      *ngFor="let lab of labs"
+    >
+
+      <div class="lab-card-top">
+
+        <div class="lab-icon">
+          💻
+        </div>
+
+        <span
+          class="status-badge"
+          [class.inactive]="!lab.isActive"
+        >
+          {{ lab.isActive ? 'Available' : 'Unavailable' }}
+        </span>
+
+      </div>
+
+
+      <div class="lab-content">
+
+        <h2>{{ lab.name }}</h2>
+
+        <p class="location">
+          📍 {{ lab.location }}
+        </p>
+
+        <div class="lab-details">
+
+          <div>
+            <span>Capacity</span>
+            <strong>{{ lab.capacity }} Students</strong>
+          </div>
+
+          <div>
+            <span>Status</span>
+            <strong>
+              {{ lab.isActive ? 'Active' : 'Inactive' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="book-btn"
+        [disabled]="!lab.isActive"
+        (click)="selectLab(lab.id)"
+      >
+        View Available Slots
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
