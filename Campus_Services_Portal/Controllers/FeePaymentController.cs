@@ -10,20 +10,31 @@ namespace Campus_Services_Portal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Student")]
+    [Authorize]
     public class FeePaymentController : ControllerBase
     {
         private readonly CampusXDbContext _context;
 
-        public FeePaymentController(CampusXDbContext context)
+        public FeePaymentController(
+            CampusXDbContext context)
         {
             _context = context;
         }
 
+
+        // =====================================================
+        // STUDENT - GET MY PAYMENTS
+        // GET: api/FeePayment/my-payments
+        // =====================================================
+
         [HttpGet("my-payments")]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> GetMyPayments()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim =
+                User.FindFirst(
+                    ClaimTypes.NameIdentifier
+                );
 
             if (userIdClaim == null)
             {
@@ -33,42 +44,82 @@ namespace Campus_Services_Portal.Controllers
                 });
             }
 
-            var userId = int.Parse(userIdClaim.Value);
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(s => s.UserId == userId);
+            var userId =
+                int.Parse(
+                    userIdClaim.Value
+                );
+
+
+            var student =
+                await _context.Students
+                    .FirstOrDefaultAsync(
+                        s => s.UserId == userId
+                    );
+
 
             if (student == null)
             {
                 return NotFound(new
                 {
-                    message = "Student not found."
+                    message =
+                        "Student not found."
                 });
             }
 
-            var payments = await _context.FeePayments
-                .Where(fp => fp.StudentId == student.Id)
-                .OrderByDescending(fp => fp.Id)
-                .Select(fp => new
-                {
-                    fp.Id,
-                    fp.FeeType,
-                    fp.Amount,
-                    Status = fp.Status.ToString(),
-                    fp.PaidAt,
-                    fp.ReceiptNumber
-                })
-                .ToListAsync();
+
+            var payments =
+                await _context.FeePayments
+
+                    .Where(
+                        fp =>
+                            fp.StudentId ==
+                            student.Id
+                    )
+
+                    .OrderByDescending(
+                        fp => fp.Id
+                    )
+
+                    .Select(fp => new
+                    {
+                        fp.Id,
+
+                        fp.FeeType,
+
+                        fp.Amount,
+
+                        Status =
+                            fp.Status.ToString(),
+
+                        fp.PaidAt,
+
+                        fp.ReceiptNumber
+                    })
+
+                    .ToListAsync();
+
 
             return Ok(payments);
         }
 
+
+        // =====================================================
+        // STUDENT - MAKE PAYMENT
+        // POST: api/FeePayment/pay
+        // =====================================================
+
         [HttpPost("pay")]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> PayFee(
             string feeType,
             decimal amount)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim =
+                User.FindFirst(
+                    ClaimTypes.NameIdentifier
+                );
+
 
             if (userIdClaim == null)
             {
@@ -78,64 +129,189 @@ namespace Campus_Services_Portal.Controllers
                 });
             }
 
-            var userId = int.Parse(userIdClaim.Value);
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(s => s.UserId == userId);
+            var userId =
+                int.Parse(
+                    userIdClaim.Value
+                );
+
+
+            var student =
+                await _context.Students
+                    .FirstOrDefaultAsync(
+                        s => s.UserId == userId
+                    );
+
 
             if (student == null)
             {
                 return NotFound(new
                 {
-                    message = "Student not found."
+                    message =
+                        "Student not found."
                 });
             }
 
-            var alreadyPaid = await _context.FeePayments
-                .AnyAsync(fp =>
-                    fp.StudentId == student.Id &&
-                    fp.FeeType == feeType &&
-                    fp.Status == PaymentStatus.Paid);
 
-            if (alreadyPaid)
+            if (
+                string.IsNullOrWhiteSpace(
+                    feeType
+                )
+            )
             {
                 return BadRequest(new
                 {
-                    message = "This fee has already been paid."
+                    message =
+                        "Fee type is required."
                 });
             }
+
 
             if (amount <= 0)
             {
                 return BadRequest(new
                 {
-                    message = "Amount must be greater than zero."
+                    message =
+                        "Amount must be greater than zero."
                 });
             }
 
-            var payment = new FeePayment
-            {
-                StudentId = student.Id,
-                FeeType = feeType,
-                Amount = amount,
-                Status = PaymentStatus.Paid,
-                PaidAt = DateTime.UtcNow,
-                ReceiptNumber = $"RCPT-{DateTime.UtcNow:yyyyMMddHHmmss}-{student.Id}"
-            };
 
-            _context.FeePayments.Add(payment);
-            await _context.SaveChangesAsync();
+            var alreadyPaid =
+                await _context.FeePayments
+                    .AnyAsync(
+                        fp =>
+                            fp.StudentId ==
+                                student.Id &&
+
+                            fp.FeeType ==
+                                feeType &&
+
+                            fp.Status ==
+                                PaymentStatus.Paid
+                    );
+
+
+            if (alreadyPaid)
+            {
+                return BadRequest(new
+                {
+                    message =
+                        "This fee has already been paid."
+                });
+            }
+
+
+            var payment =
+                new FeePayment
+                {
+                    StudentId =
+                        student.Id,
+
+                    FeeType =
+                        feeType,
+
+                    Amount =
+                        amount,
+
+                    Status =
+                        PaymentStatus.Paid,
+
+                    PaidAt =
+                        DateTime.UtcNow,
+
+                    ReceiptNumber =
+                        $"RCPT-{DateTime.UtcNow:yyyyMMddHHmmss}-{student.Id}"
+                };
+
+
+            _context.FeePayments.Add(
+                payment
+            );
+
+
+            await _context
+                .SaveChangesAsync();
+
 
             return Ok(new
             {
-                message = "Payment completed successfully.",
+                message =
+                    "Payment completed successfully.",
+
                 payment.Id,
+
                 payment.FeeType,
+
                 payment.Amount,
-                Status = payment.Status.ToString(),
+
+                Status =
+                    payment.Status.ToString(),
+
                 payment.PaidAt,
+
                 payment.ReceiptNumber
             });
+        }
+
+
+        // =====================================================
+        // ADMIN - GET ALL PAYMENT RECORDS
+        // GET: api/FeePayment/admin/all
+        // =====================================================
+
+        [HttpGet("admin/all")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult>
+            GetAllPayments()
+        {
+            var payments =
+                await _context.FeePayments
+
+                    .Include(
+                        fp => fp.Student
+                    )
+
+                    .ThenInclude(
+                        student =>
+                            student.User
+                    )
+
+                    .OrderByDescending(
+                        fp => fp.Id
+                    )
+
+                    .Select(fp => new
+                    {
+                        fp.Id,
+
+                        fp.StudentId,
+
+                        StudentName =
+                            fp.Student.FullName,
+
+                        IndexNumber =
+                            fp.Student.IndexNumber,
+
+                        Email =
+                            fp.Student.User.Email,
+
+                        fp.FeeType,
+
+                        fp.Amount,
+
+                        Status =
+                            fp.Status.ToString(),
+
+                        fp.PaidAt,
+
+                        fp.ReceiptNumber
+                    })
+
+                    .ToListAsync();
+
+
+            return Ok(payments);
         }
     }
 }

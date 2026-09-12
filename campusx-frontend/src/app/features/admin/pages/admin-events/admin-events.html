@@ -1,80 +1,215 @@
-<div class="events-page">
+<div class="admin-events-page">
 
-  <!-- PAGE HEADER -->
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
   <div class="page-header">
     <div>
-      <p class="page-label">CAMPUSX ADMINISTRATION</p>
+      <p class="eyebrow">CampusX Admin</p>
       <h1>Event Management</h1>
-      <p class="page-description">
-        View and manage university events.
+      <p class="subtitle">
+        Create, update and manage campus events.
       </p>
     </div>
   </div>
 
-  <!-- SUMMARY CARDS -->
-  <div class="event-stats">
+
+  <!-- =====================================================
+       STATS
+  ====================================================== -->
+
+  <div class="stats-grid">
 
     <div class="stat-card">
-      <div class="stat-icon">EV</div>
+      <div class="stat-icon">
+        📅
+      </div>
+
       <div>
         <p>Total Events</p>
         <h2>{{ totalEvents() }}</h2>
-        <span>Registered events</span>
       </div>
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon">AC</div>
+      <div class="stat-icon">
+        ✓
+      </div>
+
       <div>
         <p>Active Events</p>
         <h2>{{ activeEvents() }}</h2>
-        <span>Currently active</span>
       </div>
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon">IN</div>
+      <div class="stat-icon">
+        !
+      </div>
+
       <div>
         <p>Inactive Events</p>
         <h2>{{ inactiveEvents() }}</h2>
-        <span>Inactive events</span>
       </div>
     </div>
 
   </div>
 
-  <!-- EVENTS TABLE -->
-  <div class="events-card">
 
-    <div class="table-header">
+  <!-- =====================================================
+       MESSAGES
+  ====================================================== -->
+
+  <div
+    class="message success-message"
+    *ngIf="successMessage()"
+  >
+    {{ successMessage() }}
+  </div>
+
+
+  <div
+    class="message error-message"
+    *ngIf="errorMessage()"
+  >
+    {{ errorMessage() }}
+  </div>
+
+
+  <!-- =====================================================
+       ADD EVENT
+  ====================================================== -->
+
+  <section class="form-section">
+
+    <div class="section-header">
       <div>
-        <h2>Events</h2>
-        <p>All CampusX events</p>
+        <h2>Add Event</h2>
+        <p>
+          Create a new event for students.
+        </p>
       </div>
     </div>
 
-    <!-- LOADING -->
+
+    <div class="event-form">
+
+      <div class="form-group">
+        <label>Event Title</label>
+
+        <input
+          type="text"
+          [(ngModel)]="eventTitle"
+          placeholder="Enter event title"
+        />
+      </div>
+
+
+      <div class="form-group">
+        <label>Venue</label>
+
+        <input
+          type="text"
+          [(ngModel)]="eventVenue"
+          placeholder="Enter venue"
+        />
+      </div>
+
+
+      <div class="form-group">
+        <label>Event Date & Time</label>
+
+        <input
+          type="datetime-local"
+          [(ngModel)]="eventDate"
+        />
+      </div>
+
+
+      <div class="form-group">
+        <label>Capacity</label>
+
+        <input
+          type="number"
+          min="1"
+          [(ngModel)]="eventCapacity"
+          placeholder="Enter capacity"
+        />
+      </div>
+
+
+      <div class="form-group full-width">
+        <label>Description</label>
+
+        <textarea
+          rows="4"
+          [(ngModel)]="eventDescription"
+          placeholder="Enter event description"
+        ></textarea>
+      </div>
+
+
+      <div class="form-actions full-width">
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="addEvent()"
+          [disabled]="isSaving()"
+        >
+          {{ isSaving() ? 'Adding...' : '+ Add Event' }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       EVENTS TABLE
+  ====================================================== -->
+
+  <section class="table-section">
+
+    <div class="section-header">
+      <div>
+        <h2>Events</h2>
+
+        <p>
+          View, edit, activate or deactivate events.
+        </p>
+      </div>
+    </div>
+
+
     <div
+      class="loading-state"
       *ngIf="isLoading()"
-      class="message"
     >
       Loading events...
     </div>
 
-    <!-- ERROR -->
+
     <div
-      *ngIf="errorMessage() && !isLoading()"
-      class="message error"
+      class="empty-state"
+      *ngIf="
+        !isLoading() &&
+        events().length === 0
+      "
     >
-      {{ errorMessage() }}
+      No events available.
     </div>
 
-    <!-- TABLE -->
+
     <div
       class="table-wrapper"
       *ngIf="
         !isLoading() &&
-        !errorMessage() &&
         events().length > 0
       "
     >
@@ -84,62 +219,248 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>EVENT</th>
-            <th>DATE</th>
-            <th>VENUE</th>
-            <th>CAPACITY</th>
-            <th>STATUS</th>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
+
         <tbody>
 
-          <tr *ngFor="let event of events()">
+          <tr
+            *ngFor="let event of events()"
+          >
 
+            <!-- ID -->
             <td>
               #{{ event.id }}
             </td>
 
+
+            <!-- EVENT -->
             <td>
-              <div class="event-info">
 
-                <div class="event-avatar">
-                  {{ event.title?.charAt(0) || 'E' }}
+              <ng-container
+                *ngIf="!isEditing(event.id)"
+              >
+
+                <div class="event-info">
+                  <div class="event-avatar">
+                    E
+                  </div>
+
+                  <div>
+                    <strong>
+                      {{ event.title }}
+                    </strong>
+
+                    <span>
+                      {{ event.description }}
+                    </span>
+                  </div>
                 </div>
 
-                <div>
-                  <strong>
-                    {{ event.title }}
-                  </strong>
+              </ng-container>
 
-                  <span>
-                    {{ event.description }}
-                  </span>
+
+              <ng-container
+                *ngIf="isEditing(event.id)"
+              >
+
+                <div class="edit-stack">
+
+                  <input
+                    type="text"
+                    [(ngModel)]="editTitle"
+                    placeholder="Event title"
+                  />
+
+                  <textarea
+                    rows="3"
+                    [(ngModel)]="editDescription"
+                    placeholder="Description"
+                  ></textarea>
+
                 </div>
+
+              </ng-container>
+
+            </td>
+
+
+            <!-- DATE -->
+            <td>
+
+              <ng-container
+                *ngIf="!isEditing(event.id)"
+              >
+                {{ event.eventDate | date:'medium' }}
+              </ng-container>
+
+
+              <input
+                *ngIf="isEditing(event.id)"
+                type="datetime-local"
+                [(ngModel)]="editDate"
+              />
+
+            </td>
+
+
+            <!-- VENUE -->
+            <td>
+
+              <ng-container
+                *ngIf="!isEditing(event.id)"
+              >
+                {{ event.venue }}
+              </ng-container>
+
+
+              <input
+                *ngIf="isEditing(event.id)"
+                type="text"
+                [(ngModel)]="editVenue"
+              />
+
+            </td>
+
+
+            <!-- CAPACITY -->
+            <td>
+
+              <ng-container
+                *ngIf="!isEditing(event.id)"
+              >
+                {{ event.capacity }}
+              </ng-container>
+
+
+              <input
+                *ngIf="isEditing(event.id)"
+                class="capacity-input"
+                type="number"
+                min="1"
+                [(ngModel)]="editCapacity"
+              />
+
+            </td>
+
+
+            <!-- STATUS -->
+            <td>
+
+              <span
+                class="status-badge active"
+                *ngIf="
+                  !isEditing(event.id) &&
+                  event.isActive
+                "
+              >
+                Active
+              </span>
+
+
+              <span
+                class="status-badge inactive"
+                *ngIf="
+                  !isEditing(event.id) &&
+                  !event.isActive
+                "
+              >
+                Inactive
+              </span>
+
+
+              <select
+                *ngIf="isEditing(event.id)"
+                [(ngModel)]="editIsActive"
+              >
+                <option [ngValue]="true">
+                  Active
+                </option>
+
+                <option [ngValue]="false">
+                  Inactive
+                </option>
+              </select>
+
+            </td>
+
+
+            <!-- ACTIONS -->
+            <td>
+
+              <div
+                class="action-buttons"
+                *ngIf="!isEditing(event.id)"
+              >
+
+                <button
+                  type="button"
+                  class="edit-btn"
+                  (click)="startEdit(event)"
+                  [disabled]="isUpdating(event.id)"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  type="button"
+                  [class.deactivate-btn]="event.isActive"
+                  [class.activate-btn]="!event.isActive"
+                  (click)="toggleEventStatus(event)"
+                  [disabled]="isUpdating(event.id)"
+                >
+
+                  {{
+                    isUpdating(event.id)
+                      ? 'Updating...'
+                      : event.isActive
+                        ? 'Deactivate'
+                        : 'Activate'
+                  }}
+
+                </button>
 
               </div>
-            </td>
 
-            <td>
-              {{ event.eventDate | date:'mediumDate' }}
-            </td>
 
-            <td>
-              {{ event.venue }}
-            </td>
-
-            <td>
-              {{ event.capacity }}
-            </td>
-
-            <td>
-              <span
-                class="status"
-                [class.active]="event.isActive"
-                [class.inactive]="!event.isActive"
+              <div
+                class="action-buttons"
+                *ngIf="isEditing(event.id)"
               >
-                {{ event.isActive ? 'Active' : 'Inactive' }}
-              </span>
+
+                <button
+                  type="button"
+                  class="save-btn"
+                  (click)="saveEdit(event)"
+                  [disabled]="isUpdating(event.id)"
+                >
+                  {{
+                    isUpdating(event.id)
+                      ? 'Saving...'
+                      : 'Save'
+                  }}
+                </button>
+
+
+                <button
+                  type="button"
+                  class="cancel-btn"
+                  (click)="cancelEdit()"
+                  [disabled]="isUpdating(event.id)"
+                >
+                  Cancel
+                </button>
+
+              </div>
+
             </td>
 
           </tr>
@@ -150,18 +471,6 @@
 
     </div>
 
-    <!-- NO EVENTS -->
-    <div
-      *ngIf="
-        !isLoading() &&
-        !errorMessage() &&
-        events().length === 0
-      "
-      class="message"
-    >
-      No events found.
-    </div>
-
-  </div>
+  </section>
 
 </div>

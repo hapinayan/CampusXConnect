@@ -43,7 +43,22 @@ export class AdminCertificates implements OnInit {
 
   errorMessage = signal('');
 
+  successMessage = signal('');
+
   selectedStatus: string = 'All';
+
+
+  // =====================================================
+  // ACTION STATE
+  // =====================================================
+
+  updatingRequestId =
+    signal<number | null>(null);
+
+  rejectingRequestId =
+    signal<number | null>(null);
+
+  rejectionReason = '';
 
 
   // =====================================================
@@ -82,27 +97,9 @@ export class AdminCertificates implements OnInit {
   readyRequests = computed(() =>
     this.requests().filter(
       request =>
-        request.status === 'ReadyForCollection'
+        request.status === 'Issued'
     ).length
   );
-
-
-  // =====================================================
-  // FILTERED REQUESTS
-  // =====================================================
-
-  filteredRequests = computed(() => {
-
-    if (this.selectedStatus === 'All') {
-      return this.requests();
-    }
-
-    return this.requests().filter(
-      request =>
-        request.status === this.selectedStatus
-    );
-
-  });
 
 
   // =====================================================
@@ -120,9 +117,7 @@ export class AdminCertificates implements OnInit {
   // =====================================================
 
   ngOnInit(): void {
-
     this.loadRequests();
-
   }
 
 
@@ -176,6 +171,40 @@ export class AdminCertificates implements OnInit {
 
 
   // =====================================================
+  // FILTERED REQUESTS
+  // =====================================================
+
+  filteredRequests():
+    CertificateRequest[] {
+
+    if (
+      this.selectedStatus === 'All'
+    ) {
+      return this.requests();
+    }
+
+
+    if (
+      this.selectedStatus ===
+      'ReadyForCollection'
+    ) {
+      return this.requests().filter(
+        request =>
+          request.status === 'Issued'
+      );
+    }
+
+
+    return this.requests().filter(
+      request =>
+        request.status ===
+        this.selectedStatus
+    );
+
+  }
+
+
+  // =====================================================
   // FILTER
   // =====================================================
 
@@ -189,22 +218,36 @@ export class AdminCertificates implements OnInit {
 
 
   // =====================================================
-  // UPDATE STATUS
+  // APPROVE REQUEST
   // =====================================================
 
-  updateStatus(
-    request: CertificateRequest,
-    status: CertificateStatus
+  approveRequest(
+    request: CertificateRequest
   ): void {
+
+    this.clearMessages();
+
+    this.updatingRequestId.set(
+      request.id
+    );
+
 
     this.certificateService
       .updateStatus(
         request.id,
-        status
+        'Approved'
       )
       .subscribe({
 
         next: () => {
+
+          this.successMessage.set(
+            'Certificate request approved successfully.'
+          );
+
+          this.updatingRequestId.set(
+            null
+          );
 
           this.loadRequests();
 
@@ -214,12 +257,17 @@ export class AdminCertificates implements OnInit {
         error: (error) => {
 
           console.error(
-            'Error updating certificate status:',
+            'Error approving certificate request:',
             error
           );
 
           this.errorMessage.set(
-            'Unable to update certificate status.'
+            error?.error?.message ||
+            'Unable to approve certificate request.'
+          );
+
+          this.updatingRequestId.set(
+            null
           );
 
         }
@@ -230,15 +278,242 @@ export class AdminCertificates implements OnInit {
 
 
   // =====================================================
+  // START REJECT
+  // =====================================================
+
+  startReject(
+    request: CertificateRequest
+  ): void {
+
+    this.clearMessages();
+
+    this.rejectingRequestId.set(
+      request.id
+    );
+
+    this.rejectionReason = '';
+
+  }
+
+
+  // =====================================================
+  // CANCEL REJECT
+  // =====================================================
+
+  cancelReject(): void {
+
+    this.rejectingRequestId.set(
+      null
+    );
+
+    this.rejectionReason = '';
+
+  }
+
+
+  // =====================================================
+  // CONFIRM REJECT
+  // =====================================================
+
+  confirmReject(
+    request: CertificateRequest
+  ): void {
+
+    this.clearMessages();
+
+
+    if (
+      !this.rejectionReason.trim()
+    ) {
+
+      this.errorMessage.set(
+        'Please enter a rejection reason.'
+      );
+
+      return;
+
+    }
+
+
+    this.updatingRequestId.set(
+      request.id
+    );
+
+
+    this.certificateService
+      .updateStatus(
+        request.id,
+        'Rejected',
+        this.rejectionReason.trim()
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.successMessage.set(
+            'Certificate request rejected successfully.'
+          );
+
+          this.updatingRequestId.set(
+            null
+          );
+
+          this.cancelReject();
+
+          this.loadRequests();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Error rejecting certificate request:',
+            error
+          );
+
+          this.errorMessage.set(
+            error?.error?.message ||
+            'Unable to reject certificate request.'
+          );
+
+          this.updatingRequestId.set(
+            null
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // MARK READY FOR COLLECTION
+  // Backend status = Issued
+  // =====================================================
+
+  markReadyForCollection(
+    request: CertificateRequest
+  ): void {
+
+    this.clearMessages();
+
+    this.updatingRequestId.set(
+      request.id
+    );
+
+
+    this.certificateService
+      .updateStatus(
+        request.id,
+        'Issued'
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.successMessage.set(
+            'Certificate marked ready for collection.'
+          );
+
+          this.updatingRequestId.set(
+            null
+          );
+
+          this.loadRequests();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Error marking certificate ready:',
+            error
+          );
+
+          this.errorMessage.set(
+            error?.error?.message ||
+            'Unable to mark certificate ready for collection.'
+          );
+
+          this.updatingRequestId.set(
+            null
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // HELPERS
+  // =====================================================
+
+  isUpdating(
+    requestId: number
+  ): boolean {
+
+    return (
+      this.updatingRequestId() ===
+      requestId
+    );
+
+  }
+
+
+  isRejecting(
+    requestId: number
+  ): boolean {
+
+    return (
+      this.rejectingRequestId() ===
+      requestId
+    );
+
+  }
+
+
+  clearMessages(): void {
+
+    this.errorMessage.set('');
+
+    this.successMessage.set('');
+
+  }
+
+
+  // =====================================================
+  // DISPLAY STATUS
+  // =====================================================
+
+  getStatusName(
+    status: CertificateStatus
+  ): string {
+
+    if (status === 'Issued') {
+      return 'Ready for Collection';
+    }
+
+    return status;
+
+  }
+
+
+  // =====================================================
   // CERTIFICATE TYPE NAME
-  // Backend can return string or numeric enum
   // =====================================================
 
   getTypeName(
     type: CertificateType | string | number
   ): string {
 
-    if (typeof type === 'string') {
+    if (
+      typeof type === 'string'
+    ) {
 
       switch (type) {
 
@@ -262,7 +537,9 @@ export class AdminCertificates implements OnInit {
     }
 
 
-    switch (Number(type)) {
+    switch (
+      Number(type)
+    ) {
 
       case CertificateType.Enrollment:
         return 'Enrollment';

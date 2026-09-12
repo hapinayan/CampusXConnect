@@ -378,3 +378,33 @@ tbody tr:hover {
     flex-direction: column;
   }
 }
+
+.action-btn {
+  min-width: 95px;
+  height: 40px;
+
+  padding: 0 14px;
+
+  border: 1px solid #f0d5d5;
+  border-radius: 10px;
+
+  background: #fff;
+  color: #b42318;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #fff5f5;
+  border-color: #e5484d;
+  color: #c62828;
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+}

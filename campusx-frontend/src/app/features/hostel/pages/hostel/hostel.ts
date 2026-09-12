@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ChangeDetectorRef
 } from '@angular/core';
 
@@ -30,7 +31,7 @@ import {
   templateUrl: './hostel.html',
   styleUrl: './hostel.css'
 })
-export class HostelPage implements OnInit {
+export class HostelPage implements OnInit, OnDestroy {
 
   // =========================
   // STUDENT
@@ -88,6 +89,14 @@ export class HostelPage implements OnInit {
 
 
   // =========================
+  // AUTO REFRESH
+  // =========================
+
+  private applicationRefreshInterval:
+    ReturnType<typeof setInterval> | null = null;
+
+
+  // =========================
   // CONSTRUCTOR
   // =========================
 
@@ -111,6 +120,140 @@ export class HostelPage implements OnInit {
     this.loadHostels();
 
     this.loadMyApplication();
+
+    // Check latest application status every 10 seconds
+    this.startApplicationAutoRefresh();
+
+  }
+
+
+  // =========================
+  // DESTROY
+  // =========================
+
+  ngOnDestroy(): void {
+
+    this.stopApplicationAutoRefresh();
+
+  }
+
+
+  // =========================
+  // START AUTO REFRESH
+  // =========================
+
+  startApplicationAutoRefresh(): void {
+
+    this.stopApplicationAutoRefresh();
+
+    this.applicationRefreshInterval =
+      setInterval(() => {
+
+        this.refreshApplicationStatus();
+
+      }, 10000);
+
+  }
+
+
+  // =========================
+  // STOP AUTO REFRESH
+  // =========================
+
+  stopApplicationAutoRefresh(): void {
+
+    if (
+      this.applicationRefreshInterval !== null
+    ) {
+
+      clearInterval(
+        this.applicationRefreshInterval
+      );
+
+      this.applicationRefreshInterval = null;
+
+    }
+
+  }
+
+
+  // =========================
+  // REFRESH APPLICATION STATUS
+  // =========================
+
+  refreshApplicationStatus(): void {
+
+    this.hostelService
+      .getMyApplication()
+      .subscribe({
+
+        next: (data) => {
+
+          const oldStatus =
+            this.application?.status;
+
+          const newStatus =
+            data?.status;
+
+          const oldRoom =
+            this.application?.roomNumber;
+
+          const newRoom =
+            data?.roomNumber;
+
+
+          this.application = data;
+
+
+          // Show message only when status changes
+          if (
+            oldStatus &&
+            newStatus &&
+            oldStatus !== newStatus
+          ) {
+
+            this.successMessage =
+              `Hostel application status updated to ${newStatus}.`;
+
+          }
+
+
+          // Show message when room gets assigned
+          if (
+            oldRoom !== newRoom &&
+            newRoom
+          ) {
+
+            this.successMessage =
+              `Room ${newRoom} has been assigned to you.`;
+
+          }
+
+
+          console.log(
+            'Latest hostel application:',
+            data
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          // Don't clear the existing application
+          // just because one refresh request failed.
+
+          console.error(
+            'Failed to refresh hostel application:',
+            error
+          );
+
+        }
+
+      });
 
   }
 

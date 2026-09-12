@@ -36,4 +36,17 @@ export class StudentService {
       `${this.apiUrl}/${id}`
     );
   }
+
+  // UPDATE STUDENT STATUS
+updateStudentStatus(
+  id: number,
+  isActive: boolean
+): Observable<any> {
+
+  return this.http.put<any>(
+    `${this.apiUrl}/${id}/status?isActive=${isActive}`,
+    {}
+  );
+}
+
 }

@@ -17,10 +17,14 @@
       </p>
     </div>
 
-    <button class="add-student-btn">
-      <span>+</span>
-      Add Student
-    </button>
+    <button
+  class="add-student-btn"
+  type="button"
+  (click)="addStudent()"
+>
+  <span>+</span>
+  Add Student
+</button>
 
   </div>
 
@@ -111,6 +115,7 @@
 
       <div class="table-actions">
 
+        <!-- SEARCH -->
         <div class="search-box">
 
           <span>
@@ -120,31 +125,39 @@
           <input
             type="text"
             placeholder="Search students..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
           />
 
         </div>
 
 
-        <select>
-          <option>
+        <!-- FACULTY FILTER -->
+        <select
+          [ngModel]="selectedFaculty()"
+          (ngModelChange)="selectedFaculty.set($event)"
+        >
+
+          <option value="All Faculties">
             All Faculties
           </option>
 
-          <option>
+          <option value="Computing">
             Computing
           </option>
 
-          <option>
+          <option value="Business">
             Business
           </option>
 
-          <option>
+          <option value="Engineering">
             Engineering
           </option>
 
-          <option>
+          <option value="Science">
             Science
           </option>
+
         </select>
 
       </div>
@@ -176,7 +189,7 @@
       *ngIf="
         !isLoading() &&
         !errorMessage() &&
-        students().length > 0
+        filteredStudents().length > 0
       "
     >
 
@@ -218,7 +231,7 @@
         <tbody>
 
           <tr
-            *ngFor="let student of students()"
+            *ngFor="let student of filteredStudents()"
           >
 
             <td>
@@ -281,12 +294,14 @@
 
 
             <td>
-
-              <button class="action-btn">
-                •••
-              </button>
-
-            </td>
+  <button
+    type="button"
+    class="action-btn"
+    (click)="toggleStudentStatus(student)"
+  >
+    {{ student.isActive ? 'Deactivate' : 'Activate' }}
+  </button>
+</td>
 
           </tr>
 
@@ -302,7 +317,7 @@
       *ngIf="
         !isLoading() &&
         !errorMessage() &&
-        students().length === 0
+        filteredStudents().length === 0
       "
       style="padding: 20px;"
     >
@@ -322,7 +337,7 @@
 
       <p>
         Showing
-        {{ students().length }}
+        {{ filteredStudents().length }}
         of
         {{ totalStudents() }}
         students

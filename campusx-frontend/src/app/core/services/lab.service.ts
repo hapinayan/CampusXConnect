@@ -1,8 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, shareReplay } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http';
+
+import {
+  Observable,
+  shareReplay
+} from 'rxjs';
+
+import {
+  environment
+} from '../../../environments/environment';
 
 import {
   Lab,
@@ -52,11 +62,14 @@ export class LabService {
 
     if (!this.labsCache$) {
 
-      this.labsCache$ = this.http
-        .get<Lab[]>(this.labUrl)
-        .pipe(
-          shareReplay(1)
-        );
+      this.labsCache$ =
+        this.http
+          .get<Lab[]>(
+            this.labUrl
+          )
+          .pipe(
+            shareReplay(1)
+          );
 
     }
 
@@ -100,11 +113,12 @@ export class LabService {
     date: string
   ): Observable<AvailableSlot[]> {
 
-    const params = new HttpParams()
-      .set(
-        'date',
-        date
-      );
+    const params =
+      new HttpParams()
+        .set(
+          'date',
+          date
+        );
 
 
     return this.http.get<AvailableSlot[]>(
@@ -121,18 +135,8 @@ export class LabService {
   // DEFAULT TIME SLOTS
   // =====================================================
 
-  /*
-   * These slots are displayed when:
-   *
-   * 1. Page is opened
-   * 2. No laboratory is selected
-   * 3. No booking date is selected
-   *
-   * Once a laboratory + date are selected,
-   * the backend API becomes the source of truth.
-   */
-
-  getDefaultTimeSlots(): AvailableSlot[] {
+  getDefaultTimeSlots():
+    AvailableSlot[] {
 
     return [
 
@@ -178,7 +182,7 @@ export class LabService {
 
 
   // =====================================================
-  // BOOK LABORATORY
+  // STUDENT - BOOK LABORATORY
   // =====================================================
 
   bookLab(
@@ -200,7 +204,7 @@ export class LabService {
 
 
   // =====================================================
-  // GET MY LAB BOOKINGS
+  // STUDENT - GET MY LAB BOOKINGS
   // =====================================================
 
   getMyBookings(
@@ -215,7 +219,7 @@ export class LabService {
 
 
   // =====================================================
-  // CANCEL LAB BOOKING
+  // STUDENT - CANCEL LAB BOOKING
   // =====================================================
 
   cancelBooking(
@@ -224,6 +228,86 @@ export class LabService {
 
     return this.http.delete<any>(
       `${this.bookingUrl}/${bookingId}`
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - CREATE LAB
+  // POST: api/Labs
+  // =====================================================
+
+  createLab(
+    name: string,
+    location: string,
+    capacity: number
+  ): Observable<Lab> {
+
+    const body = {
+      name,
+      location,
+      capacity
+    };
+
+
+    return this.http.post<Lab>(
+      this.labUrl,
+      body
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - UPDATE LAB
+  // PUT: api/Labs/{id}
+  // =====================================================
+
+  updateLab(
+    id: number,
+    name: string,
+    location: string,
+    capacity: number,
+    isActive: boolean
+  ): Observable<any> {
+
+    const body = {
+      name,
+      location,
+      capacity,
+      isActive
+    };
+
+
+    return this.http.put<any>(
+      `${this.labUrl}/${id}`,
+      body
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - CHANGE LAB STATUS
+  // =====================================================
+
+  updateLabStatus(
+    lab: Lab,
+    isActive: boolean
+  ): Observable<any> {
+
+    const body = {
+      name: lab.name,
+      location: lab.location,
+      capacity: lab.capacity,
+      isActive
+    };
+
+
+    return this.http.put<any>(
+      `${this.labUrl}/${lab.id}`,
+      body
     );
 
   }

@@ -7,5 +7,8 @@ namespace Campus_Services_Portal.DTOs.Certificates
     {
         [Required]
         public CertificateRequestStatus Status { get; set; }
+
+        [StringLength(1000)]
+        public string? RejectionReason { get; set; }
     }
 }

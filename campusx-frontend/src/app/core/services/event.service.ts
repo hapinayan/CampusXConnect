@@ -58,7 +58,7 @@ export class EventService {
 
 
   // =====================================================
-  // REGISTER FOR EVENT
+  // STUDENT - REGISTER FOR EVENT
   // POST: api/event-registrations
   // =====================================================
 
@@ -75,7 +75,7 @@ export class EventService {
 
 
   // =====================================================
-  // GET MY EVENT REGISTRATIONS
+  // STUDENT - GET MY EVENT REGISTRATIONS
   // GET: api/event-registrations/student/{studentId}
   // =====================================================
 
@@ -91,7 +91,7 @@ export class EventService {
 
 
   // =====================================================
-  // CANCEL EVENT REGISTRATION
+  // STUDENT - CANCEL EVENT REGISTRATION
   // DELETE: api/event-registrations/{id}
   // =====================================================
 
@@ -101,6 +101,93 @@ export class EventService {
 
     return this.http.delete<any>(
       `${this.registrationUrl}/${registrationId}`
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - CREATE EVENT
+  // POST: api/events
+  // =====================================================
+
+  createEvent(
+    title: string,
+    description: string,
+    eventDate: string,
+    venue: string,
+    capacity: number
+  ): Observable<Event> {
+
+    const body = {
+      title,
+      description,
+      eventDate,
+      venue,
+      capacity
+    };
+
+    return this.http.post<Event>(
+      this.eventUrl,
+      body
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - UPDATE EVENT
+  // PUT: api/events/{id}
+  // =====================================================
+
+  updateEvent(
+    id: number,
+    title: string,
+    description: string,
+    eventDate: string,
+    venue: string,
+    capacity: number,
+    isActive: boolean
+  ): Observable<any> {
+
+    const body = {
+      title,
+      description,
+      eventDate,
+      venue,
+      capacity,
+      isActive
+    };
+
+    return this.http.put<any>(
+      `${this.eventUrl}/${id}`,
+      body
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - ACTIVATE / DEACTIVATE EVENT
+  // =====================================================
+
+  updateEventStatus(
+    event: Event,
+    isActive: boolean
+  ): Observable<any> {
+
+    const body = {
+      title: event.title,
+      description: event.description,
+      eventDate: event.eventDate,
+      venue: event.venue,
+      capacity: event.capacity,
+      isActive
+    };
+
+    return this.http.put<any>(
+      `${this.eventUrl}/${event.id}`,
+      body
     );
 
   }

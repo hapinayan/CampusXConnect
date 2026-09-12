@@ -1,8 +1,13 @@
 <div class="hostels-page">
 
+  <!-- ===================================================== -->
   <!-- PAGE HEADER -->
+  <!-- ===================================================== -->
+
   <div class="page-header">
+
     <div>
+
       <p class="page-label">
         CAMPUSX ADMINISTRATION
       </p>
@@ -14,19 +19,28 @@
       <p class="page-description">
         Review and manage student hostel applications.
       </p>
+
     </div>
+
   </div>
 
 
+  <!-- ===================================================== -->
   <!-- SUMMARY CARDS -->
+  <!-- ===================================================== -->
+
   <div class="hostel-stats">
 
+
+    <!-- TOTAL -->
     <div class="stat-card">
+
       <div class="stat-icon">
         HA
       </div>
 
       <div>
+
         <p>
           Total Applications
         </p>
@@ -38,16 +52,21 @@
         <span>
           All hostel applications
         </span>
+
       </div>
+
     </div>
 
 
+    <!-- PENDING -->
     <div class="stat-card">
+
       <div class="stat-icon">
         PE
       </div>
 
       <div>
+
         <p>
           Pending
         </p>
@@ -59,16 +78,21 @@
         <span>
           Waiting for review
         </span>
+
       </div>
+
     </div>
 
 
+    <!-- APPROVED -->
     <div class="stat-card">
+
       <div class="stat-icon">
         AP
       </div>
 
       <div>
+
         <p>
           Approved
         </p>
@@ -80,16 +104,21 @@
         <span>
           Approved applications
         </span>
+
       </div>
+
     </div>
 
 
+    <!-- ROOM ASSIGNED -->
     <div class="stat-card">
+
       <div class="stat-icon">
         RA
       </div>
 
       <div>
+
         <p>
           Room Assigned
         </p>
@@ -101,17 +130,26 @@
         <span>
           Students with rooms
         </span>
+
       </div>
+
     </div>
 
   </div>
 
 
-  <!-- APPLICATIONS TABLE -->
+  <!-- ===================================================== -->
+  <!-- APPLICATIONS CARD -->
+  <!-- ===================================================== -->
+
   <div class="hostels-card">
 
+
+    <!-- TABLE HEADER -->
     <div class="table-header">
+
       <div>
+
         <h2>
           Hostel Applications
         </h2>
@@ -119,20 +157,30 @@
         <p>
           Student hostel application records
         </p>
+
       </div>
+
     </div>
 
 
+    <!-- ===================================================== -->
     <!-- LOADING -->
+    <!-- ===================================================== -->
+
     <div
       *ngIf="isLoading()"
       class="message"
     >
+
       Loading hostel applications...
+
     </div>
 
 
+    <!-- ===================================================== -->
     <!-- ERROR -->
+    <!-- ===================================================== -->
+
     <div
       *ngIf="
         errorMessage() &&
@@ -140,11 +188,16 @@
       "
       class="message error"
     >
+
       {{ errorMessage() }}
+
     </div>
 
 
+    <!-- ===================================================== -->
     <!-- TABLE -->
+    <!-- ===================================================== -->
+
     <div
       class="table-wrapper"
       *ngIf="
@@ -156,18 +209,55 @@
 
       <table>
 
+
+        <!-- ================================================= -->
+        <!-- TABLE HEAD -->
+        <!-- ================================================= -->
+
         <thead>
+
           <tr>
-            <th>ID</th>
-            <th>STUDENT</th>
-            <th>HOSTEL</th>
-            <th>PREFERENCES</th>
-            <th>ROOM</th>
-            <th>APPLIED DATE</th>
-            <th>STATUS</th>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              STUDENT
+            </th>
+
+            <th>
+              HOSTEL
+            </th>
+
+            <th>
+              PREFERENCES
+            </th>
+
+            <th>
+              ROOM
+            </th>
+
+            <th>
+              APPLIED DATE
+            </th>
+
+            <th>
+              STATUS
+            </th>
+
+            <th>
+              ACTION
+            </th>
+
           </tr>
+
         </thead>
 
+
+        <!-- ================================================= -->
+        <!-- TABLE BODY -->
+        <!-- ================================================= -->
 
         <tbody>
 
@@ -178,22 +268,38 @@
             "
           >
 
+
+            <!-- ============================================= -->
+            <!-- ID -->
+            <!-- ============================================= -->
+
             <td>
+
               #{{ application.id }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- STUDENT -->
+            <!-- ============================================= -->
+
             <td>
+
               <div class="student-info">
 
                 <div class="student-avatar">
+
                   {{
                     application.studentName
                       ?.charAt(0) || 'S'
                   }}
+
                 </div>
 
+
                 <div>
+
                   <strong>
                     {{ application.studentName }}
                   </strong>
@@ -205,60 +311,320 @@
                   <span>
                     {{ application.email }}
                   </span>
+
                 </div>
 
               </div>
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- HOSTEL -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ application.hostelName }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- PREFERENCES -->
+            <!-- ============================================= -->
+
             <td>
+
               {{
                 application.preferences
                   || 'No preference'
               }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- ROOM -->
+            <!-- ============================================= -->
+
             <td>
+
               {{
                 application.roomNumber
                   || 'Not assigned'
               }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- APPLIED DATE -->
+            <!-- ============================================= -->
+
             <td>
+
               {{
                 application.appliedAt
                   | date:'mediumDate'
               }}
+
             </td>
 
+
+            <!-- ============================================= -->
+            <!-- STATUS -->
+            <!-- ============================================= -->
 
             <td>
 
               <span
                 class="status"
+
                 [class.pending]="
                   application.status === 'Pending'
                 "
+
                 [class.approved]="
                   application.status === 'Approved'
                 "
+
                 [class.assigned]="
                   application.status === 'RoomAssigned'
                 "
+
                 [class.rejected]="
                   application.status === 'Rejected'
                 "
               >
+
                 {{ application.status }}
+
               </span>
+
+            </td>
+
+
+            <!-- ============================================= -->
+            <!-- ACTION -->
+            <!-- ============================================= -->
+
+            <td>
+
+
+              <!-- =========================================== -->
+              <!-- PENDING -->
+              <!-- =========================================== -->
+
+              <div
+                class="application-actions"
+
+                *ngIf="
+                  application.status === 'Pending'
+                "
+              >
+
+
+                <!-- APPROVE -->
+
+                <button
+                  type="button"
+                  class="approve-btn"
+
+                  [disabled]="
+                    isUpdating(application.id)
+                  "
+
+                  (click)="
+                    approveApplication(
+                      application.id
+                    )
+                  "
+                >
+
+                  <span
+                    *ngIf="
+                      !isUpdating(application.id)
+                    "
+                  >
+                    ✓
+                  </span>
+
+                  <span
+                    *ngIf="
+                      isUpdating(application.id)
+                    "
+                  >
+                    ...
+                  </span>
+
+                  {{
+                    isUpdating(application.id)
+                      ? 'Updating...'
+                      : 'Approve'
+                  }}
+
+                </button>
+
+
+                <!-- REJECT -->
+
+                <button
+                  type="button"
+                  class="reject-btn"
+
+                  [disabled]="
+                    isUpdating(application.id)
+                  "
+
+                  (click)="
+                    rejectApplication(
+                      application.id
+                    )
+                  "
+                >
+
+                  ✕ Reject
+
+                </button>
+
+              </div>
+
+
+              <!-- =========================================== -->
+              <!-- APPROVED - ROOM ASSIGNMENT -->
+              <!-- =========================================== -->
+
+              <div
+                class="room-assignment"
+
+                *ngIf="
+                  application.status === 'Approved'
+                "
+              >
+
+
+                <!-- ROOM DROPDOWN -->
+
+                <select
+                  class="room-select"
+
+                  [value]="
+                    getSelectedRoomId(
+                      application.id
+                    ) ?? ''
+                  "
+
+                  (change)="
+                    onRoomSelected(
+                      application.id,
+                      $any($event.target).value
+                        ? +$any($event.target).value
+                        : null
+                    )
+                  "
+                >
+
+                  <option value="">
+                    Select Room
+                  </option>
+
+
+                  <option
+                    *ngFor="
+                      let room
+                      of rooms()
+                    "
+
+                    [value]="room.id"
+                  >
+
+                    {{ room.roomNumber }}
+                    - Capacity {{ room.capacity }}
+
+                  </option>
+
+                </select>
+
+
+                <!-- ASSIGN BUTTON -->
+
+                <button
+                  type="button"
+                  class="assign-room-btn"
+
+                  [disabled]="
+                    isAssigning(application.id) ||
+                    !getSelectedRoomId(
+                      application.id
+                    )
+                  "
+
+                  (click)="
+                    assignSelectedRoom(
+                      application.id
+                    )
+                  "
+                >
+
+                  {{
+                    isAssigning(application.id)
+                      ? 'Assigning...'
+                      : 'Assign Room'
+                  }}
+
+                </button>
+
+              </div>
+
+
+              <!-- =========================================== -->
+              <!-- ROOM ASSIGNED -->
+              <!-- =========================================== -->
+
+              <div
+                class="assigned-action"
+
+                *ngIf="
+                  application.status === 'RoomAssigned'
+                "
+              >
+
+                <span>
+                  ✓ Room Assigned
+                </span>
+
+
+                <small
+                  *ngIf="
+                    application.roomNumber
+                  "
+                >
+
+                  {{ application.roomNumber }}
+
+                </small>
+
+              </div>
+
+
+              <!-- =========================================== -->
+              <!-- REJECTED -->
+              <!-- =========================================== -->
+
+              <div
+                class="rejected-action"
+
+                *ngIf="
+                  application.status === 'Rejected'
+                "
+              >
+
+                <span>
+                  ✕ Rejected
+                </span>
+
+              </div>
 
             </td>
 
@@ -271,7 +637,10 @@
     </div>
 
 
+    <!-- ===================================================== -->
     <!-- EMPTY -->
+    <!-- ===================================================== -->
+
     <div
       *ngIf="
         !isLoading() &&
@@ -280,7 +649,9 @@
       "
       class="message"
     >
+
       No hostel applications found.
+
     </div>
 
   </div>

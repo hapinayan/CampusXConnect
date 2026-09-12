@@ -1,30 +1,41 @@
-<div class="admin-page">
+<div class="admin-certificates-page">
 
   <!-- =====================================================
        PAGE HEADER
   ====================================================== -->
 
   <div class="page-header">
-
     <div>
-      <p class="eyebrow">
-        CampusX Admin
-      </p>
-
-      <h1>
-        Certificate Requests
-      </h1>
-
-      <p class="subtitle">
-        Review and manage student certificate requests.
+      <h1>Certificate Management</h1>
+      <p>
+        Manage student certificate requests,
+        approvals, rejections and collection status.
       </p>
     </div>
-
   </div>
 
 
   <!-- =====================================================
-       SUMMARY CARDS
+       MESSAGES
+  ====================================================== -->
+
+  <div
+    class="alert success-alert"
+    *ngIf="successMessage()"
+  >
+    {{ successMessage() }}
+  </div>
+
+  <div
+    class="alert error-alert"
+    *ngIf="errorMessage()"
+  >
+    {{ errorMessage() }}
+  </div>
+
+
+  <!-- =====================================================
+       STATISTICS
   ====================================================== -->
 
   <div class="stats-grid">
@@ -35,13 +46,8 @@
       </div>
 
       <div>
-        <p class="stat-label">
-          Total Requests
-        </p>
-
-        <h2>
-          {{ totalRequests() }}
-        </h2>
+        <span>Total Requests</span>
+        <h2>{{ totalRequests() }}</h2>
       </div>
     </div>
 
@@ -52,13 +58,8 @@
       </div>
 
       <div>
-        <p class="stat-label">
-          Pending
-        </p>
-
-        <h2>
-          {{ pendingRequests() }}
-        </h2>
+        <span>Pending</span>
+        <h2>{{ pendingRequests() }}</h2>
       </div>
     </div>
 
@@ -69,30 +70,8 @@
       </div>
 
       <div>
-        <p class="stat-label">
-          Approved
-        </p>
-
-        <h2>
-          {{ approvedRequests() }}
-        </h2>
-      </div>
-    </div>
-
-
-    <div class="stat-card">
-      <div class="stat-icon">
-        📦
-      </div>
-
-      <div>
-        <p class="stat-label">
-          Ready
-        </p>
-
-        <h2>
-          {{ readyRequests() }}
-        </h2>
+        <span>Approved</span>
+        <h2>{{ approvedRequests() }}</h2>
       </div>
     </div>
 
@@ -103,13 +82,20 @@
       </div>
 
       <div>
-        <p class="stat-label">
-          Rejected
-        </p>
+        <span>Rejected</span>
+        <h2>{{ rejectedRequests() }}</h2>
+      </div>
+    </div>
 
-        <h2>
-          {{ rejectedRequests() }}
-        </h2>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        📦
+      </div>
+
+      <div>
+        <span>Ready for Collection</span>
+        <h2>{{ readyRequests() }}</h2>
       </div>
     </div>
 
@@ -117,212 +103,227 @@
 
 
   <!-- =====================================================
-       REQUESTS SECTION
+       FILTERS
   ====================================================== -->
 
-  <div class="content-card">
+  <div class="filter-section">
 
-    <div class="section-header">
-
-      <div>
-        <h2>
-          Certificate Requests
-        </h2>
-
-        <p>
-          View requests and update their current status.
-        </p>
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         FILTERS
-    ====================================================== -->
-
-    <div class="filter-bar">
-
-      <button
-        type="button"
-        [class.active]="selectedStatus === 'All'"
-        (click)="changeFilter('All')"
-      >
-        All
-      </button>
-
-      <button
-        type="button"
-        [class.active]="selectedStatus === 'Pending'"
-        (click)="changeFilter('Pending')"
-      >
-        Pending
-      </button>
-
-      <button
-        type="button"
-        [class.active]="selectedStatus === 'Approved'"
-        (click)="changeFilter('Approved')"
-      >
-        Approved
-      </button>
-
-      <button
-        type="button"
-        [class.active]="selectedStatus === 'ReadyForCollection'"
-        (click)="changeFilter('ReadyForCollection')"
-      >
-        Ready
-      </button>
-
-      <button
-        type="button"
-        [class.active]="selectedStatus === 'Rejected'"
-        (click)="changeFilter('Rejected')"
-      >
-        Rejected
-      </button>
-
-    </div>
-
-
-    <!-- =====================================================
-         ERROR MESSAGE
-    ====================================================== -->
-
-    <div
-      class="error-message"
-      *ngIf="errorMessage()"
+    <button
+      type="button"
+      [class.active]="selectedStatus === 'All'"
+      (click)="changeFilter('All')"
     >
-      {{ errorMessage() }}
-    </div>
+      All
+    </button>
 
 
-    <!-- =====================================================
-         LOADING
-    ====================================================== -->
-
-    <div
-      class="loading-state"
-      *ngIf="isLoading()"
+    <button
+      type="button"
+      [class.active]="selectedStatus === 'Pending'"
+      (click)="changeFilter('Pending')"
     >
-      Loading certificate requests...
-    </div>
+      Pending
+    </button>
 
 
-    <!-- =====================================================
-         TABLE
-    ====================================================== -->
-
-    <div
-      class="table-wrapper"
-      *ngIf="!isLoading() && filteredRequests().length > 0"
+    <button
+      type="button"
+      [class.active]="selectedStatus === 'Approved'"
+      (click)="changeFilter('Approved')"
     >
+      Approved
+    </button>
 
-      <table>
 
-        <thead>
+    <button
+      type="button"
+      [class.active]="selectedStatus === 'Rejected'"
+      (click)="changeFilter('Rejected')"
+    >
+      Rejected
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="
+        selectedStatus === 'ReadyForCollection'
+      "
+      (click)="changeFilter('ReadyForCollection')"
+    >
+      Ready for Collection
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       LOADING
+  ====================================================== -->
+
+  <div
+    class="loading-state"
+    *ngIf="isLoading()"
+  >
+    Loading certificate requests...
+  </div>
+
+
+  <!-- =====================================================
+       EMPTY STATE
+  ====================================================== -->
+
+  <div
+    class="empty-state"
+    *ngIf="
+      !isLoading() &&
+      filteredRequests().length === 0
+    "
+  >
+    No certificate requests found.
+  </div>
+
+
+  <!-- =====================================================
+       TABLE
+  ====================================================== -->
+
+  <div
+    class="table-wrapper"
+    *ngIf="
+      !isLoading() &&
+      filteredRequests().length > 0
+    "
+  >
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>ID</th>
+
+          <th>Student</th>
+
+          <th>Certificate Type</th>
+
+          <th>Reason</th>
+
+          <th>Requested Date</th>
+
+          <th>Status</th>
+
+          <th>Actions</th>
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <ng-container
+          *ngFor="
+            let request of filteredRequests()
+          "
+        >
+
           <tr>
 
-            <th>
-              ID
-            </th>
-
-            <th>
-              Student
-            </th>
-
-            <th>
-              Certificate
-            </th>
-
-            <th>
-              Reason
-            </th>
-
-            <th>
-              Requested
-            </th>
-
-            <th>
-              Status
-            </th>
-
-            <th>
-              Actions
-            </th>
-
-          </tr>
-        </thead>
-
-
-        <tbody>
-
-          <tr
-            *ngFor="let request of filteredRequests()"
-          >
-
+            <!-- ID -->
             <td>
               #{{ request.id }}
             </td>
 
 
+            <!-- STUDENT -->
             <td>
 
-              <div class="student-cell">
+              <div class="student-info">
 
-                <strong>
-                  {{ request.studentName || 'Student' }}
-                </strong>
+                <div class="student-avatar">
+                  {{
+                    request.studentName
+                      ? request.studentName.charAt(0)
+                      : 'S'
+                  }}
+                </div>
 
-                <span>
-                  ID {{ request.studentId }}
-                </span>
+                <div>
+                  <strong>
+                    {{
+                      request.studentName ||
+                      'Student'
+                    }}
+                  </strong>
+
+                  <small>
+                    Student ID:
+                    {{ request.studentId }}
+                  </small>
+                </div>
 
               </div>
 
             </td>
 
 
+            <!-- TYPE -->
             <td>
-
               <span class="certificate-type">
-                {{ getTypeName(request.type) }}
+                {{
+                  getTypeName(
+                    request.type
+                  )
+                }}
               </span>
+            </td>
+
+
+            <!-- REASON -->
+            <td class="reason-cell">
+
+              {{
+                request.reason ||
+                '-'
+              }}
 
             </td>
 
 
+            <!-- REQUESTED DATE -->
             <td>
 
-              <div class="reason-cell">
-                {{ request.reason }}
-              </div>
+              {{
+                request.requestedAt
+                  | date:'mediumDate'
+              }}
 
             </td>
 
 
-            <td>
-
-              {{ request.requestedAt | date:'MMM d, y, h:mm a' }}
-
-            </td>
-
-
+            <!-- STATUS -->
             <td>
 
               <span
                 class="status-badge"
-                [class.pending]="request.status === 'Pending'"
-                [class.approved]="request.status === 'Approved'"
-                [class.rejected]="request.status === 'Rejected'"
-                [class.ready]="request.status === 'ReadyForCollection'"
+                [class.status-pending]="
+                  request.status === 'Pending'
+                "
+                [class.status-approved]="
+                  request.status === 'Approved'
+                "
+                [class.status-rejected]="
+                  request.status === 'Rejected'
+                "
+                [class.status-ready]="
+                  request.status === 'Issued'
+                "
               >
 
                 {{
-                  request.status === 'ReadyForCollection'
-                    ? 'Ready for Collection'
-                    : request.status
+                  getStatusName(
+                    request.status
+                  )
                 }}
 
               </span>
@@ -330,48 +331,119 @@
             </td>
 
 
+            <!-- ACTIONS -->
             <td>
 
               <div class="action-buttons">
 
-                <button
-                  type="button"
-                  class="action-btn approve"
-                  *ngIf="request.status === 'Pending'"
-                  (click)="updateStatus(request, 'Approved')"
-                >
-                  Approve
-                </button>
 
+                <!-- =====================================
+                     PENDING ACTIONS
+                ====================================== -->
 
-                <button
-                  type="button"
-                  class="action-btn reject"
-                  *ngIf="request.status === 'Pending'"
-                  (click)="updateStatus(request, 'Rejected')"
-                >
-                  Reject
-                </button>
-
-
-                <button
-                  type="button"
-                  class="action-btn ready"
-                  *ngIf="request.status === 'Approved'"
-                  (click)="updateStatus(request, 'ReadyForCollection')"
-                >
-                  Mark Ready
-                </button>
-
-
-                <span
-                  class="completed-label"
+                <ng-container
                   *ngIf="
-                    request.status === 'Rejected' ||
-                    request.status === 'ReadyForCollection'
+                    request.status ===
+                    'Pending'
                   "
                 >
-                  Completed
+
+                  <button
+                    type="button"
+                    class="btn btn-approve"
+                    [disabled]="
+                      isUpdating(request.id)
+                    "
+                    (click)="
+                      approveRequest(request)
+                    "
+                  >
+                    {{
+                      isUpdating(request.id)
+                        ? 'Please wait...'
+                        : 'Approve'
+                    }}
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="btn btn-reject"
+                    [disabled]="
+                      isUpdating(request.id)
+                    "
+                    (click)="
+                      startReject(request)
+                    "
+                  >
+                    Reject
+                  </button>
+
+                </ng-container>
+
+
+                <!-- =====================================
+                     APPROVED ACTION
+                ====================================== -->
+
+                <ng-container
+                  *ngIf="
+                    request.status ===
+                    'Approved'
+                  "
+                >
+
+                  <button
+                    type="button"
+                    class="btn btn-ready"
+                    [disabled]="
+                      isUpdating(request.id)
+                    "
+                    (click)="
+                      markReadyForCollection(
+                        request
+                      )
+                    "
+                  >
+
+                    {{
+                      isUpdating(request.id)
+                        ? 'Please wait...'
+                        : 'Mark Ready'
+                    }}
+
+                  </button>
+
+                </ng-container>
+
+
+                <!-- =====================================
+                     REJECTED
+                ====================================== -->
+
+                <span
+                  class="completed-text rejected-text"
+                  *ngIf="
+                    request.status ===
+                    'Rejected'
+                  "
+                >
+                  Rejected
+                </span>
+
+
+                <!-- =====================================
+                     ISSUED / READY
+                ====================================== -->
+
+                <span
+                  class="completed-text ready-text"
+                  *ngIf="
+                    request.status ===
+                    'Issued'
+                  "
+                >
+                  Ready for Collection
                 </span>
 
               </div>
@@ -380,38 +452,101 @@
 
           </tr>
 
-        </tbody>
 
-      </table>
+          <!-- =================================================
+               REJECTION REASON ROW
+          ================================================== -->
 
-    </div>
+          <tr
+            class="reject-reason-row"
+            *ngIf="
+              isRejecting(request.id)
+            "
+          >
+
+            <td colspan="7">
+
+              <div class="reject-panel">
+
+                <div class="reject-panel-header">
+
+                  <div>
+
+                    <h4>
+                      Reject Certificate Request
+                    </h4>
+
+                    <p>
+                      Enter the reason for rejecting
+                      this request. The student will
+                      receive this reason in a
+                      notification.
+                    </p>
+
+                  </div>
+
+                </div>
 
 
-    <!-- =====================================================
-         EMPTY STATE
-    ====================================================== -->
+                <textarea
+                  [(ngModel)]="
+                    rejectionReason
+                  "
+                  rows="3"
+                  maxlength="1000"
+                  placeholder="Enter rejection reason..."
+                >
+                </textarea>
 
-    <div
-      class="empty-state"
-      *ngIf="
-        !isLoading() &&
-        filteredRequests().length === 0
-      "
-    >
 
-      <div class="empty-icon">
-        📄
-      </div>
+                <div class="reject-actions">
 
-      <h3>
-        No certificate requests found
-      </h3>
+                  <button
+                    type="button"
+                    class="btn btn-cancel"
+                    [disabled]="
+                      isUpdating(request.id)
+                    "
+                    (click)="
+                      cancelReject()
+                    "
+                  >
+                    Cancel
+                  </button>
 
-      <p>
-        There are no requests matching the selected status.
-      </p>
 
-    </div>
+                  <button
+                    type="button"
+                    class="btn btn-confirm-reject"
+                    [disabled]="
+                      isUpdating(request.id)
+                    "
+                    (click)="
+                      confirmReject(request)
+                    "
+                  >
+
+                    {{
+                      isUpdating(request.id)
+                        ? 'Rejecting...'
+                        : 'Confirm Reject'
+                    }}
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </ng-container>
+
+      </tbody>
+
+    </table>
 
   </div>
 

@@ -1,59 +1,246 @@
 <div class="labs-page">
 
+  <!-- ===================================================== -->
+  <!-- PAGE HEADER -->
+  <!-- ===================================================== -->
+
   <div class="page-header">
+
     <div>
-      <p class="page-label">CAMPUSX ADMINISTRATION</p>
-      <h1>Lab Management</h1>
+      <p class="page-label">
+        CAMPUSX ADMINISTRATION
+      </p>
+
+      <h1>
+        Lab Management
+      </h1>
+
       <p class="page-description">
         Manage laboratories, capacities and availability.
       </p>
     </div>
+
   </div>
 
 
-  <!-- SUMMARY -->
+  <!-- ===================================================== -->
+  <!-- SUMMARY CARDS -->
+  <!-- ===================================================== -->
+
   <div class="lab-stats">
 
     <div class="stat-card">
-      <div class="stat-icon">LB</div>
+
+      <div class="stat-icon">
+        LB
+      </div>
+
       <div>
         <p>Total Laboratories</p>
-        <h2>{{ totalLabs() }}</h2>
-        <span>Campus laboratories</span>
+
+        <h2>
+          {{ totalLabs() }}
+        </h2>
+
+        <span>
+          All laboratories
+        </span>
       </div>
+
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon">AC</div>
+
+      <div class="stat-icon">
+        ✓
+      </div>
+
       <div>
         <p>Active Labs</p>
-        <h2>{{ activeLabs() }}</h2>
-        <span>Available laboratories</span>
+
+        <h2>
+          {{ activeLabs() }}
+        </h2>
+
+        <span>
+          Available for booking
+        </span>
       </div>
+
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon">IN</div>
+
+      <div class="stat-icon">
+        !
+      </div>
+
       <div>
         <p>Inactive Labs</p>
-        <h2>{{ inactiveLabs() }}</h2>
-        <span>Unavailable laboratories</span>
+
+        <h2>
+          {{ inactiveLabs() }}
+        </h2>
+
+        <span>
+          Currently unavailable
+        </span>
       </div>
+
     </div>
 
   </div>
 
 
-  <!-- LAB TABLE -->
+  <!-- ===================================================== -->
+  <!-- SUCCESS MESSAGE -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="successMessage()"
+    class="message success"
+  >
+    {{ successMessage() }}
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- ERROR MESSAGE -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="errorMessage()"
+    class="message error"
+  >
+    {{ errorMessage() }}
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- ADD LAB CARD -->
+  <!-- ===================================================== -->
+
+  <div class="add-lab-card">
+
+    <div class="section-header">
+
+      <div>
+        <h2>
+          Add Laboratory
+        </h2>
+
+        <p>
+          Create a new laboratory for student reservations.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="add-lab-form">
+
+      <!-- LAB NAME -->
+
+      <div class="form-group">
+
+        <label>
+          Laboratory Name
+        </label>
+
+        <input
+          type="text"
+          placeholder="Enter laboratory name"
+          [(ngModel)]="labName"
+        />
+
+      </div>
+
+
+      <!-- LOCATION -->
+
+      <div class="form-group">
+
+        <label>
+          Location
+        </label>
+
+        <input
+          type="text"
+          placeholder="Enter location"
+          [(ngModel)]="labLocation"
+        />
+
+      </div>
+
+
+      <!-- CAPACITY -->
+
+      <div class="form-group">
+
+        <label>
+          Capacity
+        </label>
+
+        <input
+          type="number"
+          min="1"
+          placeholder="Enter capacity"
+          [(ngModel)]="labCapacity"
+        />
+
+      </div>
+
+
+      <!-- ADD BUTTON -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="add-btn"
+          [disabled]="isSaving()"
+          (click)="addLab()"
+        >
+
+          {{
+            isSaving()
+              ? 'Adding...'
+              : '+ Add Laboratory'
+          }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- LAB TABLE CARD -->
+  <!-- ===================================================== -->
+
   <div class="labs-card">
 
     <div class="table-header">
+
       <div>
-        <h2>Laboratories</h2>
-        <p>All CampusX laboratories</p>
+        <h2>
+          Laboratories
+        </h2>
+
+        <p>
+          View, edit, activate or deactivate laboratories.
+        </p>
       </div>
+
     </div>
 
+
+    <!-- LOADING -->
 
     <div
       *ngIf="isLoading()"
@@ -63,19 +250,12 @@
     </div>
 
 
-    <div
-      *ngIf="errorMessage() && !isLoading()"
-      class="message error"
-    >
-      {{ errorMessage() }}
-    </div>
-
+    <!-- TABLE -->
 
     <div
       class="table-wrapper"
       *ngIf="
         !isLoading() &&
-        !errorMessage() &&
         labs().length > 0
       "
     >
@@ -83,58 +263,232 @@
       <table>
 
         <thead>
+
           <tr>
             <th>ID</th>
             <th>LABORATORY</th>
             <th>LOCATION</th>
             <th>CAPACITY</th>
             <th>STATUS</th>
+            <th>ACTIONS</th>
           </tr>
+
         </thead>
+
 
         <tbody>
 
-          <tr *ngFor="let lab of labs()">
+          <tr
+            *ngFor="let lab of labs()"
+          >
+
+            <!-- ID -->
 
             <td>
               #{{ lab.id }}
             </td>
 
+
+            <!-- LABORATORY -->
+
             <td>
-              <div class="lab-info">
+
+              <!-- NORMAL VIEW -->
+
+              <div
+                class="lab-info"
+                *ngIf="!isEditing(lab.id)"
+              >
 
                 <div class="lab-avatar">
                   {{ lab.name?.charAt(0) || 'L' }}
                 </div>
 
                 <div>
+
                   <strong>
                     {{ lab.name }}
                   </strong>
+
                   <span>
                     Campus Laboratory
                   </span>
+
                 </div>
 
               </div>
+
+
+              <!-- EDIT VIEW -->
+
+              <div
+                class="edit-field"
+                *ngIf="isEditing(lab.id)"
+              >
+
+                <input
+                  type="text"
+                  [(ngModel)]="editName"
+                />
+
+              </div>
+
             </td>
 
-            <td>
-              {{ lab.location }}
-            </td>
+
+            <!-- LOCATION -->
 
             <td>
-              {{ lab.capacity }}
+
+              <span
+                *ngIf="!isEditing(lab.id)"
+              >
+                {{ lab.location }}
+              </span>
+
+
+              <div
+                class="edit-field"
+                *ngIf="isEditing(lab.id)"
+              >
+
+                <input
+                  type="text"
+                  [(ngModel)]="editLocation"
+                />
+
+              </div>
+
             </td>
 
+
+            <!-- CAPACITY -->
+
             <td>
+
+              <span
+                *ngIf="!isEditing(lab.id)"
+              >
+                {{ lab.capacity }}
+              </span>
+
+
+              <div
+                class="edit-field capacity-edit"
+                *ngIf="isEditing(lab.id)"
+              >
+
+                <input
+                  type="number"
+                  min="1"
+                  [(ngModel)]="editCapacity"
+                />
+
+              </div>
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
               <span
                 class="status"
                 [class.active]="lab.isActive"
                 [class.inactive]="!lab.isActive"
               >
-                {{ lab.isActive ? 'Active' : 'Inactive' }}
+
+                {{
+                  lab.isActive
+                    ? 'Active'
+                    : 'Inactive'
+                }}
+
               </span>
+
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+              <!-- NORMAL ACTIONS -->
+
+              <div
+                class="action-buttons"
+                *ngIf="!isEditing(lab.id)"
+              >
+
+                <button
+                  type="button"
+                  class="edit-btn"
+                  [disabled]="isUpdating(lab.id)"
+                  (click)="startEdit(lab)"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  type="button"
+                  class="status-btn"
+                  [class.deactivate]="lab.isActive"
+                  [class.activate]="!lab.isActive"
+                  [disabled]="isUpdating(lab.id)"
+                  (click)="toggleLabStatus(lab)"
+                >
+
+                  {{
+                    isUpdating(lab.id)
+                      ? 'Updating...'
+                      : (
+                          lab.isActive
+                            ? 'Deactivate'
+                            : 'Activate'
+                        )
+                  }}
+
+                </button>
+
+              </div>
+
+
+              <!-- EDIT ACTIONS -->
+
+              <div
+                class="action-buttons"
+                *ngIf="isEditing(lab.id)"
+              >
+
+                <button
+                  type="button"
+                  class="save-btn"
+                  [disabled]="isUpdating(lab.id)"
+                  (click)="saveEdit(lab.id)"
+                >
+
+                  {{
+                    isUpdating(lab.id)
+                      ? 'Saving...'
+                      : 'Save'
+                  }}
+
+                </button>
+
+
+                <button
+                  type="button"
+                  class="cancel-btn"
+                  [disabled]="isUpdating(lab.id)"
+                  (click)="cancelEdit()"
+                >
+                  Cancel
+                </button>
+
+              </div>
+
             </td>
 
           </tr>
@@ -146,10 +500,11 @@
     </div>
 
 
+    <!-- EMPTY -->
+
     <div
       *ngIf="
         !isLoading() &&
-        !errorMessage() &&
         labs().length === 0
       "
       class="message"

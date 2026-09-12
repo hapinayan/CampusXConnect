@@ -12,13 +12,21 @@ export enum CertificateType {
 
 // =====================================================
 // CERTIFICATE STATUS
+// Backend:
+// Pending  = 0
+// Approved = 1
+// Rejected = 2
+// Issued   = 3
+//
+// UI-la "Issued" status-ai
+// "Ready for Collection" endu display pannuvom.
 // =====================================================
 
 export type CertificateStatus =
   | 'Pending'
   | 'Approved'
   | 'Rejected'
-  | 'ReadyForCollection';
+  | 'Issued';
 
 
 // =====================================================
@@ -26,23 +34,14 @@ export type CertificateStatus =
 // =====================================================
 
 export interface CertificateRequest {
-
   id: number;
-
   studentId: number;
-
   studentName?: string;
-
-  type: CertificateType;
-
+  type: CertificateType | string;
   reason: string;
-
   status: CertificateStatus;
-
   requestedAt: string;
-
   updatedAt?: string;
-
 }
 
 
@@ -51,9 +50,6 @@ export interface CertificateRequest {
 // =====================================================
 
 export interface CreateCertificateRequest {
-
   type: CertificateType;
-
   reason: string;
-
 }

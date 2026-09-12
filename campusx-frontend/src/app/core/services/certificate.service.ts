@@ -113,12 +113,26 @@ export class CertificateService {
 
     if (status) {
 
-      params = params.set(
-        'status',
-        status
-      );
+      const statusMap: Record<string, number> = {
+        Pending: 0,
+        Approved: 1,
+        Rejected: 2,
+        Issued: 3,
+        ReadyForCollection: 3
+      };
+
+      const statusValue =
+        statusMap[status];
+
+      if (statusValue !== undefined) {
+        params = params.set(
+          'status',
+          statusValue.toString()
+        );
+      }
 
     }
+
 
     return this.http.get<CertificateRequest[]>(
       `${this.certificateUrl}/admin`,
@@ -131,18 +145,39 @@ export class CertificateService {
   // =====================================================
   // ADMIN - UPDATE CERTIFICATE STATUS
   // PUT: api/certificate-requests/{id}/status
+  //
+  // Backend:
+  // Pending  = 0
+  // Approved = 1
+  // Rejected = 2
+  // Issued   = 3
   // =====================================================
 
   updateStatus(
     id: number,
-    status: CertificateStatus
+    status: CertificateStatus,
+    rejectionReason?: string
   ): Observable<CertificateRequest> {
+
+    const statusMap: Record<string, number> = {
+      Pending: 0,
+      Approved: 1,
+      Rejected: 2,
+      Issued: 3,
+      ReadyForCollection: 3
+    };
+
+
+    const body = {
+      status: statusMap[status],
+      rejectionReason:
+        rejectionReason?.trim() || null
+    };
+
 
     return this.http.put<CertificateRequest>(
       `${this.certificateUrl}/${id}/status`,
-      {
-        status: status
-      }
+      body
     );
 
   }

@@ -154,9 +154,27 @@ export class ComplaintService {
     data: UpdateComplaintStatus
   ): Observable<Complaint> {
 
+    const statusMap: Record<string, number> = {
+      Pending: 0,
+      InProgress: 1,
+      Resolved: 2
+    };
+
+
+    const body = {
+
+      status:
+        statusMap[data.status],
+
+      resolutionNote:
+        data.resolutionNote || null
+
+    };
+
+
     return this.http.put<Complaint>(
       `${this.complaintUrl}/${id}/status`,
-      data
+      body
     );
 
   }

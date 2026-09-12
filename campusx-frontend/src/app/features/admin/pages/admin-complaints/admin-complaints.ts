@@ -80,27 +80,6 @@ export class AdminComplaints implements OnInit {
 
 
   // =====================================================
-  // FILTERED COMPLAINTS
-  // =====================================================
-
-  filteredComplaints = computed(() => {
-
-    if (
-      this.selectedStatus === 'All'
-    ) {
-      return this.complaints();
-    }
-
-    return this.complaints().filter(
-      complaint =>
-        complaint.status ===
-        this.selectedStatus
-    );
-
-  });
-
-
-  // =====================================================
   // CONSTRUCTOR
   // =====================================================
 
@@ -173,6 +152,30 @@ export class AdminComplaints implements OnInit {
 
 
   // =====================================================
+  // FILTERED COMPLAINTS
+  // =====================================================
+
+  filteredComplaints(): Complaint[] {
+
+    if (
+      this.selectedStatus === 'All'
+    ) {
+
+      return this.complaints();
+
+    }
+
+
+    return this.complaints().filter(
+      complaint =>
+        complaint.status ===
+        this.selectedStatus
+    );
+
+  }
+
+
+  // =====================================================
   // STATUS FILTER
   // =====================================================
 
@@ -193,6 +196,9 @@ export class AdminComplaints implements OnInit {
     complaint: Complaint,
     status: ComplaintStatus
   ): void {
+
+    this.errorMessage.set('');
+
 
     const data:
       UpdateComplaintStatus = {
@@ -227,6 +233,7 @@ export class AdminComplaints implements OnInit {
           );
 
           this.errorMessage.set(
+            error?.error?.message ||
             'Unable to update complaint status.'
           );
 
