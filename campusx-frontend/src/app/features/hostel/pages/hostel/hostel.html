@@ -28,7 +28,18 @@
         title="Notifications"
       >
 
-        🔔
+        <span class="notification-bell">
+          🔔
+        </span>
+
+
+        @if (unreadCount > 0) {
+
+          <span class="topbar-notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
 
       </div>
 
@@ -77,8 +88,6 @@
 
   <aside class="sidebar">
 
-    <!-- ================= SIDEBAR BRAND ================= -->
-
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -100,12 +109,7 @@
     </div>
 
 
-    <!-- ================= NAVIGATION ================= -->
-
     <nav>
-
-
-      <!-- DASHBOARD -->
 
       <a
         class="nav-item"
@@ -123,9 +127,6 @@
       </a>
 
 
-
-      <!-- HOSTEL -->
-
       <a
         class="nav-item active"
         routerLink="/hostel"
@@ -141,9 +142,6 @@
 
       </a>
 
-
-
-      <!-- LAB BOOKING -->
 
       <a
         class="nav-item"
@@ -161,9 +159,6 @@
       </a>
 
 
-
-      <!-- EVENTS -->
-
       <a
         class="nav-item"
         routerLink="/events"
@@ -179,9 +174,6 @@
 
       </a>
 
-
-
-      <!-- COMPLAINTS -->
 
       <a
         class="nav-item"
@@ -199,9 +191,6 @@
       </a>
 
 
-
-      <!-- CERTIFICATES -->
-
       <a
         class="nav-item"
         routerLink="/certificates"
@@ -217,9 +206,6 @@
 
       </a>
 
-
-
-      <!-- PAYMENTS -->
 
       <a
         class="nav-item"
@@ -237,7 +223,6 @@
       </a>
 
 
-
       <!-- NOTIFICATIONS -->
 
       <a
@@ -253,15 +238,17 @@
           Notifications
         </span>
 
-        <span class="notification-count">
-          3
-        </span>
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
 
       </a>
 
-
-
-      <!-- PROFILE -->
 
       <a
         class="nav-item"
@@ -280,9 +267,6 @@
 
     </nav>
 
-
-
-    <!-- ================= SIDEBAR BOTTOM ================= -->
 
     <div class="sidebar-bottom">
 
@@ -359,8 +343,6 @@
     <section class="feature-row">
 
 
-      <!-- FEATURE 1 -->
-
       <div class="feature-card">
 
         <div class="feature-icon">
@@ -382,9 +364,6 @@
       </div>
 
 
-
-      <!-- FEATURE 2 -->
-
       <div class="feature-card">
 
         <div class="feature-icon">
@@ -405,9 +384,6 @@
 
       </div>
 
-
-
-      <!-- FEATURE 3 -->
 
       <div class="feature-card">
 
@@ -488,9 +464,6 @@
       </div>
 
 
-
-      <!-- STATUS BADGE -->
-
       @if (application) {
 
         <span class="status-badge">
@@ -552,13 +525,10 @@
     <div class="content-grid">
 
 
-
       <!-- ================= APPLICATION CARD ================= -->
 
       <section class="application-card">
 
-
-        <!-- CARD HEADER -->
 
         <div class="card-heading">
 
@@ -584,12 +554,8 @@
 
 
 
-        <!-- ================= FORM GRID ================= -->
-
         <div class="form-grid">
 
-
-          <!-- ================= PREFERRED HOSTEL ================= -->
 
           <div class="form-group">
 
@@ -652,9 +618,6 @@
           </div>
 
 
-
-          <!-- ================= ACADEMIC TERM ================= -->
-
           <div class="form-group">
 
 
@@ -684,9 +647,6 @@
           </div>
 
 
-
-          <!-- ================= PREFERENCES ================= -->
-
           <div class="form-group full">
 
 
@@ -706,8 +666,6 @@
         </div>
 
 
-
-        <!-- ================= APPLICATION FOOTER ================= -->
 
         <div class="application-footer">
 
@@ -757,8 +715,6 @@
       <section class="my-application-card">
 
 
-        <!-- CARD HEADER -->
-
         <div class="card-heading">
 
 
@@ -783,15 +739,11 @@
 
 
 
-        <!-- ================= APPLICATION EXISTS ================= -->
-
         @if (application) {
 
 
           <div class="application-details">
 
-
-            <!-- HOSTEL NAME -->
 
             <div class="detail-row">
 
@@ -806,9 +758,6 @@
 
             </div>
 
-
-
-            <!-- STATUS -->
 
             <div class="detail-row">
 
@@ -825,9 +774,6 @@
 
             </div>
 
-
-
-            <!-- PREFERENCES -->
 
             @if (application.preferences) {
 
@@ -847,9 +793,6 @@
             }
 
 
-
-            <!-- ROOM NUMBER -->
-
             <div class="detail-row">
 
               <span>
@@ -866,9 +809,6 @@
             </div>
 
 
-
-            <!-- APPLIED DATE -->
-
             <div class="detail-row">
 
               <span>
@@ -884,9 +824,6 @@
 
             </div>
 
-
-
-            <!-- UPDATED DATE -->
 
             @if (application.updatedAt) {
 
@@ -909,9 +846,6 @@
 
           </div>
 
-
-
-          <!-- ================= APPLICATION NOTE ================= -->
 
           <div class="application-note">
 
@@ -940,9 +874,6 @@
 
         }
 
-
-
-        <!-- ================= EMPTY STATE ================= -->
 
         @else {
 

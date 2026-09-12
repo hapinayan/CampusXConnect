@@ -20,6 +20,7 @@ import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { CertificateService } from '../../../../core/services/certificate.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 import {
   CertificateRequest,
@@ -43,6 +44,20 @@ import {
   styleUrl: './certificates.css'
 })
 export class Certificates implements OnInit {
+
+  // =====================================================
+  // STUDENT PROFILE
+  // =====================================================
+
+  studentName = 'Student';
+
+
+  // =====================================================
+  // NOTIFICATIONS
+  // =====================================================
+
+  unreadCount = 0;
+
 
   // =====================================================
   // CERTIFICATE TYPES
@@ -98,6 +113,8 @@ export class Certificates implements OnInit {
 
     private certificateService: CertificateService,
 
+    private notificationService: NotificationService,
+
     private cdr: ChangeDetectorRef
 
   ) {
@@ -124,14 +141,260 @@ export class Certificates implements OnInit {
     );
 
 
-    // Add first certificate row
+    this.loadStudentProfile();
+
+    this.loadUnreadNotificationCount();
 
     this.addCertificate();
 
-
-    // Load student's certificate requests
-
     this.loadMyRequests();
+
+  }
+
+
+  // =====================================================
+  // LOAD STUDENT PROFILE
+  // =====================================================
+
+  loadStudentProfile(): void {
+
+    try {
+
+      const storedStudent =
+        localStorage.getItem('student');
+
+
+      if (storedStudent) {
+
+        const parsedStudent =
+          JSON.parse(storedStudent);
+
+
+        if (
+          parsedStudent &&
+          parsedStudent.fullName
+        ) {
+
+          this.studentName =
+            parsedStudent.fullName.trim();
+
+
+          console.log(
+            'Student loaded from student object:',
+            this.studentName
+          );
+
+
+          this.cdr.detectChanges();
+
+          return;
+
+        }
+
+      }
+
+
+      const fullName =
+        localStorage.getItem('fullName');
+
+
+      if (
+        fullName &&
+        fullName.trim().length > 0
+      ) {
+
+        this.studentName =
+          fullName.trim();
+
+
+        console.log(
+          'Student loaded from fullName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      const storedStudentName =
+        localStorage.getItem('studentName');
+
+
+      if (
+        storedStudentName &&
+        storedStudentName.trim().length > 0
+      ) {
+
+        this.studentName =
+          storedStudentName.trim();
+
+
+        console.log(
+          'Student loaded from studentName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      this.studentName =
+        'Student';
+
+
+      console.warn(
+        'Student name not found in localStorage.'
+      );
+
+
+      this.cdr.detectChanges();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Failed to load student profile:',
+        error
+      );
+
+
+      this.studentName =
+        'Student';
+
+
+      this.cdr.detectChanges();
+
+    }
+
+  }
+
+
+  // =====================================================
+  // GET STUDENT INITIAL
+  // =====================================================
+
+  getStudentInitial(): string {
+
+    if (
+      !this.studentName ||
+      this.studentName.trim() === '' ||
+      this.studentName === 'Student'
+    ) {
+
+      return 'S';
+
+    }
+
+
+    return this.studentName
+      .trim()
+      .charAt(0)
+      .toUpperCase();
+
+  }
+
+
+  // =====================================================
+  // LOAD UNREAD NOTIFICATION COUNT
+  // =====================================================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Certificates notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        next: (notifications) => {
+
+          if (!Array.isArray(notifications)) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Certificates unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Certificates notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
 
   }
 
@@ -267,8 +530,6 @@ export class Certificates implements OnInit {
     }
 
 
-    // Backend may return enum as number
-
     if (
 
       typeof value === 'number'
@@ -290,8 +551,6 @@ export class Certificates implements OnInit {
 
     }
 
-
-    // Backend may return enum as string
 
     switch (
 
@@ -560,10 +819,6 @@ export class Certificates implements OnInit {
 
       .subscribe({
 
-        // =================================================
-        // SUCCESS
-        // =================================================
-
         next: (data) => {
 
           console.log(
@@ -585,10 +840,6 @@ export class Certificates implements OnInit {
 
         },
 
-
-        // =================================================
-        // ERROR
-        // =================================================
 
         error: (error) => {
 
@@ -636,10 +887,6 @@ export class Certificates implements OnInit {
     this.successMessage = '';
 
 
-    // ===================================================
-    // PREVENT DOUBLE SUBMISSION
-    // ===================================================
-
     if (
 
       this.submitting
@@ -650,10 +897,6 @@ export class Certificates implements OnInit {
 
     }
 
-
-    // ===================================================
-    // FORM VALIDATION
-    // ===================================================
 
     if (
 
@@ -671,10 +914,6 @@ export class Certificates implements OnInit {
 
     }
 
-
-    // ===================================================
-    // DUPLICATE VALIDATION
-    // ===================================================
 
     for (
 
@@ -702,10 +941,6 @@ export class Certificates implements OnInit {
 
     }
 
-
-    // ===================================================
-    // BUILD REQUESTS
-    // ===================================================
 
     const requests =
 
@@ -746,10 +981,6 @@ export class Certificates implements OnInit {
         });
 
 
-    // ===================================================
-    // EXTRA VALIDATION
-    // ===================================================
-
     const invalidRequest =
 
       requests.some(
@@ -789,16 +1020,8 @@ export class Certificates implements OnInit {
     );
 
 
-    // ===================================================
-    // START SUBMISSION
-    // ===================================================
-
     this.submitting = true;
 
-
-    // ===================================================
-    // SEND REQUESTS
-    // ===================================================
 
     const apiRequests =
 
@@ -833,10 +1056,6 @@ export class Certificates implements OnInit {
 
       .subscribe({
 
-        // =================================================
-        // SUCCESS
-        // =================================================
-
         next: (responses) => {
 
           console.log(
@@ -855,10 +1074,6 @@ export class Certificates implements OnInit {
             'Certificate request submitted successfully.';
 
 
-          // ===============================================
-          // RESET FORM
-          // ===============================================
-
           this.certificateForm =
 
             this.fb.group({
@@ -873,19 +1088,11 @@ export class Certificates implements OnInit {
           this.addCertificate();
 
 
-          // ===============================================
-          // REFRESH HISTORY
-          // ===============================================
-
           this.loadMyRequests();
 
 
           this.cdr.detectChanges();
 
-
-          // ===============================================
-          // HIDE SUCCESS MESSAGE
-          // ===============================================
 
           setTimeout(() => {
 
@@ -897,10 +1104,6 @@ export class Certificates implements OnInit {
 
         },
 
-
-        // =================================================
-        // ERROR
-        // =================================================
 
         error: (error) => {
 
@@ -915,10 +1118,6 @@ export class Certificates implements OnInit {
 
           this.successMessage = '';
 
-
-          // ===============================================
-          // 400
-          // ===============================================
 
           if (
 
@@ -937,10 +1136,6 @@ export class Certificates implements OnInit {
           }
 
 
-          // ===============================================
-          // 401
-          // ===============================================
-
           else if (
 
             error.status === 401
@@ -953,10 +1148,6 @@ export class Certificates implements OnInit {
 
           }
 
-
-          // ===============================================
-          // 403
-          // ===============================================
 
           else if (
 
@@ -971,10 +1162,6 @@ export class Certificates implements OnInit {
           }
 
 
-          // ===============================================
-          // 404
-          // ===============================================
-
           else if (
 
             error.status === 404
@@ -987,10 +1174,6 @@ export class Certificates implements OnInit {
 
           }
 
-
-          // ===============================================
-          // 409
-          // ===============================================
 
           else if (
 
@@ -1007,10 +1190,6 @@ export class Certificates implements OnInit {
           }
 
 
-          // ===============================================
-          // OTHER
-          // ===============================================
-
           else {
 
             this.errorMessage =
@@ -1021,10 +1200,6 @@ export class Certificates implements OnInit {
 
           }
 
-
-          // ===============================================
-          // REFRESH HISTORY
-          // ===============================================
 
           this.loadMyRequests();
 
@@ -1125,6 +1300,8 @@ export class Certificates implements OnInit {
     this.successMessage = '';
 
     this.loadMyRequests();
+
+    this.loadUnreadNotificationCount();
 
   }
 

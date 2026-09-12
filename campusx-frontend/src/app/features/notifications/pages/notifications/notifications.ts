@@ -26,6 +26,13 @@ import { Notification } from '../../../../core/models/notification.model';
 export class Notifications implements OnInit {
 
   // =====================================================
+  // STUDENT PROFILE
+  // =====================================================
+
+  studentName = 'Student';
+
+
+  // =====================================================
   // NOTIFICATIONS
   // =====================================================
 
@@ -63,7 +70,154 @@ export class Notifications implements OnInit {
       'Notifications page initialized'
     );
 
+    this.loadStudentProfile();
+
     this.loadNotifications();
+
+  }
+
+
+  // =====================================================
+  // LOAD STUDENT PROFILE
+  // =====================================================
+
+  loadStudentProfile(): void {
+
+    try {
+
+      const storedStudent =
+        localStorage.getItem('student');
+
+
+      if (storedStudent) {
+
+        const parsedStudent =
+          JSON.parse(storedStudent);
+
+
+        if (
+          parsedStudent &&
+          parsedStudent.fullName
+        ) {
+
+          this.studentName =
+            parsedStudent.fullName.trim();
+
+
+          console.log(
+            'Student loaded from student object:',
+            this.studentName
+          );
+
+
+          this.cdr.detectChanges();
+
+          return;
+
+        }
+
+      }
+
+
+      const fullName =
+        localStorage.getItem('fullName');
+
+
+      if (
+        fullName &&
+        fullName.trim().length > 0
+      ) {
+
+        this.studentName =
+          fullName.trim();
+
+
+        console.log(
+          'Student loaded from fullName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      const storedStudentName =
+        localStorage.getItem('studentName');
+
+
+      if (
+        storedStudentName &&
+        storedStudentName.trim().length > 0
+      ) {
+
+        this.studentName =
+          storedStudentName.trim();
+
+
+        console.log(
+          'Student loaded from studentName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      this.studentName = 'Student';
+
+      console.warn(
+        'Student name not found in localStorage.'
+      );
+
+      this.cdr.detectChanges();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Failed to load student profile:',
+        error
+      );
+
+      this.studentName = 'Student';
+
+      this.cdr.detectChanges();
+
+    }
+
+  }
+
+
+  // =====================================================
+  // GET STUDENT INITIAL
+  // =====================================================
+
+  getStudentInitial(): string {
+
+    if (
+      !this.studentName ||
+      this.studentName.trim() === '' ||
+      this.studentName === 'Student'
+    ) {
+
+      return 'S';
+
+    }
+
+
+    return this.studentName
+      .trim()
+      .charAt(0)
+      .toUpperCase();
 
   }
 
@@ -83,10 +237,6 @@ export class Notifications implements OnInit {
       storedStudentId
     );
 
-
-    // -----------------------------------------------------
-    // STUDENT ID NOT FOUND
-    // -----------------------------------------------------
 
     if (!storedStudentId) {
 
@@ -108,10 +258,6 @@ export class Notifications implements OnInit {
       Number(storedStudentId);
 
 
-    // -----------------------------------------------------
-    // INVALID STUDENT ID
-    // -----------------------------------------------------
-
     if (!studentId) {
 
       this.notifications = [];
@@ -128,18 +274,10 @@ export class Notifications implements OnInit {
     }
 
 
-    // -----------------------------------------------------
-    // LOADING
-    // -----------------------------------------------------
-
     this.loading = true;
 
     this.errorMessage = '';
 
-
-    // -----------------------------------------------------
-    // API
-    // -----------------------------------------------------
 
     this.notificationService
       .getMyNotifications(studentId)
@@ -155,10 +293,6 @@ export class Notifications implements OnInit {
 
       )
       .subscribe({
-
-        // =================================================
-        // SUCCESS
-        // =================================================
 
         next: (data) => {
 
@@ -178,10 +312,6 @@ export class Notifications implements OnInit {
 
         },
 
-
-        // =================================================
-        // ERROR
-        // =================================================
 
         error: (error) => {
 
@@ -233,7 +363,6 @@ export class Notifications implements OnInit {
     notification: Notification
   ): void {
 
-    // Already read
     if (notification.isRead) {
 
       return;
@@ -250,10 +379,6 @@ export class Notifications implements OnInit {
     this.notificationService
       .markAsRead(notification.id)
       .subscribe({
-
-        // =================================================
-        // SUCCESS
-        // =================================================
 
         next: () => {
 
@@ -277,10 +402,6 @@ export class Notifications implements OnInit {
 
         },
 
-
-        // =================================================
-        // ERROR
-        // =================================================
 
         error: (error) => {
 

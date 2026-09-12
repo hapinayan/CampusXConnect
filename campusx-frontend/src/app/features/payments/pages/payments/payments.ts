@@ -18,6 +18,7 @@ import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import { PaymentService } from '../../../../core/services/payment.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 import {
   Payment,
@@ -43,10 +44,31 @@ import {
 export class Payments implements OnInit {
 
   // =====================================================
-  // PAYMENT FORM
+  // STUDENT PROFILE
+  // =====================================================
+
+  studentName = 'Student';
+
+
+  // =====================================================
+  // NOTIFICATIONS
+  // =====================================================
+
+  unreadCount = 0;
+
+
+  // =====================================================
+  // MAIN PAYMENT FORM
   // =====================================================
 
   paymentForm: FormGroup;
+
+
+  // =====================================================
+  // PAYMENT DETAILS FORM
+  // =====================================================
+
+  paymentDetailsForm: FormGroup;
 
 
   // =====================================================
@@ -70,10 +92,49 @@ export class Payments implements OnInit {
 
 
   // =====================================================
+  // PAYMENT MODAL
+  // =====================================================
+
+  showPaymentModal = false;
+
+  selectedPaymentMethod:
+    'card' |
+    'bank' = 'card';
+
+
+  // =====================================================
+  // PAYMENT SUMMARY
+  // =====================================================
+
+  pendingFeeType = '';
+
+  pendingAmount = 0;
+
+
+  // =====================================================
+  // PROCESSING STATE
+  // =====================================================
+
+  paymentProcessing = false;
+
+  processingText =
+    'Processing your payment...';
+
+
+  // =====================================================
   // LAST PAYMENT
   // =====================================================
 
   lastPayment: PaymentResponse | null = null;
+
+
+  // =====================================================
+  // TRANSACTION DISPLAY
+  // =====================================================
+
+  transactionReference = '';
+
+  paidAt: Date | null = null;
 
 
   // =====================================================
@@ -86,9 +147,15 @@ export class Payments implements OnInit {
 
     private paymentService: PaymentService,
 
+    private notificationService: NotificationService,
+
     private cdr: ChangeDetectorRef
 
   ) {
+
+    // =================================================
+    // MAIN FORM
+    // =================================================
 
     this.paymentForm = this.fb.group({
 
@@ -109,6 +176,57 @@ export class Payments implements OnInit {
 
     });
 
+
+    // =================================================
+    // PAYMENT DETAILS
+    // =================================================
+
+    this.paymentDetailsForm = this.fb.group({
+
+      cardholderName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
+      ],
+
+      cardNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^[0-9]{16}$/
+          )
+        ]
+      ],
+
+      expiryDate: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(0[1-9]|1[0-2])\/[0-9]{2}$/
+          )
+        ]
+      ],
+
+      cvv: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^[0-9]{3,4}$/
+          )
+        ]
+      ],
+
+      bankReference: [
+        ''
+      ]
+
+    });
+
   }
 
 
@@ -122,7 +240,278 @@ export class Payments implements OnInit {
       'Payments page initialized'
     );
 
+
+    this.loadStudentProfile();
+
+    this.loadUnreadNotificationCount();
+
     this.loadPayments();
+
+  }
+
+
+  // =====================================================
+  // LOAD STUDENT PROFILE
+  // =====================================================
+
+  loadStudentProfile(): void {
+
+    try {
+
+      // ===============================================
+      // 1. STUDENT OBJECT
+      // ===============================================
+
+      const storedStudent =
+        localStorage.getItem('student');
+
+
+      if (storedStudent) {
+
+        const parsedStudent =
+          JSON.parse(storedStudent);
+
+
+        if (
+          parsedStudent &&
+          parsedStudent.fullName
+        ) {
+
+          this.studentName =
+            parsedStudent.fullName.trim();
+
+
+          console.log(
+            'Student loaded from student object:',
+            this.studentName
+          );
+
+
+          this.cdr.detectChanges();
+
+          return;
+
+        }
+
+      }
+
+
+      // ===============================================
+      // 2. FULL NAME
+      // ===============================================
+
+      const fullName =
+        localStorage.getItem('fullName');
+
+
+      if (
+        fullName &&
+        fullName.trim().length > 0
+      ) {
+
+        this.studentName =
+          fullName.trim();
+
+
+        console.log(
+          'Student loaded from fullName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      // ===============================================
+      // 3. STUDENT NAME
+      // ===============================================
+
+      const storedStudentName =
+        localStorage.getItem('studentName');
+
+
+      if (
+        storedStudentName &&
+        storedStudentName.trim().length > 0
+      ) {
+
+        this.studentName =
+          storedStudentName.trim();
+
+
+        console.log(
+          'Student loaded from studentName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      // ===============================================
+      // FALLBACK
+      // ===============================================
+
+      this.studentName = 'Student';
+
+
+      console.warn(
+        'Student name not found in localStorage.'
+      );
+
+
+      this.cdr.detectChanges();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Failed to load student profile:',
+        error
+      );
+
+
+      this.studentName = 'Student';
+
+
+      this.cdr.detectChanges();
+
+    }
+
+  }
+
+
+  // =====================================================
+  // GET STUDENT INITIAL
+  // =====================================================
+
+  getStudentInitial(): string {
+
+    if (
+      !this.studentName ||
+      this.studentName.trim() === '' ||
+      this.studentName === 'Student'
+    ) {
+
+      return 'S';
+
+    }
+
+
+    return this.studentName
+      .trim()
+      .charAt(0)
+      .toUpperCase();
+
+  }
+
+
+  // =====================================================
+  // LOAD UNREAD NOTIFICATION COUNT
+  // =====================================================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Payments notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        next: (notifications) => {
+
+          if (
+            !Array.isArray(
+              notifications
+            )
+          ) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Payments unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Payments notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
 
   }
 
@@ -134,6 +523,7 @@ export class Payments implements OnInit {
   loadPayments(): void {
 
     this.paymentsLoading = true;
+
 
     this.paymentService
       .getMyPayments()
@@ -152,10 +542,6 @@ export class Payments implements OnInit {
 
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (data) => {
 
           console.log(
@@ -163,17 +549,17 @@ export class Payments implements OnInit {
             data
           );
 
+
           this.payments =
             Array.isArray(data)
               ? data
               : [];
 
+
+          this.cdr.detectChanges();
+
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 
@@ -182,7 +568,9 @@ export class Payments implements OnInit {
             error
           );
 
+
           this.payments = [];
+
 
           if (
             error.status !== 404
@@ -194,6 +582,9 @@ export class Payments implements OnInit {
 
           }
 
+
+          this.cdr.detectChanges();
+
         }
 
       });
@@ -202,7 +593,7 @@ export class Payments implements OnInit {
 
 
   // =====================================================
-  // MAKE PAYMENT
+  // CONTINUE TO PAYMENT
   // =====================================================
 
   makePayment(): void {
@@ -214,40 +605,34 @@ export class Payments implements OnInit {
     this.lastPayment = null;
 
 
-    // ===================================================
-    // PREVENT DOUBLE SUBMISSION
-    // ===================================================
-
     if (
-      this.submitting
+      this.submitting ||
+      this.paymentProcessing
     ) {
 
       return;
 
     }
 
-
-    // ===================================================
-    // FORM VALIDATION
-    // ===================================================
 
     if (
       this.paymentForm.invalid
     ) {
 
-      this.paymentForm.markAllAsTouched();
+      this.paymentForm
+        .markAllAsTouched();
+
 
       this.errorMessage =
         'Please enter a valid fee type and amount.';
+
+
+      this.cdr.detectChanges();
 
       return;
 
     }
 
-
-    // ===================================================
-    // GET FORM VALUES
-    // ===================================================
 
     const feeType =
       String(
@@ -279,38 +664,398 @@ export class Payments implements OnInit {
     }
 
 
-    // ===================================================
-    // START PAYMENT
-    // ===================================================
+    this.pendingFeeType =
+      feeType;
 
-    this.submitting = true;
+
+    this.pendingAmount =
+      amount;
+
+
+    this.selectedPaymentMethod =
+      'card';
+
+
+    this.paymentDetailsForm.reset({
+
+      cardholderName:
+        this.studentName !== 'Student'
+          ? this.studentName
+          : '',
+
+      cardNumber: '',
+
+      expiryDate: '',
+
+      cvv: '',
+
+      bankReference: ''
+
+    });
+
+
+    this.configurePaymentMethodValidation();
+
+
+    this.showPaymentModal = true;
 
 
     console.log(
-      'Making payment:',
+      'Opening payment confirmation:',
       {
-        feeType,
-        amount
+        feeType:
+          this.pendingFeeType,
+
+        amount:
+          this.pendingAmount
       }
     );
 
 
-    // ===================================================
-    // CALL BACKEND
-    // ===================================================
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // SELECT PAYMENT METHOD
+  // =====================================================
+
+  selectPaymentMethod(
+    method: 'card' | 'bank'
+  ): void {
+
+    this.selectedPaymentMethod =
+      method;
+
+
+    this.configurePaymentMethodValidation();
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // CONFIGURE PAYMENT METHOD VALIDATION
+  // =====================================================
+
+  private configurePaymentMethodValidation(): void {
+
+    const cardholderName =
+      this.paymentDetailsForm
+        .get('cardholderName');
+
+    const cardNumber =
+      this.paymentDetailsForm
+        .get('cardNumber');
+
+    const expiryDate =
+      this.paymentDetailsForm
+        .get('expiryDate');
+
+    const cvv =
+      this.paymentDetailsForm
+        .get('cvv');
+
+    const bankReference =
+      this.paymentDetailsForm
+        .get('bankReference');
+
+
+    if (
+      this.selectedPaymentMethod ===
+      'card'
+    ) {
+
+      cardholderName?.setValidators([
+        Validators.required,
+        Validators.minLength(3)
+      ]);
+
+
+      cardNumber?.setValidators([
+        Validators.required,
+        Validators.pattern(
+          /^[0-9]{16}$/
+        )
+      ]);
+
+
+      expiryDate?.setValidators([
+        Validators.required,
+        Validators.pattern(
+          /^(0[1-9]|1[0-2])\/[0-9]{2}$/
+        )
+      ]);
+
+
+      cvv?.setValidators([
+        Validators.required,
+        Validators.pattern(
+          /^[0-9]{3,4}$/
+        )
+      ]);
+
+
+      bankReference?.clearValidators();
+
+    }
+
+    else {
+
+      cardholderName?.clearValidators();
+
+      cardNumber?.clearValidators();
+
+      expiryDate?.clearValidators();
+
+      cvv?.clearValidators();
+
+
+      bankReference?.setValidators([
+        Validators.required,
+        Validators.minLength(4)
+      ]);
+
+    }
+
+
+    cardholderName
+      ?.updateValueAndValidity();
+
+    cardNumber
+      ?.updateValueAndValidity();
+
+    expiryDate
+      ?.updateValueAndValidity();
+
+    cvv
+      ?.updateValueAndValidity();
+
+    bankReference
+      ?.updateValueAndValidity();
+
+  }
+
+
+  // =====================================================
+  // FORMAT CARD NUMBER INPUT
+  // =====================================================
+
+  formatCardNumberInput(
+    event: Event
+  ): void {
+
+    const input =
+      event.target as HTMLInputElement;
+
+
+    const digits =
+      input.value
+        .replace(
+          /\D/g,
+          ''
+        )
+        .slice(
+          0,
+          16
+        );
+
+
+    this.paymentDetailsForm
+      .get('cardNumber')
+      ?.setValue(
+        digits,
+        {
+          emitEvent: false
+        }
+      );
+
+
+    input.value =
+      digits.replace(
+        /(\d{4})(?=\d)/g,
+        '$1 '
+      );
+
+  }
+
+
+  // =====================================================
+  // FORMAT EXPIRY INPUT
+  // =====================================================
+
+  formatExpiryInput(
+    event: Event
+  ): void {
+
+    const input =
+      event.target as HTMLInputElement;
+
+
+    let value =
+      input.value
+        .replace(
+          /\D/g,
+          ''
+        )
+        .slice(
+          0,
+          4
+        );
+
+
+    if (
+      value.length >= 3
+    ) {
+
+      value =
+        `${value.slice(0, 2)}/${value.slice(2)}`;
+
+    }
+
+
+    this.paymentDetailsForm
+      .get('expiryDate')
+      ?.setValue(
+        value,
+        {
+          emitEvent: false
+        }
+      );
+
+
+    input.value =
+      value;
+
+  }
+
+
+  // =====================================================
+  // CLOSE PAYMENT MODAL
+  // =====================================================
+
+  closePaymentModal(): void {
+
+    if (
+      this.paymentProcessing
+    ) {
+
+      return;
+
+    }
+
+
+    this.showPaymentModal = false;
+
+
+    this.paymentDetailsForm.reset();
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // CONFIRM PAYMENT
+  // =====================================================
+
+  confirmPayment(): void {
+
+    this.errorMessage = '';
+
+    this.successMessage = '';
+
+
+    if (
+      this.paymentProcessing ||
+      this.submitting
+    ) {
+
+      return;
+
+    }
+
+
+    this.configurePaymentMethodValidation();
+
+
+    if (
+      this.paymentDetailsForm.invalid
+    ) {
+
+      this.paymentDetailsForm
+        .markAllAsTouched();
+
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    if (
+      !this.pendingFeeType ||
+      this.pendingAmount <= 0
+    ) {
+
+      this.errorMessage =
+        'Payment information is invalid. Please try again.';
+
+
+      this.showPaymentModal = false;
+
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.paymentProcessing = true;
+
+    this.submitting = true;
+
+
+    this.processingText =
+      'Processing your secure payment...';
+
+
+    console.log(
+      'Confirming payment:',
+      {
+        feeType:
+          this.pendingFeeType,
+
+        amount:
+          this.pendingAmount,
+
+        method:
+          this.selectedPaymentMethod
+      }
+    );
+
 
     this.paymentService
 
       .pay(
-        feeType,
-        amount
+        this.pendingFeeType,
+        this.pendingAmount
       )
 
       .pipe(
 
         finalize(() => {
 
+          this.paymentProcessing = false;
+
           this.submitting = false;
+
 
           this.cdr.detectChanges();
 
@@ -319,10 +1064,6 @@ export class Payments implements OnInit {
       )
 
       .subscribe({
-
-        // ===============================================
-        // SUCCESS
-        // ===============================================
 
         next: (response) => {
 
@@ -334,6 +1075,7 @@ export class Payments implements OnInit {
 
           this.errorMessage = '';
 
+
           this.successMessage =
             response.message ||
             'Payment completed successfully.';
@@ -343,9 +1085,21 @@ export class Payments implements OnInit {
             response;
 
 
-          // =============================================
-          // RESET FORM
-          // =============================================
+          this.transactionReference =
+            this.createTransactionReference();
+
+
+          this.paidAt =
+            new Date();
+
+
+          this.showPaymentModal =
+            false;
+
+
+          this.paymentDetailsForm
+            .reset();
+
 
           this.paymentForm.reset({
 
@@ -356,34 +1110,20 @@ export class Payments implements OnInit {
           });
 
 
-          // =============================================
-          // REFRESH HISTORY
-          // =============================================
+          this.pendingFeeType = '';
+
+          this.pendingAmount = 0;
+
 
           this.loadPayments();
+
+          this.loadUnreadNotificationCount();
 
 
           this.cdr.detectChanges();
 
-
-          // =============================================
-          // HIDE SUCCESS MESSAGE
-          // =============================================
-
-          setTimeout(() => {
-
-            this.successMessage = '';
-
-            this.cdr.detectChanges();
-
-          }, 5000);
-
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 
@@ -398,10 +1138,6 @@ export class Payments implements OnInit {
           this.lastPayment = null;
 
 
-          // =============================================
-          // 400
-          // =============================================
-
           if (
             error.status === 400
           ) {
@@ -413,11 +1149,6 @@ export class Payments implements OnInit {
 
           }
 
-
-          // =============================================
-          // 401
-          // =============================================
-
           else if (
             error.status === 401
           ) {
@@ -426,11 +1157,6 @@ export class Payments implements OnInit {
               'Your session has expired. Please login again.';
 
           }
-
-
-          // =============================================
-          // 403
-          // =============================================
 
           else if (
             error.status === 403
@@ -441,11 +1167,6 @@ export class Payments implements OnInit {
 
           }
 
-
-          // =============================================
-          // 404
-          // =============================================
-
           else if (
             error.status === 404
           ) {
@@ -455,11 +1176,6 @@ export class Payments implements OnInit {
 
           }
 
-
-          // =============================================
-          // 409
-          // =============================================
-
           else if (
             error.status === 409
           ) {
@@ -468,20 +1184,16 @@ export class Payments implements OnInit {
               error.error?.message ||
               'This fee has already been paid.';
 
+
             this.loadPayments();
 
           }
-
-
-          // =============================================
-          // OTHER ERRORS
-          // =============================================
 
           else {
 
             this.errorMessage =
               error.error?.message ||
-              'Unable to complete payment.';
+              'Unable to complete payment. Please try again.';
 
           }
 
@@ -496,6 +1208,84 @@ export class Payments implements OnInit {
 
 
   // =====================================================
+  // CREATE DISPLAY TRANSACTION REFERENCE
+  // =====================================================
+
+  private createTransactionReference(): string {
+
+    const now =
+      new Date();
+
+
+    const datePart =
+      `${now.getFullYear()}${String(
+        now.getMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      )}${String(
+        now.getDate()
+      ).padStart(
+        2,
+        '0'
+      )}`;
+
+
+    const randomPart =
+      Math.floor(
+        100000 +
+        Math.random() * 900000
+      );
+
+
+    return `PAY-${datePart}-${randomPart}`;
+
+  }
+
+
+  // =====================================================
+  // GET PAYMENT METHOD LABEL
+  // =====================================================
+
+  getPaymentMethodLabel(): string {
+
+    return this.selectedPaymentMethod ===
+      'card'
+      ? 'Card Payment'
+      : 'Bank Transfer';
+
+  }
+
+
+  // =====================================================
+  // GET MASKED CARD NUMBER
+  // =====================================================
+
+  getMaskedCardNumber(): string {
+
+    const cardNumber =
+      String(
+        this.paymentDetailsForm
+          .get('cardNumber')
+          ?.value || ''
+      );
+
+
+    if (
+      cardNumber.length < 4
+    ) {
+
+      return '••••';
+
+    }
+
+
+    return `•••• •••• •••• ${cardNumber.slice(-4)}`;
+
+  }
+
+
+  // =====================================================
   // REFRESH PAYMENT HISTORY
   // =====================================================
 
@@ -505,7 +1295,10 @@ export class Payments implements OnInit {
 
     this.successMessage = '';
 
+
     this.loadPayments();
+
+    this.loadUnreadNotificationCount();
 
   }
 

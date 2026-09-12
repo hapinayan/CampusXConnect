@@ -180,6 +180,39 @@
 
 
 /* =========================================================
+   SIDEBAR NOTIFICATION COUNT
+========================================================= */
+
+.sidebar .notification-count {
+  min-width: 26px;
+  height: 26px;
+
+  margin-left: auto;
+
+  padding: 0 7px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #fb7185;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow:
+    0 4px 10px rgba(251, 113, 133, 0.25);
+}
+
+
+/* =========================================================
    SIDEBAR BOTTOM
 ========================================================= */
 
@@ -269,6 +302,8 @@
   width: 43px;
   height: 43px;
 
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -296,6 +331,48 @@
   transform: translateY(-1px);
 }
 
+.notification-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+
+  line-height: 1;
+}
+
+.topbar-notification-count {
+  position: absolute;
+
+  top: -6px;
+  right: -6px;
+
+  min-width: 21px;
+  height: 21px;
+
+  padding: 0 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #ffffff;
+
+  border-radius: 50%;
+
+  background: #fb7185;
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  box-shadow:
+    0 3px 8px rgba(251, 113, 133, 0.28);
+}
+
 
 /* =========================================================
    STUDENT PROFILE
@@ -306,11 +383,35 @@
   align-items: center;
 
   gap: 11px;
+
+  padding: 5px 8px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.student-profile:hover {
+  background: #f0f9f5;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 15px rgba(16, 185, 129, 0.08);
 }
 
 .profile-avatar {
   width: 43px;
   height: 43px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -326,8 +427,22 @@
 
   color: #fff;
 
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 800;
+
+  box-shadow:
+    0 4px 12px rgba(16, 185, 129, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.student-profile:hover .profile-avatar {
+  transform: scale(1.05);
+
+  box-shadow:
+    0 6px 16px rgba(16, 185, 129, 0.25);
 }
 
 .profile-info {
@@ -335,18 +450,53 @@
   flex-direction: column;
 
   gap: 2px;
+
+  min-width: 100px;
+  max-width: 190px;
 }
 
 .profile-info strong {
+  display: block;
+
   color: #102a43;
 
   font-size: 14px;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
 .profile-info small {
+  display: block;
+
+  margin-top: 2px;
+
   color: #718096;
 
   font-size: 12px;
+}
+
+.profile-arrow {
+  margin-left: 5px;
+
+  color: #5f7c74;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.student-profile:hover .profile-arrow {
+  color: #059669;
+
+  transform: translateX(3px);
 }
 
 
@@ -600,7 +750,9 @@
 .content-grid {
   display: grid;
 
-  grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.85fr);
+  grid-template-columns:
+    minmax(0, 1.65fr)
+    minmax(320px, 0.85fr);
 
   gap: 22px;
 
@@ -692,7 +844,8 @@
 .form-grid {
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   gap: 20px;
 
@@ -810,7 +963,8 @@
 .slots-grid {
   display: grid;
 
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
 
   gap: 12px;
 }
@@ -1047,11 +1201,6 @@
   transform: translateX(2px);
 }
 
-
-/* =========================================================
-   BOOKING ICON
-========================================================= */
-
 .booking-item-icon {
   width: 49px;
   height: 49px;
@@ -1068,11 +1217,6 @@
 
   font-size: 21px;
 }
-
-
-/* =========================================================
-   BOOKING INFO
-========================================================= */
 
 .booking-info {
   flex: 1;
@@ -1096,11 +1240,6 @@
 
   font-size: 12px;
 }
-
-
-/* =========================================================
-   CANCEL BUTTON
-========================================================= */
 
 .cancel-button {
   padding: 9px 14px;
@@ -1261,11 +1400,6 @@
   }
 }
 
-
-/* =========================================================
-   CANCEL POPUP
-========================================================= */
-
 .cancel-popup {
   width: 100%;
   max-width: 440px;
@@ -1348,11 +1482,6 @@
   font-size: 12px;
   font-weight: 650;
 }
-
-
-/* =========================================================
-   POPUP ACTIONS
-========================================================= */
 
 .popup-actions {
   display: flex;
@@ -1472,6 +1601,10 @@
     display: none;
   }
 
+  .sidebar .notification-count {
+    display: none;
+  }
+
   .main-content {
     width: calc(100% - 75px);
 
@@ -1482,8 +1615,18 @@
     padding: 0 20px;
   }
 
-  .profile-info {
+  .profile-info,
+  .profile-arrow {
     display: none;
+  }
+
+  .student-profile {
+    padding: 3px;
+  }
+
+  .profile-avatar {
+    width: 43px;
+    height: 43px;
   }
 
   .topbar-right {
@@ -1628,159 +1771,585 @@
 }
 
 /* =========================================================
-   STUDENT PROFILE — DASHBOARD STYLE
+   CAMPUSX CUSTOM CALENDAR
+   PREMIUM GREEN DATE PICKER
 ========================================================= */
 
-.student-profile {
-  display: flex;
-  align-items: center;
-
-  gap: 11px;
-
-  padding: 5px 8px;
-
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  text-decoration: none;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.calendar-form-group {
+  position: relative;
 }
 
-.student-profile:hover {
-  background: #f0f9f5;
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 5px 15px rgba(16, 185, 129, 0.08);
+.custom-date-wrapper {
+  width: 100%;
+  position: relative;
 }
 
 
 /* =========================================================
-   PROFILE AVATAR
+   DATE INPUT BUTTON
 ========================================================= */
 
-.profile-avatar {
-  width: 43px;
-  height: 43px;
+.custom-date-input {
+  width: 100%;
+  min-height: 47px;
 
-  flex-shrink: 0;
+  padding: 0 13px 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border: 1px solid #d7e8e1;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #fbfefd;
+
+  color: #183b35;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.custom-date-input:hover {
+  border-color: #a9d8c8;
+  background: #ffffff;
+}
+
+.custom-date-input.calendar-open {
+  border-color: #10b981;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(16, 185, 129, 0.10);
+}
+
+.custom-date-input.date-selected {
+  color: #123f35;
+}
+
+
+/* DATE TEXT */
+
+.date-input-text {
+  min-width: 0;
+
+  overflow: hidden;
+
+  color: #183b35;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date-input-text.placeholder {
+  color: #91a39e;
+}
+
+
+/* CALENDAR ICON */
+
+.date-calendar-icon {
+  width: 30px;
+  height: 30px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
+  flex-shrink: 0;
 
-  background: linear-gradient(
-    135deg,
-    #34d399,
-    #059669
-  );
+  border-radius: 8px;
 
-  color: #fff;
+  background: #ecfdf5;
 
-  font-size: 17px;
-  font-weight: 800;
-
-  box-shadow:
-    0 4px 12px rgba(16, 185, 129, 0.18);
+  font-size: 16px;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.student-profile:hover .profile-avatar {
-  transform: scale(1.05);
-
-  box-shadow:
-    0 6px 16px rgba(16, 185, 129, 0.25);
-}
-
-
-/* =========================================================
-   PROFILE INFO
-========================================================= */
-
-.profile-info {
-  min-width: 100px;
-  max-width: 190px;
-}
-
-.profile-info strong {
-  display: block;
-
-  color: #102a43;
-
-  font-size: 14px;
-  font-weight: 750;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-.profile-info small {
-  display: block;
-
-  margin-top: 2px;
-
-  color: #718096;
-
-  font-size: 12px;
-}
-
-
-/* =========================================================
-   PROFILE ARROW
-========================================================= */
-
-.profile-arrow {
-  margin-left: 5px;
-
-  color: #5f7c74;
-
-  font-size: 18px;
-  font-weight: 600;
-
-  transition:
-    color 0.2s ease,
+    background 0.2s ease,
     transform 0.2s ease;
 }
 
-.student-profile:hover .profile-arrow {
-  color: #059669;
+.custom-date-input:hover .date-calendar-icon {
+  background: #d9f8e9;
+}
 
-  transform: translateX(3px);
+.custom-date-input.calendar-open .date-calendar-icon {
+  background: #d1fae5;
+
+  transform: scale(1.04);
 }
 
 
 /* =========================================================
-   MOBILE
+   CALENDAR POPUP
 ========================================================= */
 
-@media (max-width: 700px) {
+.custom-calendar {
+  width: 340px;
 
-  .profile-info,
-  .profile-arrow {
-    display: none;
+  position: absolute;
+
+  top: calc(100% + 10px);
+  right: 0;
+
+  z-index: 50;
+
+  padding: 17px;
+
+  border: 1px solid #dcebe5;
+
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 20px 55px rgba(15, 80, 65, 0.16),
+    0 5px 16px rgba(15, 80, 65, 0.08);
+
+  animation: calendarOpen 0.18s ease;
+}
+
+
+@keyframes calendarOpen {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-7px)
+      scale(0.98);
   }
 
-  .student-profile {
-    padding: 3px;
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
   }
 
-  .profile-avatar {
-    width: 43px;
-    height: 43px;
+}
+
+
+/* SMALL TOP ARROW */
+
+.custom-calendar::before {
+  content: "";
+
+  position: absolute;
+
+  top: -7px;
+  right: 20px;
+
+  width: 13px;
+  height: 13px;
+
+  border-top: 1px solid #dcebe5;
+  border-left: 1px solid #dcebe5;
+
+  background: #ffffff;
+
+  transform: rotate(45deg);
+}
+
+
+/* =========================================================
+   CALENDAR HEADER
+========================================================= */
+
+.calendar-header {
+  min-height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 12px;
+}
+
+
+/* MONTH TITLE */
+
+.calendar-month-title {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-month-title span {
+  color: #123f35;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  letter-spacing: -0.2px;
+}
+
+
+/* NAVIGATION BUTTONS */
+
+.calendar-nav-button {
+  width: 37px;
+  height: 37px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: 1px solid #dceae5;
+
+  border-radius: 10px;
+
+  background: #f8fcfa;
+
+  color: #075e4c;
+
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.calendar-nav-button:hover {
+  border-color: #a7ddca;
+
+  background: #ecfdf5;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   WEEK DAYS
+========================================================= */
+
+.calendar-weekdays {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, 1fr);
+
+  gap: 4px;
+
+  margin-bottom: 6px;
+}
+
+.calendar-weekdays span {
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #7e938d;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   DAYS GRID
+========================================================= */
+
+.calendar-days {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, 1fr);
+
+  gap: 4px;
+}
+
+
+/* DEFAULT DAY */
+
+.calendar-day {
+  aspect-ratio: 1;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #284c44;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+
+/* DAY HOVER */
+
+.calendar-day:hover:not(:disabled):not(.selected) {
+  border-color: #c8eadc;
+
+  background: #effaf5;
+
+  color: #047857;
+
+  transform: translateY(-1px);
+}
+
+
+/* OTHER MONTH */
+
+.calendar-day.other-month {
+  color: #b5c2be;
+}
+
+
+/* TODAY */
+
+.calendar-day.today:not(.selected) {
+  border-color: #7dd3b3;
+
+  background: #ecfdf5;
+
+  color: #047857;
+
+  font-weight: 800;
+}
+
+
+/* SELECTED DATE */
+
+.calendar-day.selected {
+  border-color: #047857;
+
+  background: linear-gradient(
+    135deg,
+    #10b981,
+    #047857
+  );
+
+  color: #ffffff;
+
+  font-weight: 850;
+
+  box-shadow:
+    0 5px 13px rgba(16, 185, 129, 0.25);
+
+  transform: scale(1.04);
+}
+
+
+/* DISABLED / PAST DAYS */
+
+.calendar-day.disabled {
+  color: #ced8d4;
+
+  background: transparent;
+
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+.calendar-day.disabled:hover {
+  transform: none;
+}
+
+
+/* =========================================================
+   CALENDAR FOOTER
+========================================================= */
+
+.calendar-footer {
+  margin-top: 14px;
+
+  padding-top: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-top: 1px solid #e8f0ed;
+}
+
+
+/* TODAY BUTTON */
+
+.calendar-today-button {
+  min-width: 80px;
+  height: 34px;
+
+  padding: 0 14px;
+
+  border: 1px solid #bfe6d6;
+
+  border-radius: 9px;
+
+  background: #ecfdf5;
+
+  color: #047857;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.calendar-today-button:hover {
+  border-color: #71d5ae;
+
+  background: #d9f8e9;
+
+  transform: translateY(-1px);
+}
+
+
+/* CLEAR BUTTON */
+
+.calendar-clear-button {
+  min-width: 70px;
+  height: 34px;
+
+  padding: 0 13px;
+
+  border: 1px solid transparent;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #708680;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.calendar-clear-button:hover {
+  background: #f1f5f4;
+
+  color: #31564d;
+}
+
+
+/* =========================================================
+   RESPONSIVE CALENDAR
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .custom-calendar {
+    width: min(
+      340px,
+      calc(100vw - 125px)
+    );
+
+    right: 0;
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .custom-calendar {
+    width: min(
+      310px,
+      calc(100vw - 110px)
+    );
+
+    padding: 14px;
+
+    border-radius: 14px;
+  }
+
+
+  .calendar-header {
+    margin-bottom: 9px;
+  }
+
+
+  .calendar-nav-button {
+    width: 34px;
+    height: 34px;
+
+    font-size: 21px;
+  }
+
+
+  .calendar-month-title span {
+    font-size: 14px;
+  }
+
+
+  .calendar-weekdays span {
+    font-size: 9px;
+  }
+
+
+  .calendar-day {
+    border-radius: 8px;
+
+    font-size: 11px;
   }
 
 }

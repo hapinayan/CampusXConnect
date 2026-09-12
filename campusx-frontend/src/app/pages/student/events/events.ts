@@ -8,7 +8,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
+import QRCode from 'qrcode';
+
 import { EventService } from '../../../core/services/event.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 import {
   Event,
@@ -35,6 +38,13 @@ export class Events implements OnInit {
   // =====================================================
 
   studentName = 'Student';
+
+
+  // =====================================================
+  // NOTIFICATIONS
+  // =====================================================
+
+  unreadCount = 0;
 
 
   // =====================================================
@@ -67,6 +77,19 @@ export class Events implements OnInit {
 
 
   // =====================================================
+  // SUCCESS POPUP + QR
+  // =====================================================
+
+  showSuccessPopup = false;
+
+  qrCodeUrl = '';
+
+  registeredEvent: Event | null = null;
+
+  registeredRegistrationId: number | null = null;
+
+
+  // =====================================================
   // CANCEL POPUP
   // =====================================================
 
@@ -81,6 +104,7 @@ export class Events implements OnInit {
 
   constructor(
     private eventService: EventService,
+    private notificationService: NotificationService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -95,14 +119,14 @@ export class Events implements OnInit {
       'Events page initialized'
     );
 
-
     // Load real student name
     this.loadStudentProfile();
 
+    // Load unread notification count
+    this.loadUnreadNotificationCount();
 
     // Load all events
     this.loadEvents();
-
 
     // Load student's registrations
     this.loadMyRegistrations();
@@ -116,35 +140,138 @@ export class Events implements OnInit {
 
   loadStudentProfile(): void {
 
-    const storedStudentName =
-      localStorage.getItem('studentName');
+    try {
+
+      // ===============================================
+      // 1. TRY COMPLETE STUDENT OBJECT
+      // ===============================================
+
+      const storedStudent =
+        localStorage.getItem('student');
 
 
-    if (
-      storedStudentName &&
-      storedStudentName.trim()
-    ) {
+      if (storedStudent) {
 
-      this.studentName =
-        storedStudentName.trim();
+        const parsedStudent =
+          JSON.parse(storedStudent);
 
-    }
 
-    else {
+        if (
+          parsedStudent &&
+          parsedStudent.fullName
+        ) {
+
+          this.studentName =
+            parsedStudent.fullName.trim();
+
+
+          console.log(
+            'Student loaded from student object:',
+            this.studentName
+          );
+
+
+          this.cdr.detectChanges();
+
+          return;
+
+        }
+
+      }
+
+
+      // ===============================================
+      // 2. TRY FULL NAME
+      // ===============================================
+
+      const fullName =
+        localStorage.getItem('fullName');
+
+
+      if (
+        fullName &&
+        fullName.trim().length > 0
+      ) {
+
+        this.studentName =
+          fullName.trim();
+
+
+        console.log(
+          'Student loaded from fullName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      // ===============================================
+      // 3. TRY STUDENT NAME
+      // ===============================================
+
+      const storedStudentName =
+        localStorage.getItem('studentName');
+
+
+      if (
+        storedStudentName &&
+        storedStudentName.trim().length > 0
+      ) {
+
+        this.studentName =
+          storedStudentName.trim();
+
+
+        console.log(
+          'Student loaded from studentName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      // ===============================================
+      // 4. NO NAME FOUND
+      // ===============================================
 
       this.studentName =
         'Student';
 
+
+      console.warn(
+        'Student name not found in localStorage.'
+      );
+
+
+      this.cdr.detectChanges();
+
     }
 
+    catch (error) {
 
-    console.log(
-      'Logged-in student:',
-      this.studentName
-    );
+      console.error(
+        'Failed to load student profile:',
+        error
+      );
 
 
-    this.cdr.detectChanges();
+      this.studentName =
+        'Student';
+
+
+      this.cdr.detectChanges();
+
+    }
 
   }
 
@@ -157,6 +284,7 @@ export class Events implements OnInit {
 
     if (
       !this.studentName ||
+      this.studentName.trim() === '' ||
       this.studentName === 'Student'
     ) {
 
@@ -169,6 +297,102 @@ export class Events implements OnInit {
       .trim()
       .charAt(0)
       .toUpperCase();
+
+  }
+
+
+  // =====================================================
+  // LOAD UNREAD NOTIFICATION COUNT
+  // =====================================================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Events notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        next: (notifications) => {
+
+          if (!Array.isArray(notifications)) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Events unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Events notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
 
   }
 
@@ -247,9 +471,7 @@ export class Events implements OnInit {
   loadMyRegistrations(): void {
 
     const storedStudentId =
-      localStorage.getItem(
-        'studentId'
-      );
+      localStorage.getItem('studentId');
 
 
     console.log(
@@ -257,10 +479,6 @@ export class Events implements OnInit {
       storedStudentId
     );
 
-
-    // ===================================================
-    // NO STUDENT ID
-    // ===================================================
 
     if (!storedStudentId) {
 
@@ -279,10 +497,6 @@ export class Events implements OnInit {
       Number(storedStudentId);
 
 
-    // ===================================================
-    // INVALID STUDENT ID
-    // ===================================================
-
     if (!studentId) {
 
       this.registrations = [];
@@ -295,10 +509,6 @@ export class Events implements OnInit {
 
     }
 
-
-    // ===================================================
-    // LOAD REGISTRATIONS
-    // ===================================================
 
     this.registrationsLoading = true;
 
@@ -321,7 +531,7 @@ export class Events implements OnInit {
         next: (data) => {
 
           console.log(
-            'My registrations:',
+            'My event registrations:',
             data
           );
 
@@ -347,8 +557,6 @@ export class Events implements OnInit {
 
           this.registrations = [];
 
-
-          // 404 means no registrations
 
           if (
             error.status !== 404
@@ -402,6 +610,92 @@ export class Events implements OnInit {
 
 
   // =====================================================
+  // GENERATE EVENT QR CODE
+  // =====================================================
+
+  async generateEventQrCode(
+    eventId: number,
+    registrationId: number
+  ): Promise<void> {
+
+    try {
+
+      const studentId =
+        Number(
+          localStorage.getItem('studentId')
+        );
+
+
+      const event =
+        this.events.find(
+          item =>
+            item.id === eventId
+        );
+
+
+      const qrData =
+        JSON.stringify({
+
+          type:
+            'CampusXEventRegistration',
+
+          registrationId:
+            registrationId,
+
+          eventId:
+            eventId,
+
+          studentId:
+            studentId,
+
+          studentName:
+            this.studentName,
+
+          eventTitle:
+            event?.title ||
+            'CampusX Event'
+
+        });
+
+
+      this.qrCodeUrl =
+        await QRCode.toDataURL(
+          qrData,
+          {
+            width: 260,
+            margin: 2
+          }
+        );
+
+
+      console.log(
+        'Event QR generated successfully'
+      );
+
+
+      this.cdr.detectChanges();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'QR generation failed:',
+        error
+      );
+
+
+      this.qrCodeUrl = '';
+
+
+      this.cdr.detectChanges();
+
+    }
+
+  }
+
+
+  // =====================================================
   // REGISTER FOR EVENT
   // =====================================================
 
@@ -414,10 +708,6 @@ export class Events implements OnInit {
     this.successMessage = '';
 
 
-    // ===================================================
-    // PREVENT DOUBLE CLICK
-    // ===================================================
-
     if (
       this.registeringEventId !== null
     ) {
@@ -426,10 +716,6 @@ export class Events implements OnInit {
 
     }
 
-
-    // ===================================================
-    // ALREADY REGISTERED
-    // ===================================================
 
     if (
       this.isRegistered(eventId)
@@ -443,23 +729,13 @@ export class Events implements OnInit {
     }
 
 
-    // ===================================================
-    // START REGISTERING
-    // ===================================================
-
     this.registeringEventId =
       eventId;
 
 
-    // ===================================================
-    // API REQUEST
-    // ===================================================
-
     this.eventService
       .registerForEvent({
-
         eventId: eventId
-
       })
       .pipe(
 
@@ -474,11 +750,7 @@ export class Events implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
-        next: (response) => {
+        next: async (response: any) => {
 
           console.log(
             'Event registration successful:',
@@ -493,30 +765,79 @@ export class Events implements OnInit {
             'Event registration successful!';
 
 
-          // Refresh registrations
+          // ===========================================
+          // STORE REGISTERED EVENT
+          // ===========================================
+
+          this.registeredEvent =
+            this.events.find(
+              event =>
+                event.id === eventId
+            ) || null;
+
+
+          // ===========================================
+          // GET REGISTRATION ID FROM BACKEND RESPONSE
+          // ===========================================
+
+          const registrationId =
+            Number(
+              response?.id ??
+              response?.registrationId ??
+              response?.eventRegistrationId ??
+              0
+            );
+
+
+          this.registeredRegistrationId =
+            registrationId > 0
+              ? registrationId
+              : null;
+
+
+          // ===========================================
+          // GENERATE QR
+          // ===========================================
+
+          if (
+            registrationId > 0
+          ) {
+
+            await this.generateEventQrCode(
+              eventId,
+              registrationId
+            );
+
+          }
+
+          else {
+
+            console.warn(
+              'Registration ID was not returned by backend.'
+            );
+
+
+            this.qrCodeUrl = '';
+
+          }
+
+
+          // ===========================================
+          // SHOW SUCCESS POPUP
+          // ===========================================
+
+          this.showSuccessPopup = true;
+
+
+          // Reload registrations
 
           this.loadMyRegistrations();
 
 
           this.cdr.detectChanges();
 
-
-          // Hide success message
-
-          setTimeout(() => {
-
-            this.successMessage = '';
-
-            this.cdr.detectChanges();
-
-          }, 5000);
-
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 
@@ -528,8 +849,6 @@ export class Events implements OnInit {
 
           this.successMessage = '';
 
-
-          // 400
 
           if (
             error.status === 400
@@ -543,8 +862,6 @@ export class Events implements OnInit {
           }
 
 
-          // 401
-
           else if (
             error.status === 401
           ) {
@@ -555,8 +872,6 @@ export class Events implements OnInit {
           }
 
 
-          // 409
-
           else if (
             error.status === 409
           ) {
@@ -566,14 +881,10 @@ export class Events implements OnInit {
               'You are already registered or the event is full.';
 
 
-            // Refresh registrations
-
             this.loadMyRegistrations();
 
           }
 
-
-          // Other errors
 
           else {
 
@@ -588,6 +899,28 @@ export class Events implements OnInit {
         }
 
       });
+
+  }
+
+
+  // =====================================================
+  // CLOSE SUCCESS POPUP
+  // =====================================================
+
+  closeSuccessPopup(): void {
+
+    this.showSuccessPopup = false;
+
+    this.registeredEvent = null;
+
+    this.registeredRegistrationId = null;
+
+    this.qrCodeUrl = '';
+
+    this.successMessage = '';
+
+
+    this.cdr.detectChanges();
 
   }
 
@@ -639,10 +972,6 @@ export class Events implements OnInit {
 
   confirmCancelRegistration(): void {
 
-    // ===================================================
-    // CHECK REGISTRATION
-    // ===================================================
-
     if (
       this.selectedRegistrationId === null
     ) {
@@ -656,10 +985,6 @@ export class Events implements OnInit {
       this.selectedRegistrationId;
 
 
-    // ===================================================
-    // CLOSE POPUP
-    // ===================================================
-
     this.showCancelPopup = false;
 
     this.selectedRegistrationId = null;
@@ -669,10 +994,6 @@ export class Events implements OnInit {
 
     this.successMessage = '';
 
-
-    // ===================================================
-    // API REQUEST
-    // ===================================================
 
     this.eventService
       .cancelRegistration(
@@ -689,22 +1010,17 @@ export class Events implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: () => {
 
           console.log(
-            'Event registration cancelled.'
+            'Event registration cancelled:',
+            registrationId
           );
 
 
           this.successMessage =
             'Event registration cancelled successfully.';
 
-
-          // Remove immediately from UI
 
           this.registrations =
             this.registrations.filter(
@@ -715,8 +1031,6 @@ export class Events implements OnInit {
 
           this.cdr.detectChanges();
 
-
-          // Hide success message
 
           setTimeout(() => {
 
@@ -729,10 +1043,6 @@ export class Events implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -740,8 +1050,6 @@ export class Events implements OnInit {
             error
           );
 
-
-          // 401
 
           if (
             error.status === 401
@@ -753,8 +1061,6 @@ export class Events implements OnInit {
           }
 
 
-          // 403
-
           else if (
             error.status === 403
           ) {
@@ -765,8 +1071,6 @@ export class Events implements OnInit {
           }
 
 
-          // 404
-
           else if (
             error.status === 404
           ) {
@@ -776,8 +1080,6 @@ export class Events implements OnInit {
 
           }
 
-
-          // Other
 
           else {
 

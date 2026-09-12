@@ -6,8 +6,6 @@
 
   <aside class="sidebar">
 
-    <!-- BRAND -->
-
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -22,13 +20,7 @@
     </div>
 
 
-    <!-- ===================================================
-         NAVIGATION
-    ==================================================== -->
-
     <nav class="sidebar-nav">
-
-      <!-- DASHBOARD -->
 
       <a
         class="nav-item"
@@ -44,8 +36,6 @@
       </a>
 
 
-      <!-- HOSTEL -->
-
       <a
         class="nav-item"
         routerLink="/hostel"
@@ -59,8 +49,6 @@
         </span>
       </a>
 
-
-      <!-- LAB BOOKING -->
 
       <a
         class="nav-item"
@@ -76,8 +64,6 @@
       </a>
 
 
-      <!-- EVENTS -->
-
       <a
         class="nav-item active"
         routerLink="/events"
@@ -91,8 +77,6 @@
         </span>
       </a>
 
-
-      <!-- COMPLAINTS -->
 
       <a
         class="nav-item"
@@ -108,8 +92,6 @@
       </a>
 
 
-      <!-- CERTIFICATES -->
-
       <a
         class="nav-item"
         routerLink="/certificates"
@@ -123,8 +105,6 @@
         </span>
       </a>
 
-
-      <!-- PAYMENTS -->
 
       <a
         class="nav-item"
@@ -146,6 +126,7 @@
         class="nav-item"
         routerLink="/notifications"
       >
+
         <span class="nav-icon">
           🔔
         </span>
@@ -153,10 +134,18 @@
         <span>
           Notifications
         </span>
+
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
       </a>
 
-
-      <!-- PROFILE -->
 
       <a
         class="nav-item"
@@ -173,10 +162,6 @@
 
     </nav>
 
-
-    <!-- ===================================================
-         SIDEBAR BOTTOM
-    ==================================================== -->
 
     <div class="sidebar-bottom">
 
@@ -214,8 +199,6 @@
 
     <header class="topbar">
 
-      <!-- PAGE TITLE -->
-
       <div class="topbar-title">
 
         <span class="page-label">
@@ -225,14 +208,10 @@
       </div>
 
 
-      <!-- TOPBAR RIGHT -->
-
       <div class="topbar-right">
 
 
-        <!-- =================================================
-             NOTIFICATION
-        ================================================== -->
+        <!-- NOTIFICATION -->
 
         <button
           type="button"
@@ -241,16 +220,24 @@
           title="Notifications"
         >
 
-          🔔
+          <span class="notification-bell">
+            🔔
+          </span>
+
+
+          @if (unreadCount > 0) {
+
+            <span class="topbar-notification-count">
+              {{ unreadCount }}
+            </span>
+
+          }
 
         </button>
 
 
 
-        <!-- =================================================
-             STUDENT PROFILE
-             SAME STYLE AS DASHBOARD
-        ================================================== -->
+        <!-- STUDENT PROFILE -->
 
         <div
           class="student-profile"
@@ -258,17 +245,12 @@
           title="View Profile"
         >
 
-
-          <!-- AVATAR -->
-
           <div class="profile-avatar">
 
             {{ getStudentInitial() }}
 
           </div>
 
-
-          <!-- STUDENT INFO -->
 
           <div class="profile-info">
 
@@ -283,12 +265,9 @@
           </div>
 
 
-          <!-- ARROW -->
-
           <span class="profile-arrow">
-            ⌄
+            →
           </span>
-
 
         </div>
 
@@ -305,9 +284,7 @@
     <section class="content">
 
 
-      <!-- =================================================
-           HERO
-      ================================================== -->
+      <!-- HERO -->
 
       <section class="hero">
 
@@ -329,8 +306,6 @@
         </div>
 
 
-        <!-- BACK TO DASHBOARD -->
-
         <button
           type="button"
           class="back-button"
@@ -345,14 +320,10 @@
 
 
 
-      <!-- =================================================
-           FEATURES
-      ================================================== -->
+      <!-- FEATURES -->
 
       <section class="feature-row">
 
-
-        <!-- FEATURE 1 -->
 
         <div class="feature-card">
 
@@ -376,8 +347,6 @@
 
 
 
-        <!-- FEATURE 2 -->
-
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -399,8 +368,6 @@
         </div>
 
 
-
-        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -426,9 +393,7 @@
 
 
 
-      <!-- =================================================
-           ERROR MESSAGE
-      ================================================== -->
+      <!-- ERROR MESSAGE -->
 
       @if (errorMessage) {
 
@@ -444,11 +409,9 @@
 
 
 
-      <!-- =================================================
-           SUCCESS MESSAGE
-      ================================================== -->
+      <!-- NORMAL SUCCESS MESSAGE -->
 
-      @if (successMessage) {
+      @if (successMessage && !showSuccessPopup) {
 
         <div class="message success">
 
@@ -462,14 +425,12 @@
 
 
 
-      <!-- =================================================
-           EVENTS SECTION
-      ================================================== -->
+      <!-- ===================================================
+           EVENTS
+      ==================================================== -->
 
       <section class="events-card">
 
-
-        <!-- SECTION HEADER -->
 
         <div class="section-header">
 
@@ -493,10 +454,6 @@
 
 
 
-        <!-- =================================================
-             LOADING
-        ================================================== -->
-
         @if (eventsLoading) {
 
           <div class="loading-box">
@@ -510,10 +467,6 @@
         }
 
 
-
-        <!-- =================================================
-             EVENTS
-        ================================================== -->
 
         @else if (events.length > 0) {
 
@@ -529,20 +482,14 @@
               <div class="event-card">
 
 
-                <!-- EVENT ICON -->
-
                 <div class="event-icon">
                   📅
                 </div>
 
 
 
-                <!-- EVENT DETAILS -->
-
                 <div class="event-content">
 
-
-                  <!-- TITLE -->
 
                   <h3>
                     {{ event.title }}
@@ -550,15 +497,11 @@
 
 
 
-                  <!-- DESCRIPTION -->
-
                   <p class="event-description">
                     {{ event.description }}
                   </p>
 
 
-
-                  <!-- DATE -->
 
                   <div class="event-detail">
 
@@ -574,8 +517,6 @@
 
 
 
-                  <!-- VENUE -->
-
                   <div class="event-detail">
 
                     <span>
@@ -589,8 +530,6 @@
                   </div>
 
 
-
-                  <!-- CAPACITY -->
 
                   <div class="event-detail">
 
@@ -607,8 +546,6 @@
 
 
 
-                  <!-- INACTIVE EVENT -->
-
                   @if (!event.isActive) {
 
                     <div class="event-inactive">
@@ -620,8 +557,6 @@
                   }
 
 
-
-                  <!-- ALREADY REGISTERED -->
 
                   @else if (isRegistered(event.id)) {
 
@@ -638,8 +573,6 @@
                   }
 
 
-
-                  <!-- REGISTER -->
 
                   @else {
 
@@ -682,10 +615,6 @@
 
 
 
-        <!-- =================================================
-             NO EVENTS
-        ================================================== -->
-
         @else {
 
           <div class="empty-state">
@@ -710,14 +639,12 @@
 
 
 
-      <!-- =================================================
+      <!-- ===================================================
            MY REGISTRATIONS
-      ================================================== -->
+      ==================================================== -->
 
       <section class="registrations-card">
 
-
-        <!-- SECTION HEADER -->
 
         <div class="section-header">
 
@@ -741,10 +668,6 @@
 
 
 
-        <!-- =================================================
-             LOADING
-        ================================================== -->
-
         @if (registrationsLoading) {
 
           <div class="loading-box">
@@ -758,10 +681,6 @@
         }
 
 
-
-        <!-- =================================================
-             REGISTRATIONS
-        ================================================== -->
 
         @else if (registrations.length > 0) {
 
@@ -777,15 +696,11 @@
               <div class="registration-item">
 
 
-                <!-- ICON -->
-
                 <div class="registration-icon">
                   🎟️
                 </div>
 
 
-
-                <!-- DETAILS -->
 
                 <div class="registration-info">
 
@@ -807,8 +722,6 @@
                   </h3>
 
 
-                  <!-- REGISTRATION ID -->
-
                   <p>
 
                     🎟️
@@ -818,8 +731,6 @@
 
                   </p>
 
-
-                  <!-- REGISTERED DATE -->
 
                   <p>
 
@@ -834,8 +745,6 @@
                 </div>
 
 
-
-                <!-- CANCEL -->
 
                 <button
                   type="button"
@@ -856,10 +765,6 @@
         }
 
 
-
-        <!-- =================================================
-             EMPTY STATE
-        ================================================== -->
 
         @else {
 
@@ -890,6 +795,225 @@
 
 
   <!-- =====================================================
+       REGISTRATION SUCCESS + QR POPUP
+  ====================================================== -->
+
+  @if (showSuccessPopup) {
+
+    <div
+      class="popup-overlay success-popup-overlay"
+      (click)="closeSuccessPopup()"
+    >
+
+      <div
+        class="registration-success-popup"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- SUCCESS ICON -->
+
+        <div class="registration-success-icon">
+          ✓
+        </div>
+
+
+        <span class="success-popup-label">
+          REGISTRATION CONFIRMED
+        </span>
+
+
+        <h2>
+          Registration Successful!
+        </h2>
+
+
+        <p class="success-popup-description">
+
+          You have successfully registered for
+
+          <strong>
+            {{ registeredEvent?.title || 'this event' }}
+          </strong>.
+
+        </p>
+
+
+
+        <!-- EVENT DETAILS -->
+
+        <div class="success-event-details">
+
+
+          <div class="success-detail-item">
+
+            <span class="success-detail-icon">
+              👤
+            </span>
+
+            <div>
+
+              <small>
+                Student
+              </small>
+
+              <strong>
+                {{ studentName }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          @if (registeredEvent) {
+
+            <div class="success-detail-item">
+
+              <span class="success-detail-icon">
+                📅
+              </span>
+
+              <div>
+
+                <small>
+                  Event Date
+                </small>
+
+                <strong>
+                  {{ registeredEvent.eventDate | date:'dd MMM yyyy' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="success-detail-item">
+
+              <span class="success-detail-icon">
+                📍
+              </span>
+
+              <div>
+
+                <small>
+                  Venue
+                </small>
+
+                <strong>
+                  {{ registeredEvent.venue }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          }
+
+
+
+          @if (registeredRegistrationId) {
+
+            <div class="success-detail-item">
+
+              <span class="success-detail-icon">
+                🎟️
+              </span>
+
+              <div>
+
+                <small>
+                  Registration ID
+                </small>
+
+                <strong>
+                  #{{ registeredRegistrationId }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+
+
+        <!-- QR CODE -->
+
+        @if (qrCodeUrl) {
+
+          <div class="qr-section">
+
+            <p class="qr-title">
+              Event Entry QR Code
+            </p>
+
+            <div class="qr-code-box">
+
+              <img
+                [src]="qrCodeUrl"
+                alt="CampusX Event Registration QR Code"
+                class="event-qr-code"
+              >
+
+            </div>
+
+            <p class="qr-help">
+              Show this QR code when entering the event.
+            </p>
+
+          </div>
+
+        }
+
+
+        @else {
+
+          <div class="qr-unavailable">
+
+            <span>
+              ✓
+            </span>
+
+            <p>
+              Your registration was successful.
+            </p>
+
+            <small>
+              QR code is not available for this registration.
+            </small>
+
+          </div>
+
+        }
+
+
+
+        <!-- DONE BUTTON -->
+
+        <button
+          type="button"
+          class="success-done-button"
+          (click)="closeSuccessPopup()"
+        >
+
+          Done
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- =====================================================
        CANCEL REGISTRATION POPUP
   ====================================================== -->
 
@@ -906,23 +1030,15 @@
       >
 
 
-        <!-- POPUP ICON -->
-
         <div class="popup-icon">
           ⚠️
         </div>
 
 
-
-        <!-- TITLE -->
-
         <h2>
           Cancel Registration?
         </h2>
 
-
-
-        <!-- MESSAGE -->
 
         <p>
           Are you sure you want to cancel
@@ -930,21 +1046,13 @@
         </p>
 
 
-
-        <!-- WARNING -->
-
         <span class="popup-warning">
           This action cannot be undone.
         </span>
 
 
-
-        <!-- ACTIONS -->
-
         <div class="popup-actions">
 
-
-          <!-- KEEP -->
 
           <button
             type="button"
@@ -956,9 +1064,6 @@
 
           </button>
 
-
-
-          <!-- CONFIRM -->
 
           <button
             type="button"
