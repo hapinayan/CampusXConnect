@@ -22,8 +22,6 @@
 
     <nav class="sidebar-nav">
 
-      <!-- Dashboard -->
-
       <a
         class="nav-item"
         routerLink="/dashboard"
@@ -32,8 +30,6 @@
         <span>Dashboard</span>
       </a>
 
-
-      <!-- Hostel -->
 
       <a
         class="nav-item"
@@ -44,8 +40,6 @@
       </a>
 
 
-      <!-- Lab Booking -->
-
       <a
         class="nav-item"
         routerLink="/lab-booking"
@@ -54,8 +48,6 @@
         <span>Lab Booking</span>
       </a>
 
-
-      <!-- Events -->
 
       <a
         class="nav-item"
@@ -66,8 +58,6 @@
       </a>
 
 
-      <!-- Complaints -->
-
       <a
         class="nav-item"
         routerLink="/complaints"
@@ -76,8 +66,6 @@
         <span>Complaints</span>
       </a>
 
-
-      <!-- Certificates -->
 
       <a
         class="nav-item"
@@ -88,8 +76,6 @@
       </a>
 
 
-      <!-- Payments -->
-
       <a
         class="nav-item active"
         routerLink="/payments"
@@ -98,8 +84,6 @@
         <span>Payments</span>
       </a>
 
-
-      <!-- Notifications -->
 
       <a
         class="nav-item"
@@ -114,32 +98,28 @@
           Notifications
         </span>
 
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
       </a>
 
-
-      <!-- Profile -->
 
       <a
         class="nav-item"
         routerLink="/profile"
       >
-
-        <span class="nav-icon">
-          👤
-        </span>
-
-        <span>
-          Profile
-        </span>
-
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
       </a>
 
     </nav>
 
-
-    <!-- =================================================
-         LOGOUT
-    ================================================== -->
 
     <div class="sidebar-bottom">
 
@@ -147,15 +127,8 @@
         class="nav-item logout"
         routerLink="/login"
       >
-
-        <span class="nav-icon">
-          ↪
-        </span>
-
-        <span>
-          Logout
-        </span>
-
+        <span class="nav-icon">↪</span>
+        <span>Logout</span>
       </a>
 
     </div>
@@ -188,31 +161,45 @@
 
       <div class="topbar-right">
 
-        <!-- Notification -->
 
         <button
           type="button"
           class="notification-btn"
           routerLink="/notifications"
+          title="Notifications"
         >
 
-          🔔
+          <span class="notification-bell">
+            🔔
+          </span>
+
+
+          @if (unreadCount > 0) {
+
+            <span class="topbar-notification-count">
+              {{ unreadCount }}
+            </span>
+
+          }
 
         </button>
 
 
-        <!-- Student Profile -->
-
-        <div class="student-profile">
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
 
           <div class="profile-avatar">
-            S
+            {{ getStudentInitial() }}
           </div>
+
 
           <div class="profile-info">
 
             <strong>
-              Student
+              {{ studentName }}
             </strong>
 
             <small>
@@ -221,8 +208,9 @@
 
           </div>
 
-          <span>
-            ⌄
+
+          <span class="profile-arrow">
+            →
           </span>
 
         </div>
@@ -268,9 +256,7 @@
           class="back-button"
           routerLink="/dashboard"
         >
-
           ← Dashboard
-
         </button>
 
       </section>
@@ -283,9 +269,6 @@
 
       <section class="feature-row">
 
-
-        <!-- FEATURE 1 -->
-
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -293,7 +276,6 @@
           </div>
 
           <div>
-
             <strong>
               Secure Payments
             </strong>
@@ -301,14 +283,10 @@
             <span>
               Pay your university fees
             </span>
-
           </div>
 
         </div>
 
-
-
-        <!-- FEATURE 2 -->
 
         <div class="feature-card">
 
@@ -317,7 +295,6 @@
           </div>
 
           <div>
-
             <strong>
               Digital Receipts
             </strong>
@@ -325,14 +302,10 @@
             <span>
               Keep track of payment receipts
             </span>
-
           </div>
 
         </div>
 
-
-
-        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -341,7 +314,6 @@
           </div>
 
           <div>
-
             <strong>
               Payment History
             </strong>
@@ -349,7 +321,6 @@
             <span>
               View your previous payments
             </span>
-
           </div>
 
         </div>
@@ -384,7 +355,7 @@
            SUCCESS MESSAGE
       ================================================== -->
 
-      @if (successMessage) {
+      @if (successMessage && !lastPayment) {
 
         <div class="message success">
 
@@ -421,7 +392,7 @@
             </h2>
 
             <p>
-              Enter your fee details to complete a payment.
+              Enter your fee details and continue to secure payment.
             </p>
 
           </div>
@@ -450,6 +421,7 @@
                 type="text"
                 formControlName="feeType"
                 placeholder="e.g. Registration Fee"
+                autocomplete="off"
               />
 
 
@@ -502,24 +474,22 @@
 
 
 
-          <!-- =================================================
-               PAYMENT INFORMATION
-          ================================================== -->
+          <!-- PAYMENT INFORMATION -->
 
           <div class="payment-note">
 
             <span>
-              ℹ️
+              🔒
             </span>
 
             <div>
 
               <strong>
-                Payment Information
+                Secure Payment
               </strong>
 
               <p>
-                Please verify the fee type and amount before submitting your payment.
+                Review your fee details before continuing to payment.
               </p>
 
             </div>
@@ -528,31 +498,23 @@
 
 
 
-          <!-- =================================================
-               SUBMIT
-          ================================================== -->
+          <!-- FORM ACTION -->
 
           <div class="form-actions">
 
             <button
               type="submit"
               class="submit-button"
-              [disabled]="submitting"
+              [disabled]="submitting || paymentProcessing"
             >
 
-              @if (submitting) {
+              <span>
+                Continue to Payment
+              </span>
 
-                <span class="spinner white"></span>
-
-                Processing...
-
-              }
-
-              @else {
-
-                💳 Make Payment
-
-              }
+              <span>
+                →
+              </span>
 
             </button>
 
@@ -570,7 +532,7 @@
 
       @if (lastPayment) {
 
-        <section class="receipt-card">
+        <section class="receipt-card professional-receipt">
 
           <div class="receipt-header">
 
@@ -579,6 +541,10 @@
             </div>
 
             <div>
+
+              <span class="receipt-success-label">
+                PAYMENT CONFIRMED
+              </span>
 
               <h2>
                 Payment Successful
@@ -593,9 +559,31 @@
           </div>
 
 
-          <div class="receipt-details">
 
-            <!-- PAYMENT ID -->
+          <div class="receipt-summary">
+
+            <div>
+
+              <span>
+                Amount Paid
+              </span>
+
+              <strong class="receipt-main-amount">
+                LKR {{ formatAmount(lastPayment.amount) }}
+              </strong>
+
+            </div>
+
+
+            <span class="receipt-paid-badge">
+              ✓ Paid
+            </span>
+
+          </div>
+
+
+
+          <div class="receipt-details">
 
             <div class="receipt-item">
 
@@ -610,8 +598,6 @@
             </div>
 
 
-            <!-- FEE TYPE -->
-
             <div class="receipt-item">
 
               <span>
@@ -624,38 +610,6 @@
 
             </div>
 
-
-            <!-- AMOUNT -->
-
-            <div class="receipt-item">
-
-              <span>
-                Amount
-              </span>
-
-              <strong>
-                LKR {{ formatAmount(lastPayment.amount) }}
-              </strong>
-
-            </div>
-
-
-            <!-- STATUS -->
-
-            <div class="receipt-item">
-
-              <span>
-                Status
-              </span>
-
-              <strong class="receipt-status">
-                {{ lastPayment.status }}
-              </strong>
-
-            </div>
-
-
-            <!-- RECEIPT NUMBER -->
 
             <div class="receipt-item">
 
@@ -670,7 +624,34 @@
             </div>
 
 
-            <!-- PAID AT -->
+            <div class="receipt-item">
+
+              <span>
+                Status
+              </span>
+
+              <strong class="receipt-status">
+                {{ lastPayment.status }}
+              </strong>
+
+            </div>
+
+
+            <div class="receipt-item">
+
+              <span>
+                Transaction Reference
+              </span>
+
+              <strong>
+                {{
+                  transactionReference ||
+                  lastPayment.receiptNumber
+                }}
+              </strong>
+
+            </div>
+
 
             <div class="receipt-item">
 
@@ -679,10 +660,26 @@
               </span>
 
               <strong>
-                {{ lastPayment.paidAt | date:'dd MMM yyyy, h:mm a' }}
+                {{
+                  lastPayment.paidAt
+                  | date:'dd MMM yyyy, h:mm a'
+                }}
               </strong>
 
             </div>
+
+          </div>
+
+
+          <div class="receipt-security-note">
+
+            <span>
+              🔒
+            </span>
+
+            <span>
+              Payment recorded securely by CampusX.
+            </span>
 
           </div>
 
@@ -717,26 +714,18 @@
           </div>
 
 
-          <!-- REFRESH -->
-
           <button
             type="button"
             class="refresh-button"
             (click)="refreshPayments()"
             [disabled]="paymentsLoading"
           >
-
             🔄 Refresh
-
           </button>
 
         </div>
 
 
-
-        <!-- =================================================
-             LOADING
-        ================================================== -->
 
         @if (paymentsLoading) {
 
@@ -751,11 +740,6 @@
         }
 
 
-
-        <!-- =================================================
-             PAYMENT LIST
-        ================================================== -->
-
         @else if (payments.length > 0) {
 
           <div class="payment-list">
@@ -767,15 +751,10 @@
 
               <div class="payment-item">
 
-
-                <!-- PAYMENT ICON -->
-
                 <div class="payment-icon">
                   💳
                 </div>
 
-
-                <!-- PAYMENT INFO -->
 
                 <div class="payment-info">
 
@@ -794,11 +773,16 @@
                     </div>
 
 
-                    <!-- STATUS -->
-
                     <span
                       class="status-badge"
-                      [class]="getPaymentStatusClass(payment.status)"
+                      [class.status-paid]="payment.status === 'Paid'"
+                      [class.status-pending]="payment.status === 'Pending'"
+                      [class.status-failed]="payment.status === 'Failed'"
+                      [class.status-default]="
+                        payment.status !== 'Paid' &&
+                        payment.status !== 'Pending' &&
+                        payment.status !== 'Failed'
+                      "
                     >
 
                       @if (
@@ -838,7 +822,6 @@
                   </div>
 
 
-                  <!-- AMOUNT -->
 
                   <div class="payment-amount">
 
@@ -853,7 +836,6 @@
                   </div>
 
 
-                  <!-- META -->
 
                   <div class="payment-meta">
 
@@ -861,7 +843,10 @@
 
                       📅 Paid:
 
-                      {{ payment.paidAt | date:'dd MMM yyyy, h:mm a' }}
+                      {{
+                        payment.paidAt
+                        | date:'dd MMM yyyy, h:mm a'
+                      }}
 
                     </span>
 
@@ -886,11 +871,6 @@
 
         }
 
-
-
-        <!-- =================================================
-             EMPTY STATE
-        ================================================== -->
 
         @else {
 
@@ -917,5 +897,574 @@
     </section>
 
   </main>
+
+
+
+  <!-- =====================================================
+       PAYMENT MODAL
+  ====================================================== -->
+
+  @if (showPaymentModal) {
+
+    <div
+      class="payment-modal-overlay"
+      (click)="closePaymentModal()"
+    >
+
+      <div
+        class="payment-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="payment-modal-header">
+
+          <div>
+
+            <span class="secure-label">
+              🔒 SECURE PAYMENT
+            </span>
+
+            <h2>
+              Complete Payment
+            </h2>
+
+            <p>
+              Review the payment and choose a payment method.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="modal-close-button"
+            (click)="closePaymentModal()"
+            [disabled]="paymentProcessing"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+
+        <!-- PAYMENT SUMMARY -->
+
+        <div class="modal-payment-summary">
+
+          <div>
+
+            <small>
+              Fee Type
+            </small>
+
+            <strong>
+              {{ pendingFeeType }}
+            </strong>
+
+          </div>
+
+
+          <div class="modal-amount">
+
+            <small>
+              Amount to Pay
+            </small>
+
+            <strong>
+              LKR {{ formatAmount(pendingAmount) }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PAYMENT METHOD -->
+
+        <div class="payment-method-section">
+
+          <label class="payment-section-label">
+            Payment Method
+          </label>
+
+
+          <div class="payment-method-grid">
+
+
+            <button
+              type="button"
+              class="payment-method-card"
+              [class.selected]="selectedPaymentMethod === 'card'"
+              (click)="selectPaymentMethod('card')"
+              [disabled]="paymentProcessing"
+            >
+
+              <span class="method-icon">
+                💳
+              </span>
+
+              <span class="method-text">
+
+                <strong>
+                  Card
+                </strong>
+
+                <small>
+                  Visa / Mastercard
+                </small>
+
+              </span>
+
+
+              <span class="method-check">
+
+                @if (
+                  selectedPaymentMethod === 'card'
+                ) {
+                  ✓
+                }
+
+              </span>
+
+            </button>
+
+
+
+            <button
+              type="button"
+              class="payment-method-card"
+              [class.selected]="selectedPaymentMethod === 'bank'"
+              (click)="selectPaymentMethod('bank')"
+              [disabled]="paymentProcessing"
+            >
+
+              <span class="method-icon">
+                🏦
+              </span>
+
+              <span class="method-text">
+
+                <strong>
+                  Bank Transfer
+                </strong>
+
+                <small>
+                  Reference payment
+                </small>
+
+              </span>
+
+
+              <span class="method-check">
+
+                @if (
+                  selectedPaymentMethod === 'bank'
+                ) {
+                  ✓
+                }
+
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PAYMENT DETAILS
+        ================================================== -->
+
+        <form
+          [formGroup]="paymentDetailsForm"
+          (ngSubmit)="confirmPayment()"
+        >
+
+
+          <!-- CARD PAYMENT -->
+
+          @if (
+            selectedPaymentMethod === 'card'
+          ) {
+
+            <div class="card-payment-fields">
+
+
+              <!-- CARD HOLDER -->
+
+              <div class="modal-form-group full">
+
+                <label for="cardholderName">
+                  Cardholder Name
+                </label>
+
+                <input
+                  id="cardholderName"
+                  type="text"
+                  formControlName="cardholderName"
+                  placeholder="Name on card"
+                  autocomplete="cc-name"
+                />
+
+
+                @if (
+                  paymentDetailsForm.get('cardholderName')?.touched &&
+                  paymentDetailsForm.get('cardholderName')?.invalid
+                ) {
+
+                  <small class="field-error">
+                    Please enter the cardholder name.
+                  </small>
+
+                }
+
+              </div>
+
+
+
+              <!-- CARD NUMBER -->
+
+              <div class="modal-form-group full">
+
+                <label for="cardNumber">
+                  Card Number
+                </label>
+
+
+                <div class="card-number-field">
+
+                  <span>
+                    💳
+                  </span>
+
+                  <input
+                    id="cardNumber"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="19"
+                    placeholder="1234 5678 9012 3456"
+                    autocomplete="cc-number"
+                    (input)="formatCardNumberInput($event)"
+                  />
+
+                </div>
+
+
+                @if (
+                  paymentDetailsForm.get('cardNumber')?.touched &&
+                  paymentDetailsForm.get('cardNumber')?.invalid
+                ) {
+
+                  <small class="field-error">
+                    Enter a valid 16-digit card number.
+                  </small>
+
+                }
+
+              </div>
+
+
+
+              <!-- EXPIRY + CVV -->
+
+              <div class="modal-form-row">
+
+
+                <div class="modal-form-group">
+
+                  <label for="expiryDate">
+                    Expiry Date
+                  </label>
+
+                  <input
+                    id="expiryDate"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="5"
+                    placeholder="MM/YY"
+                    autocomplete="cc-exp"
+                    (input)="formatExpiryInput($event)"
+                  />
+
+
+                  @if (
+                    paymentDetailsForm.get('expiryDate')?.touched &&
+                    paymentDetailsForm.get('expiryDate')?.invalid
+                  ) {
+
+                    <small class="field-error">
+                      Enter MM/YY.
+                    </small>
+
+                  }
+
+                </div>
+
+
+
+                <div class="modal-form-group">
+
+                  <label for="cvv">
+                    CVV
+                  </label>
+
+                  <input
+                    id="cvv"
+                    type="password"
+                    inputmode="numeric"
+                    maxlength="4"
+                    formControlName="cvv"
+                    placeholder="•••"
+                    autocomplete="cc-csc"
+                  />
+
+
+                  @if (
+                    paymentDetailsForm.get('cvv')?.touched &&
+                    paymentDetailsForm.get('cvv')?.invalid
+                  ) {
+
+                    <small class="field-error">
+                      Enter a valid CVV.
+                    </small>
+
+                  }
+
+                </div>
+
+              </div>
+
+
+              <div class="accepted-cards">
+
+                <span>
+                  Accepted:
+                </span>
+
+                <strong>
+                  VISA
+                </strong>
+
+                <strong>
+                  Mastercard
+                </strong>
+
+              </div>
+
+            </div>
+
+          }
+
+
+
+          <!-- BANK TRANSFER -->
+
+          @if (
+            selectedPaymentMethod === 'bank'
+          ) {
+
+            <div class="bank-payment-section">
+
+              <div class="bank-info-box">
+
+                <div class="bank-info-icon">
+                  🏦
+                </div>
+
+
+                <div>
+
+                  <strong>
+                    CampusX University Account
+                  </strong>
+
+                  <p>
+                    Complete the bank transfer and enter your transfer reference below.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="bank-details">
+
+                <div>
+
+                  <span>
+                    Bank
+                  </span>
+
+                  <strong>
+                    Campus Bank
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Account Name
+                  </span>
+
+                  <strong>
+                    CampusX University
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Payment Amount
+                  </span>
+
+                  <strong>
+                    LKR {{ formatAmount(pendingAmount) }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="modal-form-group full">
+
+                <label for="bankReference">
+                  Transfer Reference
+                </label>
+
+                <input
+                  id="bankReference"
+                  type="text"
+                  formControlName="bankReference"
+                  placeholder="Enter bank transaction reference"
+                  autocomplete="off"
+                />
+
+
+                @if (
+                  paymentDetailsForm.get('bankReference')?.touched &&
+                  paymentDetailsForm.get('bankReference')?.invalid
+                ) {
+
+                  <small class="field-error">
+                    Please enter the bank transfer reference.
+                  </small>
+
+                }
+
+              </div>
+
+            </div>
+
+          }
+
+
+
+          <!-- PROCESSING -->
+
+          @if (paymentProcessing) {
+
+            <div class="payment-processing-box">
+
+              <span class="payment-loader"></span>
+
+              <div>
+
+                <strong>
+                  Processing Payment
+                </strong>
+
+                <p>
+                  {{ processingText }}
+                </p>
+
+              </div>
+
+            </div>
+
+          }
+
+
+
+          <!-- SECURITY NOTE -->
+
+          <div class="modal-security-note">
+
+            <span>
+              🔒
+            </span>
+
+            <span>
+              Your payment information is protected during this transaction.
+            </span>
+
+          </div>
+
+
+
+          <!-- MODAL ACTIONS -->
+
+          <div class="payment-modal-actions">
+
+            <button
+              type="button"
+              class="payment-back-button"
+              (click)="closePaymentModal()"
+              [disabled]="paymentProcessing"
+            >
+              Cancel
+            </button>
+
+
+            <button
+              type="submit"
+              class="confirm-payment-button"
+              [disabled]="paymentProcessing"
+            >
+
+              @if (paymentProcessing) {
+
+                <span class="spinner white"></span>
+
+                Processing...
+
+              }
+
+              @else {
+
+                <span>
+                  🔒
+                </span>
+
+                <span>
+                  Pay LKR {{ formatAmount(pendingAmount) }}
+                </span>
+
+              }
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  }
 
 </div>

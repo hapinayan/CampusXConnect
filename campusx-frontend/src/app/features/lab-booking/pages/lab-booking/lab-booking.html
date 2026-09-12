@@ -6,8 +6,6 @@
 
   <aside class="sidebar">
 
-    <!-- BRAND -->
-
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -22,13 +20,7 @@
     </div>
 
 
-    <!-- ===================================================
-         NAVIGATION
-    ==================================================== -->
-
     <nav class="sidebar-nav">
-
-      <!-- DASHBOARD -->
 
       <a
         class="nav-item"
@@ -44,8 +36,6 @@
       </a>
 
 
-      <!-- HOSTEL -->
-
       <a
         class="nav-item"
         routerLink="/hostel"
@@ -59,8 +49,6 @@
         </span>
       </a>
 
-
-      <!-- LAB BOOKING -->
 
       <a
         class="nav-item"
@@ -77,8 +65,6 @@
       </a>
 
 
-      <!-- EVENTS -->
-
       <a
         class="nav-item"
         routerLink="/events"
@@ -92,8 +78,6 @@
         </span>
       </a>
 
-
-      <!-- COMPLAINTS -->
 
       <a
         class="nav-item"
@@ -109,8 +93,6 @@
       </a>
 
 
-      <!-- CERTIFICATES -->
-
       <a
         class="nav-item"
         routerLink="/certificates"
@@ -124,8 +106,6 @@
         </span>
       </a>
 
-
-      <!-- PAYMENTS -->
 
       <a
         class="nav-item"
@@ -141,12 +121,11 @@
       </a>
 
 
-      <!-- NOTIFICATIONS -->
-
       <a
         class="nav-item"
         routerLink="/notifications"
       >
+
         <span class="nav-icon">
           🔔
         </span>
@@ -154,10 +133,18 @@
         <span>
           Notifications
         </span>
+
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
       </a>
 
-
-      <!-- PROFILE -->
 
       <a
         class="nav-item"
@@ -174,10 +161,6 @@
 
     </nav>
 
-
-    <!-- ===================================================
-         SIDEBAR BOTTOM
-    ==================================================== -->
 
     <div class="sidebar-bottom">
 
@@ -199,6 +182,7 @@
   </aside>
 
 
+
   <!-- =====================================================
        MAIN CONTENT
   ====================================================== -->
@@ -212,8 +196,6 @@
 
     <header class="topbar">
 
-      <!-- PAGE TITLE -->
-
       <div class="topbar-title">
 
         <span class="page-label">
@@ -223,12 +205,8 @@
       </div>
 
 
-      <!-- TOPBAR RIGHT -->
-
       <div class="topbar-right">
 
-
-        <!-- NOTIFICATION -->
 
         <button
           type="button"
@@ -236,21 +214,28 @@
           routerLink="/notifications"
           title="Notifications"
         >
-          🔔
+
+          <span class="notification-bell">
+            🔔
+          </span>
+
+
+          @if (unreadCount > 0) {
+
+            <span class="topbar-notification-count">
+              {{ unreadCount }}
+            </span>
+
+          }
+
         </button>
 
-
-        <!-- =================================================
-             STUDENT PROFILE
-        ================================================== -->
 
         <div
           class="student-profile"
           routerLink="/profile"
           title="View Profile"
         >
-
-          <!-- AVATAR -->
 
           <div class="profile-avatar">
 
@@ -261,8 +246,6 @@
 
           </div>
 
-
-          <!-- NAME + ROLE -->
 
           <div class="profile-info">
 
@@ -282,8 +265,6 @@
           </div>
 
 
-          <!-- ARROW -->
-
           <span class="profile-arrow">
             →
           </span>
@@ -295,6 +276,7 @@
     </header>
 
 
+
     <!-- ===================================================
          CONTENT
     ==================================================== -->
@@ -302,9 +284,7 @@
     <section class="content">
 
 
-      <!-- =================================================
-           HERO
-      ================================================== -->
+      <!-- HERO -->
 
       <section class="hero">
 
@@ -325,8 +305,6 @@
         </div>
 
 
-        <!-- BACK BUTTON -->
-
         <button
           type="button"
           class="back-button"
@@ -338,14 +316,13 @@
       </section>
 
 
+
       <!-- =================================================
            FEATURES
       ================================================== -->
 
       <section class="feature-row">
 
-
-        <!-- FEATURE 1 -->
 
         <div class="feature-card">
 
@@ -368,8 +345,6 @@
         </div>
 
 
-        <!-- FEATURE 2 -->
-
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -390,8 +365,6 @@
 
         </div>
 
-
-        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -416,8 +389,9 @@
       </section>
 
 
+
       <!-- =================================================
-           ERROR MESSAGE
+           MESSAGES
       ================================================== -->
 
       @if (errorMessage) {
@@ -431,10 +405,6 @@
       }
 
 
-      <!-- =================================================
-           SUCCESS MESSAGE
-      ================================================== -->
-
       @if (successMessage) {
 
         <div class="message success">
@@ -444,6 +414,7 @@
         </div>
 
       }
+
 
 
       <!-- =================================================
@@ -459,8 +430,6 @@
 
         <section class="booking-card">
 
-
-          <!-- SECTION HEADER -->
 
           <div class="section-header">
 
@@ -483,14 +452,13 @@
           </div>
 
 
-          <!-- =================================================
-               BOOKING FORM
-          ================================================== -->
 
           <div class="form-grid">
 
 
-            <!-- LABORATORY -->
+            <!-- =================================================
+                 LABORATORY
+            ================================================== -->
 
             <div class="form-group">
 
@@ -530,24 +498,178 @@
             </div>
 
 
-            <!-- BOOKING DATE -->
 
-            <div class="form-group">
+            <!-- =================================================
+                 CUSTOM BOOKING DATE
+            ================================================== -->
+
+            <div class="form-group calendar-form-group">
 
               <label>
                 Booking Date
               </label>
 
-              <input
-                type="date"
-                [(ngModel)]="bookingDate"
-                (ngModelChange)="onDateChange()"
-              />
+
+              <div class="custom-date-wrapper">
+
+
+                <!-- DATE BUTTON -->
+
+                <button
+                  type="button"
+                  class="custom-date-input"
+                  [class.date-selected]="bookingDate"
+                  [class.calendar-open]="showCalendar"
+                  (click)="toggleCalendar()"
+                >
+
+                  <span
+                    class="date-input-text"
+                    [class.placeholder]="!bookingDate"
+                  >
+                    {{ bookingDateDisplay }}
+                  </span>
+
+
+                  <span class="date-calendar-icon">
+                    📅
+                  </span>
+
+                </button>
+
+
+
+                <!-- =================================================
+                     CUSTOM CALENDAR
+                ================================================== -->
+
+                @if (showCalendar) {
+
+                  <div class="custom-calendar">
+
+
+                    <!-- CALENDAR HEADER -->
+
+                    <div class="calendar-header">
+
+
+                      <button
+                        type="button"
+                        class="calendar-nav-button"
+                        (click)="previousMonth()"
+                        title="Previous month"
+                      >
+                        ‹
+                      </button>
+
+
+                      <div class="calendar-month-title">
+
+                        <span>
+                          {{ calendarMonthTitle }}
+                        </span>
+
+                      </div>
+
+
+                      <button
+                        type="button"
+                        class="calendar-nav-button"
+                        (click)="nextMonth()"
+                        title="Next month"
+                      >
+                        ›
+                      </button>
+
+                    </div>
+
+
+
+                    <!-- WEEK DAYS -->
+
+                    <div class="calendar-weekdays">
+
+                      @for (
+                        weekDay of weekDays;
+                        track weekDay
+                      ) {
+
+                        <span>
+                          {{ weekDay }}
+                        </span>
+
+                      }
+
+                    </div>
+
+
+
+                    <!-- DAYS -->
+
+                    <div class="calendar-days">
+
+                      @for (
+                        calendarDay of calendarDays;
+                        track $index
+                      ) {
+
+                        <button
+                          type="button"
+                          class="calendar-day"
+                          [class.other-month]="!calendarDay.currentMonth"
+                          [class.today]="calendarDay.isToday"
+                          [class.selected]="calendarDay.selected"
+                          [class.disabled]="calendarDay.disabled"
+                          [disabled]="calendarDay.disabled"
+                          (click)="selectCalendarDate(calendarDay)"
+                        >
+
+                          {{ calendarDay.day }}
+
+                        </button>
+
+                      }
+
+                    </div>
+
+
+
+                    <!-- CALENDAR FOOTER -->
+
+                    <div class="calendar-footer">
+
+                      <button
+                        type="button"
+                        class="calendar-today-button"
+                        (click)="selectToday()"
+                      >
+                        Today
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="calendar-clear-button"
+                        (click)="clearBookingDate()"
+                      >
+                        Clear
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                }
+
+              </div>
 
             </div>
 
 
-            <!-- START TIME -->
+
+            <!-- =================================================
+                 START TIME
+            ================================================== -->
 
             <div class="form-group">
 
@@ -563,7 +685,10 @@
             </div>
 
 
-            <!-- END TIME -->
+
+            <!-- =================================================
+                 END TIME
+            ================================================== -->
 
             <div class="form-group">
 
@@ -579,6 +704,7 @@
             </div>
 
           </div>
+
 
 
           <!-- =================================================
@@ -604,8 +730,6 @@
             </div>
 
 
-            <!-- LOADING -->
-
             @if (slotsLoading) {
 
               <div class="slot-message">
@@ -618,8 +742,6 @@
 
             }
 
-
-            <!-- AVAILABLE SLOTS -->
 
             @else if (
               availableSlots.length > 0
@@ -689,8 +811,6 @@
             }
 
 
-            <!-- NO SLOTS -->
-
             @else if (
               selectedLabId &&
               bookingDate
@@ -708,8 +828,6 @@
 
             }
 
-
-            <!-- DEFAULT -->
 
             @else {
 
@@ -731,6 +849,7 @@
             }
 
           </div>
+
 
 
           <!-- =================================================
@@ -772,14 +891,13 @@
         </section>
 
 
+
         <!-- =================================================
              MY BOOKINGS
         ================================================== -->
 
         <section class="bookings-card">
 
-
-          <!-- HEADER -->
 
           <div class="section-header">
 
@@ -802,8 +920,6 @@
           </div>
 
 
-          <!-- LOADING -->
-
           @if (bookingsLoading) {
 
             <div class="loading-box">
@@ -816,8 +932,6 @@
 
           }
 
-
-          <!-- BOOKINGS -->
 
           @else if (
             bookings.length > 0
@@ -833,14 +947,10 @@
                 <div class="booking-item">
 
 
-                  <!-- ICON -->
-
                   <div class="booking-item-icon">
                     🧪
                   </div>
 
-
-                  <!-- INFO -->
 
                   <div class="booking-info">
 
@@ -885,8 +995,6 @@
                   </div>
 
 
-                  <!-- CANCEL -->
-
                   <button
                     type="button"
                     class="cancel-button"
@@ -905,8 +1013,6 @@
 
           }
 
-
-          <!-- EMPTY -->
 
           @else {
 
@@ -935,6 +1041,7 @@
     </section>
 
   </main>
+
 
 
   <!-- =====================================================

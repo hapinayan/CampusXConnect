@@ -188,6 +188,8 @@
 
       <div class="topbar-right">
 
+        <!-- Notification Button -->
+
         <button
           type="button"
           class="notification-btn"
@@ -207,16 +209,24 @@
         </button>
 
 
-        <div class="student-profile">
+        <!-- =================================================
+             STUDENT PROFILE
+        ================================================== -->
+
+        <a
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
 
           <div class="profile-avatar">
-            S
+            {{ getStudentInitial() }}
           </div>
 
           <div class="profile-info">
 
             <strong>
-              Student
+              {{ studentName }}
             </strong>
 
             <small>
@@ -225,11 +235,11 @@
 
           </div>
 
-          <span>
-            ⌄
+          <span class="profile-arrow">
+            →
           </span>
 
-        </div>
+        </a>
 
       </div>
 
@@ -286,6 +296,8 @@
       <section class="summary-row">
 
 
+        <!-- TOTAL NOTIFICATIONS -->
+
         <div class="summary-card">
 
           <div class="summary-icon">
@@ -308,6 +320,8 @@
 
 
 
+        <!-- UNREAD -->
+
         <div class="summary-card">
 
           <div class="summary-icon unread">
@@ -329,6 +343,8 @@
         </div>
 
 
+
+        <!-- CAMPUS UPDATES -->
 
         <div class="summary-card">
 
@@ -355,29 +371,42 @@
 
 
       <!-- =================================================
-           MESSAGES
+           ERROR MESSAGE
       ================================================== -->
 
       @if (errorMessage) {
 
         <div class="message error">
 
-          ⚠️
+          <span>
+            ⚠️
+          </span>
 
-          {{ errorMessage }}
+          <span>
+            {{ errorMessage }}
+          </span>
 
         </div>
 
       }
 
 
+
+      <!-- =================================================
+           SUCCESS MESSAGE
+      ================================================== -->
+
       @if (successMessage) {
 
         <div class="message success">
 
-          ✓
+          <span>
+            ✓
+          </span>
 
-          {{ successMessage }}
+          <span>
+            {{ successMessage }}
+          </span>
 
         </div>
 
@@ -391,6 +420,8 @@
 
       <section class="notifications-card">
 
+
+        <!-- SECTION HEADER -->
 
         <div class="section-header">
 
@@ -415,6 +446,7 @@
             type="button"
             class="refresh-button"
             (click)="refreshNotifications()"
+            [disabled]="loading"
           >
             ↻ Refresh
           </button>
@@ -433,7 +465,9 @@
 
             <span class="spinner"></span>
 
-            Loading notifications...
+            <span>
+              Loading notifications...
+            </span>
 
           </div>
 
@@ -442,7 +476,7 @@
 
 
         <!-- =================================================
-             NOTIFICATIONS
+             NOTIFICATIONS LIST
         ================================================== -->
 
         @else if (notifications.length > 0) {
@@ -461,7 +495,9 @@
               >
 
 
-                <!-- ICON -->
+                <!-- =========================================
+                     NOTIFICATION ICON
+                ========================================== -->
 
                 <div class="notification-icon">
 
@@ -523,7 +559,9 @@
 
 
 
-                <!-- CONTENT -->
+                <!-- =========================================
+                     NOTIFICATION CONTENT
+                ========================================== -->
 
                 <div class="notification-content">
 
@@ -569,7 +607,9 @@
 
 
 
-                <!-- STATUS -->
+                <!-- =========================================
+                     READ STATUS
+                ========================================== -->
 
                 <div class="notification-status">
 
@@ -602,7 +642,7 @@
 
 
         <!-- =================================================
-             EMPTY
+             EMPTY STATE
         ================================================== -->
 
         @else {

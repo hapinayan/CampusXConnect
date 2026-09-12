@@ -10,6 +10,7 @@ import {
 } from '@angular/router';
 
 import { AuthService } from '../../../../core/services/auth.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 import {
   StudentProfile
@@ -41,11 +42,20 @@ export class Dashboard implements OnInit {
 
 
   // =====================================================
+  // NOTIFICATION COUNT
+  // =====================================================
+
+  unreadCount = 0;
+
+
+
+  // =====================================================
   // CONSTRUCTOR
   // =====================================================
 
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -64,6 +74,8 @@ export class Dashboard implements OnInit {
 
 
     this.loadStudentProfile();
+
+    this.loadUnreadNotificationCount();
 
   }
 
@@ -99,8 +111,6 @@ export class Dashboard implements OnInit {
           this.student = data;
 
 
-          // Update dashboard UI
-
           this.cdr.detectChanges();
 
         },
@@ -117,10 +127,6 @@ export class Dashboard implements OnInit {
             error
           );
 
-
-          // ---------------------------------------------
-          // UNAUTHORIZED
-          // ---------------------------------------------
 
           if (
             error.status === 401
@@ -139,6 +145,111 @@ export class Dashboard implements OnInit {
             ]);
 
           }
+
+        }
+
+      });
+
+  }
+
+
+
+  // =====================================================
+  // LOAD UNREAD NOTIFICATION COUNT
+  // =====================================================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Dashboard notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        // ===============================================
+        // SUCCESS
+        // ===============================================
+
+        next: (notifications) => {
+
+          if (!Array.isArray(notifications)) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Dashboard unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        // ===============================================
+        // ERROR
+        // ===============================================
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load dashboard notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+          this.cdr.detectChanges();
 
         }
 

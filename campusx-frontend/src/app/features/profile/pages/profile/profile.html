@@ -118,6 +118,15 @@
           Notifications
         </span>
 
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
       </a>
 
 
@@ -197,9 +206,21 @@
           type="button"
           class="notification-btn"
           routerLink="/notifications"
+          title="Notifications"
         >
 
-          🔔
+          <span class="notification-bell">
+            🔔
+          </span>
+
+
+          @if (unreadCount > 0) {
+
+            <span class="topbar-notification-count">
+              {{ unreadCount }}
+            </span>
+
+          }
 
         </button>
 

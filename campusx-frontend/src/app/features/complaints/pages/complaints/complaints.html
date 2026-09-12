@@ -6,8 +6,6 @@
 
   <aside class="sidebar">
 
-    <!-- BRAND -->
-
     <div class="sidebar-brand">
 
       <div class="brand-logo">
@@ -22,139 +20,70 @@
     </div>
 
 
-    <!-- ===================================================
-         NAVIGATION
-    ==================================================== -->
-
     <nav class="sidebar-nav">
-
-      <!-- DASHBOARD -->
 
       <a
         class="nav-item"
         routerLink="/dashboard"
       >
-
-        <span class="nav-icon">
-          ⌂
-        </span>
-
-        <span>
-          Dashboard
-        </span>
-
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
       </a>
 
-
-      <!-- HOSTEL -->
 
       <a
         class="nav-item"
         routerLink="/hostel"
       >
-
-        <span class="nav-icon">
-          🏨
-        </span>
-
-        <span>
-          Hostel
-        </span>
-
+        <span class="nav-icon">🏨</span>
+        <span>Hostel</span>
       </a>
 
-
-      <!-- LAB BOOKING -->
 
       <a
         class="nav-item"
         routerLink="/lab-booking"
       >
-
-        <span class="nav-icon">
-          🧪
-        </span>
-
-        <span>
-          Lab Booking
-        </span>
-
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
       </a>
 
-
-      <!-- EVENTS -->
 
       <a
         class="nav-item"
         routerLink="/events"
       >
-
-        <span class="nav-icon">
-          📅
-        </span>
-
-        <span>
-          Events
-        </span>
-
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
       </a>
 
-
-      <!-- COMPLAINTS -->
 
       <a
         class="nav-item active"
         routerLink="/complaints"
       >
-
-        <span class="nav-icon">
-          💬
-        </span>
-
-        <span>
-          Complaints
-        </span>
-
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
       </a>
 
-
-      <!-- CERTIFICATES -->
 
       <a
         class="nav-item"
         routerLink="/certificates"
       >
-
-        <span class="nav-icon">
-          📄
-        </span>
-
-        <span>
-          Certificates
-        </span>
-
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
       </a>
 
-
-      <!-- PAYMENTS -->
 
       <a
         class="nav-item"
         routerLink="/payments"
       >
-
-        <span class="nav-icon">
-          💳
-        </span>
-
-        <span>
-          Payments
-        </span>
-
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
       </a>
 
-
-      <!-- NOTIFICATIONS -->
 
       <a
         class="nav-item"
@@ -169,32 +98,27 @@
           Notifications
         </span>
 
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
       </a>
 
-
-      <!-- PROFILE -->
 
       <a
         class="nav-item"
         routerLink="/profile"
       >
-
-        <span class="nav-icon">
-          👤
-        </span>
-
-        <span>
-          Profile
-        </span>
-
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
       </a>
 
     </nav>
 
-
-    <!-- ===================================================
-         SIDEBAR BOTTOM
-    ==================================================== -->
 
     <div class="sidebar-bottom">
 
@@ -202,15 +126,8 @@
         class="nav-item logout"
         routerLink="/login"
       >
-
-        <span class="nav-icon">
-          ↪
-        </span>
-
-        <span>
-          Logout
-        </span>
-
+        <span class="nav-icon">↪</span>
+        <span>Logout</span>
       </a>
 
     </div>
@@ -226,9 +143,7 @@
   <main class="main-content">
 
 
-    <!-- ===================================================
-         TOPBAR
-    ==================================================== -->
+    <!-- TOPBAR -->
 
     <header class="topbar">
 
@@ -244,31 +159,44 @@
       <div class="topbar-right">
 
 
-        <!-- NOTIFICATION -->
-
         <button
           type="button"
           class="notification-btn"
           routerLink="/notifications"
+          title="Notifications"
         >
 
-          🔔
+          <span class="notification-bell">
+            🔔
+          </span>
+
+
+          @if (unreadCount > 0) {
+
+            <span class="topbar-notification-count">
+              {{ unreadCount }}
+            </span>
+
+          }
 
         </button>
 
 
-        <!-- STUDENT PROFILE -->
-
-        <div class="student-profile">
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
 
           <div class="profile-avatar">
-            S
+            {{ getStudentInitial() }}
           </div>
+
 
           <div class="profile-info">
 
             <strong>
-              Student
+              {{ studentName }}
             </strong>
 
             <small>
@@ -277,8 +205,9 @@
 
           </div>
 
-          <span>
-            ⌄
+
+          <span class="profile-arrow">
+            →
           </span>
 
         </div>
@@ -296,9 +225,7 @@
     <section class="content">
 
 
-      <!-- =================================================
-           HERO
-      ================================================== -->
+      <!-- HERO -->
 
       <section class="hero">
 
@@ -324,23 +251,17 @@
           class="back-button"
           routerLink="/dashboard"
         >
-
           ← Dashboard
-
         </button>
 
       </section>
 
 
 
-      <!-- =================================================
-           FEATURES
-      ================================================== -->
+      <!-- FEATURES -->
 
       <section class="feature-row">
 
-
-        <!-- FEATURE 1 -->
 
         <div class="feature-card">
 
@@ -364,8 +285,6 @@
 
 
 
-        <!-- FEATURE 2 -->
-
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -387,8 +306,6 @@
         </div>
 
 
-
-        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -414,9 +331,7 @@
 
 
 
-      <!-- =================================================
-           MESSAGES
-      ================================================== -->
+      <!-- MESSAGES -->
 
       @if (errorMessage) {
 
@@ -467,8 +382,6 @@
         <section class="complaint-card">
 
 
-          <!-- SECTION HEADER -->
-
           <div class="section-header">
 
             <div class="section-icon">
@@ -490,10 +403,6 @@
           </div>
 
 
-
-          <!-- =================================================
-               FORM
-          ================================================== -->
 
           <div class="complaint-form">
 
@@ -528,9 +437,7 @@
                   <option
                     [ngValue]="null"
                   >
-
                     Select complaint category
-
                   </option>
 
 
@@ -542,9 +449,7 @@
                     <option
                       [ngValue]="category.id"
                     >
-
                       {{ category.name }}
-
                     </option>
 
                   }
@@ -626,7 +531,7 @@
 
 
         <!-- =================================================
-             COMPLAINT INFO
+             DYNAMIC COMPLAINT PROCESS
         ================================================== -->
 
         <section class="info-card">
@@ -645,7 +550,7 @@
               </h2>
 
               <p>
-                What happens after you submit?
+                Track your latest complaint progress.
               </p>
 
             </div>
@@ -654,25 +559,123 @@
 
 
 
+          <!-- CURRENT STATUS SUMMARY -->
+
+          <div
+            class="process-status-summary"
+            [class.has-complaint]="latestComplaint"
+          >
+
+            @if (latestComplaint) {
+
+              <div class="process-status-icon">
+
+                @if (currentComplaintStatus === 'Resolved') {
+                  ✓
+                }
+
+                @else if (currentComplaintStatus === 'InProgress') {
+                  🔄
+                }
+
+                @else {
+                  🕐
+                }
+
+              </div>
+
+
+              <div class="process-status-info">
+
+                <small>
+                  CURRENT STATUS
+                </small>
+
+                <strong>
+                  {{ getProcessStatusTitle() }}
+                </strong>
+
+                <span>
+                  {{ getProcessStatusText() }}
+                </span>
+
+                <em>
+                  Complaint #{{ latestComplaint.id }}
+                </em>
+
+              </div>
+
+            }
+
+            @else {
+
+              <div class="process-status-icon empty">
+                ○
+              </div>
+
+
+              <div class="process-status-info">
+
+                <small>
+                  CURRENT STATUS
+                </small>
+
+                <strong>
+                  No Active Complaint
+                </strong>
+
+                <span>
+                  Submit a complaint to start tracking its progress.
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+
+
+          <!-- PROCESS STEPS -->
+
           <div class="process-list">
 
 
             <!-- STEP 1 -->
 
-            <div class="process-item">
+            <div
+              class="process-item"
+              [class.process-completed]="isProcessCompleted(1)"
+              [class.process-active]="isProcessActive(1)"
+            >
 
               <div class="process-number">
-                1
+
+                {{ getProcessStepIcon(1) }}
+
               </div>
 
-              <div>
+
+              <div class="process-content">
 
                 <strong>
                   Submitted
                 </strong>
 
                 <span>
-                  Your complaint starts as Pending.
+
+                  @if (isProcessActive(1)) {
+
+                    Your complaint has been submitted successfully.
+
+                  }
+
+                  @else {
+
+                    Your complaint starts as Pending.
+
+                  }
+
                 </span>
 
               </div>
@@ -683,20 +686,39 @@
 
             <!-- STEP 2 -->
 
-            <div class="process-item">
+            <div
+              class="process-item"
+              [class.process-completed]="isProcessCompleted(2)"
+              [class.process-active]="isProcessActive(2)"
+            >
 
               <div class="process-number">
-                2
+
+                {{ getProcessStepIcon(2) }}
+
               </div>
 
-              <div>
+
+              <div class="process-content">
 
                 <strong>
                   Under Review
                 </strong>
 
                 <span>
-                  Staff will review your complaint.
+
+                  @if (isProcessCompleted(2)) {
+
+                    Your complaint has been reviewed by staff.
+
+                  }
+
+                  @else {
+
+                    Staff will review your complaint.
+
+                  }
+
                 </span>
 
               </div>
@@ -707,20 +729,45 @@
 
             <!-- STEP 3 -->
 
-            <div class="process-item">
+            <div
+              class="process-item"
+              [class.process-completed]="isProcessCompleted(3)"
+              [class.process-active]="isProcessActive(3)"
+            >
 
               <div class="process-number">
-                3
+
+                {{ getProcessStepIcon(3) }}
+
               </div>
 
-              <div>
+
+              <div class="process-content">
 
                 <strong>
                   In Progress
                 </strong>
 
                 <span>
-                  Action will be taken when required.
+
+                  @if (isProcessActive(3)) {
+
+                    University staff are currently working on your complaint.
+
+                  }
+
+                  @else if (isProcessCompleted(3)) {
+
+                    Required action has been completed.
+
+                  }
+
+                  @else {
+
+                    Action will be taken when required.
+
+                  }
+
                 </span>
 
               </div>
@@ -731,20 +778,39 @@
 
             <!-- STEP 4 -->
 
-            <div class="process-item">
+            <div
+              class="process-item"
+              [class.process-completed]="isProcessCompleted(4)"
+              [class.process-active]="isProcessActive(4)"
+            >
 
               <div class="process-number">
-                4
+
+                {{ getProcessStepIcon(4) }}
+
               </div>
 
-              <div>
+
+              <div class="process-content">
 
                 <strong>
                   Resolved
                 </strong>
 
                 <span>
-                  You can see the resolution in your history.
+
+                  @if (isProcessActive(4)) {
+
+                    Your complaint has been resolved successfully.
+
+                  }
+
+                  @else {
+
+                    Resolution will appear in your complaint history.
+
+                  }
+
                 </span>
 
               </div>
@@ -765,8 +831,6 @@
 
       <section class="history-card">
 
-
-        <!-- HEADER -->
 
         <div class="section-header">
 
@@ -793,18 +857,12 @@
             (click)="refreshComplaints()"
             [disabled]="complaintsLoading"
           >
-
             🔄 Refresh
-
           </button>
 
         </div>
 
 
-
-        <!-- =================================================
-             LOADING
-        ================================================== -->
 
         @if (complaintsLoading) {
 
@@ -819,10 +877,6 @@
         }
 
 
-
-        <!-- =================================================
-             COMPLAINT LIST
-        ================================================== -->
 
         @else if (
           complaints.length > 0
@@ -840,47 +894,33 @@
               <div class="complaint-item">
 
 
-                <!-- ICON -->
-
                 <div class="complaint-item-icon">
-
                   💬
-
                 </div>
 
 
 
-                <!-- CONTENT -->
-
                 <div class="complaint-info">
 
-
-                  <!-- TOP ROW -->
 
                   <div class="complaint-top">
 
                     <div>
 
                       <h3>
-
                         {{ getCategoryName(complaint.categoryId) }}
-
                       </h3>
 
                       <span class="complaint-id">
-
                         Complaint #{{ complaint.id }}
-
                       </span>
 
                     </div>
 
 
-                    <!-- STATUS -->
-
                     <span
                       class="status-badge"
-                      [class]="getStatusClass(complaint.status)"
+                      [ngClass]="getStatusClass(complaint.status)"
                     >
 
                       @if (
@@ -915,8 +955,6 @@
 
 
 
-                  <!-- DESCRIPTION -->
-
                   <p class="complaint-description">
 
                     {{ complaint.description }}
@@ -924,8 +962,6 @@
                   </p>
 
 
-
-                  <!-- DATE -->
 
                   <div class="complaint-meta">
 
@@ -942,8 +978,6 @@
                   </div>
 
 
-
-                  <!-- RESOLUTION -->
 
                   @if (
                     complaint.resolutionNote
@@ -974,10 +1008,6 @@
         }
 
 
-
-        <!-- =================================================
-             EMPTY STATE
-        ================================================== -->
 
         @else {
 

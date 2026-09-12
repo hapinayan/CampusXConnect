@@ -105,7 +105,9 @@
 }
 
 
-/* NAVIGATION */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 .sidebar-nav {
   display: flex;
@@ -280,7 +282,9 @@
 }
 
 
-/* NOTIFICATION BUTTON */
+/* =========================================================
+   NOTIFICATION BUTTON
+========================================================= */
 
 .notification-btn {
   position: relative;
@@ -341,18 +345,44 @@
 }
 
 
-/* STUDENT PROFILE */
+/* =========================================================
+   STUDENT PROFILE
+   SAME AS EVENTS / COMPLAINTS / CERTIFICATES / PAYMENTS
+========================================================= */
 
 .student-profile {
   display: flex;
   align-items: center;
 
   gap: 11px;
+
+  padding: 5px 8px;
+
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
 }
+
+.student-profile:hover {
+  background: #f0f9f5;
+}
+
+
+/* PROFILE AVATAR */
 
 .profile-avatar {
   width: 43px;
   height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
 
   border-radius: 50%;
 
@@ -364,13 +394,12 @@
 
   color: #ffffff;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 800;
 }
+
+
+/* PROFILE INFO */
 
 .profile-info {
   display: flex;
@@ -380,15 +409,39 @@
 }
 
 .profile-info strong {
+  display: block;
+
   color: #102a43;
 
   font-size: 14px;
+  font-weight: 700;
+
+  line-height: 1.2;
 }
 
 .profile-info small {
+  display: block;
+
+  margin-top: 2px;
+
   color: #718096;
 
   font-size: 12px;
+
+  line-height: 1.2;
+}
+
+
+/* PROFILE ARROW */
+
+.profile-arrow {
+  margin-left: 5px;
+
+  color: #5f7c74;
+
+  font-size: 21px;
+
+  line-height: 1;
 }
 
 
@@ -663,7 +716,9 @@
 }
 
 
-/* SECTION HEADER */
+/* =========================================================
+   SECTION HEADER
+========================================================= */
 
 .section-header {
   display: flex;
@@ -715,7 +770,9 @@
 }
 
 
-/* REFRESH */
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
 
 .refresh-button {
   padding: 10px 16px;
@@ -736,7 +793,7 @@
   transition: 0.2s ease;
 }
 
-.refresh-button:hover {
+.refresh-button:hover:not(:disabled) {
   background: #dcfce7;
 
   border-color: #8bd8c1;
@@ -827,7 +884,9 @@
 }
 
 
-/* UNREAD */
+/* =========================================================
+   UNREAD NOTIFICATION
+========================================================= */
 
 .notification-item.unread {
   margin: 5px 0;
@@ -847,7 +906,9 @@
 }
 
 
-/* NOTIFICATION ICON */
+/* =========================================================
+   NOTIFICATION ICON
+========================================================= */
 
 .notification-icon {
   width: 53px;
@@ -867,7 +928,9 @@
 }
 
 
-/* CONTENT */
+/* =========================================================
+   NOTIFICATION CONTENT
+========================================================= */
 
 .notification-content {
   min-width: 0;
@@ -929,7 +992,9 @@
 }
 
 
-/* STATUS */
+/* =========================================================
+   NOTIFICATION STATUS
+========================================================= */
 
 .notification-status {
   flex-shrink: 0;
@@ -1113,6 +1178,10 @@
   }
 
   .profile-info {
+    display: none;
+  }
+
+  .profile-arrow {
     display: none;
   }
 

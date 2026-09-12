@@ -114,6 +114,15 @@
           Notifications
         </span>
 
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-count">
+            {{ unreadCount }}
+          </span>
+
+        }
+
       </a>
 
 
@@ -192,25 +201,44 @@
           type="button"
           class="notification-btn"
           routerLink="/notifications"
+          title="Notifications"
         >
 
-          🔔
+          <span class="notification-bell">
+            🔔
+          </span>
+
+
+          @if (unreadCount > 0) {
+
+            <span class="topbar-notification-count">
+              {{ unreadCount }}
+            </span>
+
+          }
 
         </button>
 
 
         <!-- STUDENT PROFILE -->
 
-        <div class="student-profile">
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
 
           <div class="profile-avatar">
-            S
+
+            {{ getStudentInitial() }}
+
           </div>
+
 
           <div class="profile-info">
 
             <strong>
-              Student
+              {{ studentName }}
             </strong>
 
             <small>
@@ -219,8 +247,9 @@
 
           </div>
 
-          <span>
-            ⌄
+
+          <span class="profile-arrow">
+            →
           </span>
 
         </div>
@@ -282,8 +311,6 @@
       <section class="feature-row">
 
 
-        <!-- FEATURE 1 -->
-
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -306,8 +333,6 @@
 
 
 
-        <!-- FEATURE 2 -->
-
         <div class="feature-card">
 
           <div class="feature-icon">
@@ -329,8 +354,6 @@
         </div>
 
 
-
-        <!-- FEATURE 3 -->
 
         <div class="feature-card">
 
@@ -356,9 +379,7 @@
 
 
 
-      <!-- =================================================
-           ERROR MESSAGE
-      ================================================== -->
+      <!-- ERROR MESSAGE -->
 
       @if (errorMessage) {
 
@@ -378,9 +399,7 @@
 
 
 
-      <!-- =================================================
-           SUCCESS MESSAGE
-      ================================================== -->
+      <!-- SUCCESS MESSAGE -->
 
       @if (successMessage) {
 
@@ -407,8 +426,6 @@
       <section class="request-card">
 
 
-        <!-- SECTION HEADER -->
-
         <div class="section-header">
 
           <div class="section-icon">
@@ -430,10 +447,6 @@
         </div>
 
 
-
-        <!-- =================================================
-             FORM
-        ================================================== -->
 
         <form
           [formGroup]="certificateForm"
@@ -459,8 +472,6 @@
               >
 
 
-                <!-- ROW NUMBER -->
-
                 <div class="row-number">
 
                   {{ i + 1 }}
@@ -468,8 +479,6 @@
                 </div>
 
 
-
-                <!-- CERTIFICATE TYPE -->
 
                 <div class="form-group type-group">
 
@@ -535,8 +544,6 @@
 
 
 
-                <!-- REASON -->
-
                 <div class="form-group reason-group">
 
                   <label>
@@ -566,8 +573,6 @@
 
 
 
-                <!-- REMOVE -->
-
                 @if (
                   certificates.length > 1
                 ) {
@@ -593,14 +598,8 @@
 
 
 
-          <!-- =================================================
-               FORM ACTIONS
-          ================================================== -->
-
           <div class="form-actions">
 
-
-            <!-- ADD ANOTHER -->
 
             <button
               type="button"
@@ -615,8 +614,6 @@
 
             </button>
 
-
-            <!-- SUBMIT -->
 
             <button
               type="submit"
@@ -655,8 +652,6 @@
       <section class="history-card">
 
 
-        <!-- HEADER -->
-
         <div class="section-header">
 
           <div class="section-icon">
@@ -676,8 +671,6 @@
           </div>
 
 
-          <!-- REFRESH -->
-
           <button
             type="button"
             class="refresh-button"
@@ -693,10 +686,6 @@
 
 
 
-        <!-- =================================================
-             LOADING
-        ================================================== -->
-
         @if (requestsLoading) {
 
           <div class="loading-box">
@@ -710,10 +699,6 @@
         }
 
 
-
-        <!-- =================================================
-             REQUEST LIST
-        ================================================== -->
 
         @else if (
           requests.length > 0
@@ -731,8 +716,6 @@
               <div class="request-item">
 
 
-                <!-- ICON -->
-
                 <div class="request-icon">
 
                   📄
@@ -740,8 +723,6 @@
                 </div>
 
 
-
-                <!-- REQUEST INFO -->
 
                 <div class="request-info">
 
@@ -767,8 +748,6 @@
                     </div>
 
 
-
-                    <!-- STATUS -->
 
                     <span
                       class="status-badge"
@@ -813,8 +792,6 @@
 
 
 
-                  <!-- REASON -->
-
                   <p class="request-reason">
 
                     <strong>
@@ -826,8 +803,6 @@
                   </p>
 
 
-
-                  <!-- DATE -->
 
                   <div class="request-meta">
 
@@ -854,10 +829,6 @@
         }
 
 
-
-        <!-- =================================================
-             EMPTY STATE
-        ================================================== -->
 
         @else {
 

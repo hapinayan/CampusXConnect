@@ -10,6 +10,8 @@ import {
 } from '@angular/router';
 
 import { AuthService } from '../../../../core/services/auth.service';
+import { NotificationService } from '../../../../core/services/notification.service';
+
 import { StudentProfile } from '../../../../core/models/auth';
 
 @Component({
@@ -25,11 +27,23 @@ import { StudentProfile } from '../../../../core/models/auth';
 })
 export class Profile implements OnInit {
 
+  // =========================
+  // STUDENT
+  // =========================
+
   student: StudentProfile | null = null;
+
+
+  // =========================
+  // NOTIFICATIONS
+  // =========================
+
+  unreadCount = 0;
 
 
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -43,6 +57,8 @@ export class Profile implements OnInit {
 
     this.loadStudentProfile();
 
+    this.loadUnreadNotificationCount();
+
   }
 
 
@@ -52,46 +68,154 @@ export class Profile implements OnInit {
 
   loadStudentProfile(): void {
 
-    console.log('Loading student profile...');
-
-    this.authService.getCurrentStudent().subscribe({
-
-      next: (data: StudentProfile) => {
-
-        console.log(
-          'Profile data received:',
-          data
-        );
-
-        this.student = data;
-
-        this.cdr.detectChanges();
-
-      },
+    console.log(
+      'Loading student profile...'
+    );
 
 
-      error: (error) => {
+    this.authService
+      .getCurrentStudent()
+      .subscribe({
 
-        console.error(
-          'Failed to load profile:',
-          error
-        );
+        next: (
+          data: StudentProfile
+        ) => {
+
+          console.log(
+            'Profile data received:',
+            data
+          );
 
 
-        // Unauthorized
-        if (error.status === 401) {
+          this.student = data;
 
-          this.authService.logout();
 
-          this.router.navigate([
-            '/login'
-          ]);
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load profile:',
+            error
+          );
+
+
+          // Unauthorized
+
+          if (
+            error.status === 401
+          ) {
+
+            this.authService.logout();
+
+            this.router.navigate([
+              '/login'
+            ]);
+
+          }
 
         }
 
-      }
+      });
 
-    });
+  }
+
+
+  // =========================
+  // LOAD UNREAD NOTIFICATIONS
+  // =========================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Profile notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        next: (notifications) => {
+
+          if (!Array.isArray(notifications)) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Profile unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Profile notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
 
   }
 

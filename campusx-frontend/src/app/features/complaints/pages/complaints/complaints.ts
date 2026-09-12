@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { ComplaintService } from '../../../../core/services/complaint.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 import {
   Complaint,
@@ -32,6 +33,20 @@ import {
   styleUrl: './complaints.css'
 })
 export class Complaints implements OnInit {
+
+  // =====================================================
+  // STUDENT PROFILE
+  // =====================================================
+
+  studentName = 'Student';
+
+
+  // =====================================================
+  // NOTIFICATIONS
+  // =====================================================
+
+  unreadCount = 0;
+
 
   // =====================================================
   // COMPLAINT CATEGORIES
@@ -77,6 +92,7 @@ export class Complaints implements OnInit {
 
   constructor(
     private complaintService: ComplaintService,
+    private notificationService: NotificationService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -91,15 +107,260 @@ export class Complaints implements OnInit {
       'Complaints page initialized'
     );
 
+    this.loadStudentProfile();
 
-    // Load complaint categories
+    this.loadUnreadNotificationCount();
 
     this.loadCategories();
 
-
-    // Load student's complaints
-
     this.loadMyComplaints();
+
+  }
+
+
+  // =====================================================
+  // LOAD STUDENT PROFILE
+  // =====================================================
+
+  loadStudentProfile(): void {
+
+    try {
+
+      const storedStudent =
+        localStorage.getItem('student');
+
+
+      if (storedStudent) {
+
+        const parsedStudent =
+          JSON.parse(storedStudent);
+
+
+        if (
+          parsedStudent &&
+          parsedStudent.fullName
+        ) {
+
+          this.studentName =
+            parsedStudent.fullName.trim();
+
+
+          console.log(
+            'Student loaded from student object:',
+            this.studentName
+          );
+
+
+          this.cdr.detectChanges();
+
+          return;
+
+        }
+
+      }
+
+
+      const fullName =
+        localStorage.getItem('fullName');
+
+
+      if (
+        fullName &&
+        fullName.trim().length > 0
+      ) {
+
+        this.studentName =
+          fullName.trim();
+
+
+        console.log(
+          'Student loaded from fullName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      const storedStudentName =
+        localStorage.getItem('studentName');
+
+
+      if (
+        storedStudentName &&
+        storedStudentName.trim().length > 0
+      ) {
+
+        this.studentName =
+          storedStudentName.trim();
+
+
+        console.log(
+          'Student loaded from studentName:',
+          this.studentName
+        );
+
+
+        this.cdr.detectChanges();
+
+        return;
+
+      }
+
+
+      this.studentName =
+        'Student';
+
+
+      console.warn(
+        'Student name not found in localStorage.'
+      );
+
+
+      this.cdr.detectChanges();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'Failed to load student profile:',
+        error
+      );
+
+
+      this.studentName =
+        'Student';
+
+
+      this.cdr.detectChanges();
+
+    }
+
+  }
+
+
+  // =====================================================
+  // GET STUDENT INITIAL
+  // =====================================================
+
+  getStudentInitial(): string {
+
+    if (
+      !this.studentName ||
+      this.studentName.trim() === '' ||
+      this.studentName === 'Student'
+    ) {
+
+      return 'S';
+
+    }
+
+
+    return this.studentName
+      .trim()
+      .charAt(0)
+      .toUpperCase();
+
+  }
+
+
+  // =====================================================
+  // LOAD UNREAD NOTIFICATION COUNT
+  // =====================================================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Complaints notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        next: (notifications) => {
+
+          if (!Array.isArray(notifications)) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Complaints unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Complaints notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
 
   }
 
@@ -111,6 +372,7 @@ export class Complaints implements OnInit {
   loadCategories(): void {
 
     this.categoriesLoading = true;
+
 
     this.complaintService
       .getCategories()
@@ -126,10 +388,6 @@ export class Complaints implements OnInit {
 
       )
       .subscribe({
-
-        // ===============================================
-        // SUCCESS
-        // ===============================================
 
         next: (data) => {
 
@@ -150,10 +408,6 @@ export class Complaints implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -164,8 +418,10 @@ export class Complaints implements OnInit {
 
           this.categories = [];
 
+
           this.errorMessage =
             'Unable to load complaint categories.';
+
 
           this.cdr.detectChanges();
 
@@ -194,10 +450,6 @@ export class Complaints implements OnInit {
     );
 
 
-    // -----------------------------------------------
-    // STUDENT ID NOT FOUND
-    // -----------------------------------------------
-
     if (!storedStudentId) {
 
       this.complaints = [];
@@ -215,10 +467,6 @@ export class Complaints implements OnInit {
       Number(storedStudentId);
 
 
-    // -----------------------------------------------
-    // INVALID STUDENT ID
-    // -----------------------------------------------
-
     if (!studentId) {
 
       this.complaints = [];
@@ -231,10 +479,6 @@ export class Complaints implements OnInit {
 
     }
 
-
-    // -----------------------------------------------
-    // LOAD API DATA
-    // -----------------------------------------------
 
     this.complaintsLoading = true;
 
@@ -256,10 +500,6 @@ export class Complaints implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (data) => {
 
           console.log(
@@ -279,10 +519,6 @@ export class Complaints implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -293,8 +529,6 @@ export class Complaints implements OnInit {
 
           this.complaints = [];
 
-
-          // 404 can simply mean no records
 
           if (
             error.status !== 404
@@ -321,16 +555,10 @@ export class Complaints implements OnInit {
 
   submitComplaint(): void {
 
-    // Clear old messages
-
     this.errorMessage = '';
 
     this.successMessage = '';
 
-
-    // ===================================================
-    // VALIDATION
-    // ===================================================
 
     if (
       !this.selectedCategoryId
@@ -368,10 +596,6 @@ export class Complaints implements OnInit {
     }
 
 
-    // ===================================================
-    // PREVENT DOUBLE SUBMISSION
-    // ===================================================
-
     if (this.submitting) {
 
       return;
@@ -381,10 +605,6 @@ export class Complaints implements OnInit {
 
     this.submitting = true;
 
-
-    // ===================================================
-    // CREATE REQUEST
-    // ===================================================
 
     const complaint: CreateComplaint = {
 
@@ -403,10 +623,6 @@ export class Complaints implements OnInit {
     );
 
 
-    // ===================================================
-    // API REQUEST
-    // ===================================================
-
     this.complaintService
       .createComplaint(
         complaint
@@ -424,10 +640,6 @@ export class Complaints implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (response) => {
 
           console.log(
@@ -438,32 +650,21 @@ export class Complaints implements OnInit {
 
           this.errorMessage = '';
 
+
           this.successMessage =
             'Complaint submitted successfully.';
 
-
-          // ---------------------------------------------
-          // CLEAR FORM
-          // ---------------------------------------------
 
           this.selectedCategoryId = null;
 
           this.description = '';
 
 
-          // ---------------------------------------------
-          // REFRESH COMPLAINT HISTORY
-          // ---------------------------------------------
-
           this.loadMyComplaints();
 
 
           this.cdr.detectChanges();
 
-
-          // ---------------------------------------------
-          // HIDE SUCCESS MESSAGE
-          // ---------------------------------------------
 
           setTimeout(() => {
 
@@ -476,10 +677,6 @@ export class Complaints implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -490,10 +687,6 @@ export class Complaints implements OnInit {
 
           this.successMessage = '';
 
-
-          // ---------------------------------------------
-          // BAD REQUEST
-          // ---------------------------------------------
 
           if (
             error.status === 400
@@ -507,10 +700,6 @@ export class Complaints implements OnInit {
           }
 
 
-          // ---------------------------------------------
-          // UNAUTHORIZED
-          // ---------------------------------------------
-
           else if (
             error.status === 401
           ) {
@@ -520,10 +709,6 @@ export class Complaints implements OnInit {
 
           }
 
-
-          // ---------------------------------------------
-          // NOT FOUND
-          // ---------------------------------------------
 
           else if (
             error.status === 404
@@ -535,10 +720,6 @@ export class Complaints implements OnInit {
 
           }
 
-
-          // ---------------------------------------------
-          // OTHER
-          // ---------------------------------------------
 
           else {
 
@@ -606,6 +787,222 @@ export class Complaints implements OnInit {
 
 
   // =====================================================
+  // LATEST COMPLAINT
+  // =====================================================
+
+  get latestComplaint(): Complaint | null {
+
+    if (
+      !this.complaints ||
+      this.complaints.length === 0
+    ) {
+
+      return null;
+
+    }
+
+
+    return [...this.complaints]
+      .sort(
+        (a, b) =>
+          b.id - a.id
+      )[0];
+
+  }
+
+
+  // =====================================================
+  // CURRENT COMPLAINT STATUS
+  // =====================================================
+
+  get currentComplaintStatus(): string {
+
+    return this.latestComplaint?.status || '';
+
+  }
+
+
+  // =====================================================
+  // PROCESS STEP COMPLETED
+  // =====================================================
+
+  isProcessCompleted(
+    step: number
+  ): boolean {
+
+    const status =
+      this.currentComplaintStatus;
+
+
+    if (!status) {
+
+      return false;
+
+    }
+
+
+    switch (status) {
+
+      case 'Pending':
+
+        return step === 1;
+
+
+      case 'InProgress':
+
+        return step <= 2;
+
+
+      case 'Resolved':
+
+        return step <= 4;
+
+
+      default:
+
+        return false;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // PROCESS STEP ACTIVE
+  // =====================================================
+
+  isProcessActive(
+    step: number
+  ): boolean {
+
+    const status =
+      this.currentComplaintStatus;
+
+
+    if (!status) {
+
+      return false;
+
+    }
+
+
+    switch (status) {
+
+      case 'Pending':
+
+        return step === 1;
+
+
+      case 'InProgress':
+
+        return step === 3;
+
+
+      case 'Resolved':
+
+        return step === 4;
+
+
+      default:
+
+        return false;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // PROCESS STEP ICON
+  // =====================================================
+
+  getProcessStepIcon(
+    step: number
+  ): string {
+
+    if (
+      this.isProcessCompleted(step)
+    ) {
+
+      return '✓';
+
+    }
+
+
+    return step.toString();
+
+  }
+
+
+  // =====================================================
+  // PROCESS STATUS TEXT
+  // =====================================================
+
+  getProcessStatusText(): string {
+
+    switch (
+      this.currentComplaintStatus
+    ) {
+
+      case 'Pending':
+
+        return 'Your complaint has been submitted and is waiting for review.';
+
+
+      case 'InProgress':
+
+        return 'University staff are currently working on your complaint.';
+
+
+      case 'Resolved':
+
+        return 'Your complaint has been resolved successfully.';
+
+
+      default:
+
+        return 'Submit a complaint to start tracking its progress.';
+
+    }
+
+  }
+
+
+  // =====================================================
+  // PROCESS STATUS TITLE
+  // =====================================================
+
+  getProcessStatusTitle(): string {
+
+    switch (
+      this.currentComplaintStatus
+    ) {
+
+      case 'Pending':
+
+        return 'Complaint Submitted';
+
+
+      case 'InProgress':
+
+        return 'Complaint In Progress';
+
+
+      case 'Resolved':
+
+        return 'Complaint Resolved';
+
+
+      default:
+
+        return 'No Active Complaint';
+
+    }
+
+  }
+
+
+  // =====================================================
   // REFRESH
   // =====================================================
 
@@ -618,6 +1015,8 @@ export class Complaints implements OnInit {
     this.loadCategories();
 
     this.loadMyComplaints();
+
+    this.loadUnreadNotificationCount();
 
   }
 

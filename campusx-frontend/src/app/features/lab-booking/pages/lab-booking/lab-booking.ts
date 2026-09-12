@@ -15,6 +15,7 @@ import {
 import { finalize } from 'rxjs';
 
 import { LabService } from '../../../../core/services/lab.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 import {
   Lab,
@@ -50,6 +51,13 @@ export class LabBookingPage implements OnInit {
 
 
   // =====================================================
+  // NOTIFICATION COUNT
+  // =====================================================
+
+  unreadCount = 0;
+
+
+  // =====================================================
   // LABS
   // =====================================================
 
@@ -74,6 +82,35 @@ export class LabBookingPage implements OnInit {
   startTime = '';
 
   endTime = '';
+
+
+  // =====================================================
+  // CUSTOM CALENDAR
+  // =====================================================
+
+  showCalendar = false;
+
+  calendarViewDate =
+    new Date();
+
+  calendarDays: {
+    date: Date;
+    day: number;
+    currentMonth: boolean;
+    isToday: boolean;
+    selected: boolean;
+    disabled: boolean;
+  }[] = [];
+
+  weekDays = [
+    'Sun',
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat'
+  ];
 
 
   // =====================================================
@@ -120,6 +157,7 @@ export class LabBookingPage implements OnInit {
 
   constructor(
     private labService: LabService,
+    private notificationService: NotificationService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -135,20 +173,20 @@ export class LabBookingPage implements OnInit {
     );
 
 
-    // Load logged-in student
     this.loadStudentProfile();
 
+    this.loadUnreadNotificationCount();
 
-    // Load laboratories
     this.loadLabs();
 
 
-    // Show default time slots
     this.availableSlots =
       this.labService.getDefaultTimeSlots();
 
 
-    // Load student's bookings
+    this.buildCalendar();
+
+
     this.loadStudentBookings();
 
   }
@@ -161,10 +199,6 @@ export class LabBookingPage implements OnInit {
   loadStudentProfile(): void {
 
     try {
-
-      /*
-       * First try complete student object
-       */
 
       const storedStudent =
         localStorage.getItem('student');
@@ -202,10 +236,6 @@ export class LabBookingPage implements OnInit {
       }
 
 
-      /*
-       * Try direct fullName
-       */
-
       const fullName =
         localStorage.getItem('fullName');
 
@@ -230,10 +260,6 @@ export class LabBookingPage implements OnInit {
       }
 
 
-      /*
-       * Try studentName
-       */
-
       const studentName =
         localStorage.getItem('studentName');
 
@@ -257,10 +283,6 @@ export class LabBookingPage implements OnInit {
 
       }
 
-
-      /*
-       * No name found
-       */
 
       this.student = null;
 
@@ -288,6 +310,102 @@ export class LabBookingPage implements OnInit {
       this.cdr.detectChanges();
 
     }
+
+  }
+
+
+  // =====================================================
+  // LOAD UNREAD NOTIFICATION COUNT
+  // =====================================================
+
+  loadUnreadNotificationCount(): void {
+
+    const storedStudentId =
+      localStorage.getItem('studentId');
+
+
+    console.log(
+      'Lab Booking notification Student ID:',
+      storedStudentId
+    );
+
+
+    if (!storedStudentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    const studentId =
+      Number(storedStudentId);
+
+
+    if (!studentId) {
+
+      this.unreadCount = 0;
+
+      this.cdr.detectChanges();
+
+      return;
+
+    }
+
+
+    this.notificationService
+      .getMyNotifications(studentId)
+      .subscribe({
+
+        next: (notifications) => {
+
+          if (!Array.isArray(notifications)) {
+
+            this.unreadCount = 0;
+
+            this.cdr.detectChanges();
+
+            return;
+
+          }
+
+
+          this.unreadCount =
+            notifications.filter(
+              notification =>
+                !notification.isRead
+            ).length;
+
+
+          console.log(
+            'Lab Booking unread notifications:',
+            this.unreadCount
+          );
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load Lab Booking notification count:',
+            error
+          );
+
+
+          this.unreadCount = 0;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
 
   }
 
@@ -375,7 +493,6 @@ export class LabBookingPage implements OnInit {
     );
 
 
-    // No student ID
     if (!storedStudentId) {
 
       console.warn(
@@ -398,7 +515,6 @@ export class LabBookingPage implements OnInit {
       Number(storedStudentId);
 
 
-    // Invalid student ID
     if (!studentId) {
 
       console.warn(
@@ -417,7 +533,6 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Load bookings
     this.loadMyBookings(
       studentId
     );
@@ -442,13 +557,11 @@ export class LabBookingPage implements OnInit {
     this.successMessage = '';
 
 
-    // Clear selected time
     this.startTime = '';
 
     this.endTime = '';
 
 
-    // No lab selected
     if (!this.selectedLabId) {
 
       this.availableSlots =
@@ -461,7 +574,6 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Lab selected but date not selected
     if (!this.bookingDate) {
 
       this.availableSlots =
@@ -474,8 +586,456 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Load live availability
     this.loadAvailableSlots();
+
+  }
+
+
+  // =====================================================
+  // TOGGLE CALENDAR
+  // =====================================================
+
+  toggleCalendar(): void {
+
+    this.showCalendar =
+      !this.showCalendar;
+
+
+    if (this.showCalendar) {
+
+      if (this.bookingDate) {
+
+        const selectedDate =
+          new Date(
+            `${this.bookingDate}T00:00:00`
+          );
+
+
+        if (
+          !isNaN(
+            selectedDate.getTime()
+          )
+        ) {
+
+          this.calendarViewDate =
+            new Date(
+              selectedDate.getFullYear(),
+              selectedDate.getMonth(),
+              1
+            );
+
+        }
+
+      }
+
+      else {
+
+        const today =
+          new Date();
+
+
+        this.calendarViewDate =
+          new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            1
+          );
+
+      }
+
+
+      this.buildCalendar();
+
+    }
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // CLOSE CALENDAR
+  // =====================================================
+
+  closeCalendar(): void {
+
+    this.showCalendar = false;
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // CALENDAR MONTH TITLE
+  // =====================================================
+
+  get calendarMonthTitle(): string {
+
+    return this.calendarViewDate
+      .toLocaleDateString(
+        'en-US',
+        {
+          month: 'long',
+          year: 'numeric'
+        }
+      );
+
+  }
+
+
+  // =====================================================
+  // PREVIOUS MONTH
+  // =====================================================
+
+  previousMonth(): void {
+
+    this.calendarViewDate =
+      new Date(
+        this.calendarViewDate.getFullYear(),
+        this.calendarViewDate.getMonth() - 1,
+        1
+      );
+
+
+    this.buildCalendar();
+
+  }
+
+
+  // =====================================================
+  // NEXT MONTH
+  // =====================================================
+
+  nextMonth(): void {
+
+    this.calendarViewDate =
+      new Date(
+        this.calendarViewDate.getFullYear(),
+        this.calendarViewDate.getMonth() + 1,
+        1
+      );
+
+
+    this.buildCalendar();
+
+  }
+
+
+  // =====================================================
+  // BUILD CALENDAR
+  // =====================================================
+
+  buildCalendar(): void {
+
+    const year =
+      this.calendarViewDate.getFullYear();
+
+    const month =
+      this.calendarViewDate.getMonth();
+
+
+    const firstDay =
+      new Date(
+        year,
+        month,
+        1
+      );
+
+
+    const startDayIndex =
+      firstDay.getDay();
+
+
+    const calendarStart =
+      new Date(
+        year,
+        month,
+        1 - startDayIndex
+      );
+
+
+    const today =
+      this.getStartOfDay(
+        new Date()
+      );
+
+
+    const days: {
+      date: Date;
+      day: number;
+      currentMonth: boolean;
+      isToday: boolean;
+      selected: boolean;
+      disabled: boolean;
+    }[] = [];
+
+
+    for (
+      let index = 0;
+      index < 42;
+      index++
+    ) {
+
+      const date =
+        new Date(
+          calendarStart
+        );
+
+
+      date.setDate(
+        calendarStart.getDate() +
+        index
+      );
+
+
+      const normalizedDate =
+        this.getStartOfDay(
+          date
+        );
+
+
+      const formattedDate =
+        this.formatDateForApi(
+          date
+        );
+
+
+      days.push({
+
+        date:
+          new Date(date),
+
+        day:
+          date.getDate(),
+
+        currentMonth:
+          date.getMonth() === month,
+
+        isToday:
+          normalizedDate.getTime() ===
+          today.getTime(),
+
+        selected:
+          this.bookingDate ===
+          formattedDate,
+
+        disabled:
+          normalizedDate.getTime() <
+          today.getTime()
+
+      });
+
+    }
+
+
+    this.calendarDays =
+      days;
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // SELECT CALENDAR DATE
+  // =====================================================
+
+  selectCalendarDate(
+    day: {
+      date: Date;
+      day: number;
+      currentMonth: boolean;
+      isToday: boolean;
+      selected: boolean;
+      disabled: boolean;
+    }
+  ): void {
+
+    if (day.disabled) {
+
+      return;
+
+    }
+
+
+    this.bookingDate =
+      this.formatDateForApi(
+        day.date
+      );
+
+
+    this.calendarViewDate =
+      new Date(
+        day.date.getFullYear(),
+        day.date.getMonth(),
+        1
+      );
+
+
+    this.showCalendar = false;
+
+
+    this.buildCalendar();
+
+
+    this.onDateChange();
+
+  }
+
+
+  // =====================================================
+  // SELECT TODAY
+  // =====================================================
+
+  selectToday(): void {
+
+    const today =
+      new Date();
+
+
+    this.bookingDate =
+      this.formatDateForApi(
+        today
+      );
+
+
+    this.calendarViewDate =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        1
+      );
+
+
+    this.showCalendar = false;
+
+
+    this.buildCalendar();
+
+
+    this.onDateChange();
+
+  }
+
+
+  // =====================================================
+  // CLEAR BOOKING DATE
+  // =====================================================
+
+  clearBookingDate(): void {
+
+    this.bookingDate = '';
+
+    this.startTime = '';
+
+    this.endTime = '';
+
+
+    this.availableSlots =
+      this.labService
+        .getDefaultTimeSlots();
+
+
+    this.buildCalendar();
+
+
+    this.showCalendar = false;
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // DISPLAY BOOKING DATE
+  // =====================================================
+
+  get bookingDateDisplay(): string {
+
+    if (!this.bookingDate) {
+
+      return 'Select booking date';
+
+    }
+
+
+    const date =
+      new Date(
+        `${this.bookingDate}T00:00:00`
+      );
+
+
+    if (
+      isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return this.bookingDate;
+
+    }
+
+
+    return date.toLocaleDateString(
+      'en-GB',
+      {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }
+    );
+
+  }
+
+
+  // =====================================================
+  // DATE HELPERS
+  // =====================================================
+
+  private getStartOfDay(
+    date: Date
+  ): Date {
+
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+
+  }
+
+
+  private formatDateForApi(
+    date: Date
+  ): string {
+
+    const year =
+      date.getFullYear();
+
+
+    const month =
+      String(
+        date.getMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      );
+
+
+    const day =
+      String(
+        date.getDate()
+      ).padStart(
+        2,
+        '0'
+      );
+
+
+    return `${year}-${month}-${day}`;
 
   }
 
@@ -497,13 +1057,11 @@ export class LabBookingPage implements OnInit {
     this.successMessage = '';
 
 
-    // Clear selected time
     this.startTime = '';
 
     this.endTime = '';
 
 
-    // Date not selected
     if (!this.bookingDate) {
 
       this.availableSlots =
@@ -516,7 +1074,6 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Date selected but lab not selected
     if (!this.selectedLabId) {
 
       this.availableSlots =
@@ -529,7 +1086,6 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Load live slots
     this.loadAvailableSlots();
 
   }
@@ -586,10 +1142,6 @@ export class LabBookingPage implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (data) => {
 
           console.log(
@@ -621,10 +1173,6 @@ export class LabBookingPage implements OnInit {
 
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 
@@ -671,7 +1219,6 @@ export class LabBookingPage implements OnInit {
     this.successMessage = '';
 
 
-    // Check full slot
     if (
       slot.isAvailable === false
     ) {
@@ -684,14 +1231,12 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Set start time
     this.startTime =
       this.formatTime(
         slot.startTime
       );
 
 
-    // Set end time
     this.endTime =
       this.formatTime(
         slot.endTime
@@ -744,7 +1289,6 @@ export class LabBookingPage implements OnInit {
     this.successMessage = '';
 
 
-    // Validation
     if (!this.selectedLabId) {
 
       this.errorMessage =
@@ -798,7 +1342,6 @@ export class LabBookingPage implements OnInit {
     }
 
 
-    // Prevent double click
     if (this.submitting) {
 
       return;
@@ -809,7 +1352,6 @@ export class LabBookingPage implements OnInit {
     this.submitting = true;
 
 
-    // Create booking request
     const booking: CreateLabBooking = {
 
       labId:
@@ -833,7 +1375,6 @@ export class LabBookingPage implements OnInit {
     );
 
 
-    // Send API request
     this.labService
       .bookLab(booking)
       .pipe(
@@ -849,10 +1390,6 @@ export class LabBookingPage implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (response) => {
 
           console.log(
@@ -867,7 +1404,6 @@ export class LabBookingPage implements OnInit {
           this.errorMessage = '';
 
 
-          // Save student ID
           if (
             response &&
             response.studentId
@@ -881,13 +1417,11 @@ export class LabBookingPage implements OnInit {
           }
 
 
-          // Clear selected time
           this.startTime = '';
 
           this.endTime = '';
 
 
-          // Refresh bookings
           const storedStudentId =
             localStorage.getItem(
               'studentId'
@@ -911,7 +1445,6 @@ export class LabBookingPage implements OnInit {
           }
 
 
-          // Refresh slots
           if (
             this.selectedLabId &&
             this.bookingDate
@@ -925,7 +1458,6 @@ export class LabBookingPage implements OnInit {
           this.cdr.detectChanges();
 
 
-          // Hide success message
           setTimeout(() => {
 
             this.successMessage = '';
@@ -936,10 +1468,6 @@ export class LabBookingPage implements OnInit {
 
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 
@@ -1062,10 +1590,6 @@ export class LabBookingPage implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (data) => {
 
           console.log(
@@ -1090,10 +1614,6 @@ export class LabBookingPage implements OnInit {
 
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 
@@ -1146,12 +1666,10 @@ export class LabBookingPage implements OnInit {
     this.successMessage = '';
 
 
-    // Store booking ID
     this.selectedBookingId =
       bookingId;
 
 
-    // Open popup
     this.showCancelPopup = true;
 
 
@@ -1187,7 +1705,6 @@ export class LabBookingPage implements OnInit {
 
   confirmCancelBooking(): void {
 
-    // No booking selected
     if (
       this.selectedBookingId === null
     ) {
@@ -1207,7 +1724,6 @@ export class LabBookingPage implements OnInit {
     );
 
 
-    // Close popup
     this.showCancelPopup = false;
 
     this.selectedBookingId = null;
@@ -1218,14 +1734,12 @@ export class LabBookingPage implements OnInit {
     this.successMessage = '';
 
 
-    // Cancel API
     this.labService
       .cancelBooking(bookingId)
       .pipe(
 
         finalize(() => {
 
-          // Refresh available slots
           if (
             this.selectedLabId &&
             this.bookingDate
@@ -1243,10 +1757,6 @@ export class LabBookingPage implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: () => {
 
           console.log(
@@ -1259,7 +1769,6 @@ export class LabBookingPage implements OnInit {
             'Lab booking cancelled successfully.';
 
 
-          // Remove booking immediately
           this.bookings =
             this.bookings.filter(
               booking =>
@@ -1267,7 +1776,6 @@ export class LabBookingPage implements OnInit {
             );
 
 
-          // Clear selected time
           this.startTime = '';
 
           this.endTime = '';
@@ -1276,7 +1784,6 @@ export class LabBookingPage implements OnInit {
           this.cdr.detectChanges();
 
 
-          // Hide success message
           setTimeout(() => {
 
             this.successMessage = '';
@@ -1287,10 +1794,6 @@ export class LabBookingPage implements OnInit {
 
         },
 
-
-        // ===============================================
-        // ERROR
-        // ===============================================
 
         error: (error) => {
 

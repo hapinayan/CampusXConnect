@@ -185,24 +185,38 @@
   line-height: 1;
 }
 
-.notification-count {
-  min-width: 21px;
-  height: 21px;
+
+/* =========================================================
+   SIDEBAR NOTIFICATION COUNT
+========================================================= */
+
+.sidebar .notification-count {
+  min-width: 26px;
+  height: 26px;
 
   margin-left: auto;
+
+  padding: 0 7px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  flex-shrink: 0;
+
   border-radius: 50%;
 
-  background: #10b981;
+  background: #fb7185;
 
-  color: #fff;
+  color: #ffffff;
 
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
+
+  line-height: 1;
+
+  box-shadow:
+    0 4px 10px rgba(251, 113, 133, 0.25);
 }
 
 
@@ -329,37 +343,56 @@
   transform: translateY(-1px);
 }
 
-.notification > span {
+.notification-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   TOPBAR NOTIFICATION COUNT
+========================================================= */
+
+.topbar-notification-count {
   position: absolute;
 
-  top: -3px;
-  right: -3px;
+  top: -6px;
+  right: -6px;
 
-  min-width: 18px;
-  height: 18px;
+  min-width: 21px;
+  height: 21px;
+
+  padding: 0 6px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0 4px;
+  border: 2px solid #ffffff;
 
   border-radius: 50%;
 
-  background: #10b981;
+  background: #fb7185;
 
-  color: #fff;
+  color: #ffffff;
 
   font-size: 10px;
   font-weight: 800;
 
-  border: 2px solid #fff;
+  line-height: 1;
+
+  box-shadow:
+    0 3px 8px rgba(251, 113, 133, 0.28);
 }
 
 
 /* =========================================================
    STUDENT MINI PROFILE
-   SAME SIZE AS DASHBOARD
 ========================================================= */
 
 .student-mini {
@@ -380,11 +413,6 @@
 .student-mini:hover {
   background: #f0f9f5;
 }
-
-
-/* =========================================================
-   STUDENT AVATAR
-========================================================= */
 
 .student-mini .avatar {
   width: 43px;
@@ -409,11 +437,6 @@
   font-size: 17px;
   font-weight: 800;
 }
-
-
-/* =========================================================
-   STUDENT INFO
-========================================================= */
 
 .student-mini-info {
   display: flex;
@@ -448,11 +471,6 @@
   font-size: 12px;
 }
 
-
-/* =========================================================
-   PROFILE ARROW
-========================================================= */
-
 .student-mini .profile-arrow {
   margin-left: 5px;
 
@@ -468,11 +486,6 @@
 
   transform: translateX(3px);
 }
-
-
-/* =========================================================
-   CLICK EFFECT
-========================================================= */
 
 .student-mini:active {
   transform: scale(0.98);
@@ -536,11 +549,6 @@
   background: rgba(255, 255, 255, 0.32);
 }
 
-
-/* =========================================================
-   HERO OVERLAY
-========================================================= */
-
 .hero-overlay {
   min-height: 220px;
 
@@ -554,11 +562,6 @@
 
   padding: 40px 45px;
 }
-
-
-/* =========================================================
-   HERO CONTENT
-========================================================= */
 
 .hero-content p {
   margin: 0 0 8px;
@@ -638,11 +641,6 @@
   margin: 22px 38px 0;
 }
 
-
-/* =========================================================
-   FEATURE CARD
-========================================================= */
-
 .feature-card {
   min-height: 105px;
 
@@ -671,11 +669,6 @@
   box-shadow:
     0 12px 30px rgba(15, 80, 65, 0.08);
 }
-
-
-/* =========================================================
-   FEATURE ICON
-========================================================= */
 
 .feature-icon {
   width: 52px;
@@ -878,10 +871,7 @@
     0 7px 28px rgba(15, 80, 65, 0.05);
 }
 
-.application-card {
-  padding: 24px;
-}
-
+.application-card,
 .my-application-card {
   padding: 24px;
 }
@@ -1372,7 +1362,7 @@
     display: none;
   }
 
-  .notification-count {
+  .sidebar .notification-count {
     display: none;
   }
 
