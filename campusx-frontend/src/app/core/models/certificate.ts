@@ -3,10 +3,15 @@
 // =====================================================
 
 export enum CertificateType {
+
   Enrollment = 0,
+
   Academic = 1,
+
   Character = 2,
+
   Other = 3
+
 }
 
 
@@ -15,9 +20,13 @@ export enum CertificateType {
 // =====================================================
 
 export type CertificateStatus =
+
   | 'Pending'
+
   | 'Approved'
+
   | 'Rejected'
+
   | 'ReadyForCollection';
 
 
@@ -33,7 +42,10 @@ export interface CertificateRequest {
 
   studentName?: string;
 
-  type: CertificateType;
+  // Backend response may return:
+  // "Enrollment", "Academic", "Character", "Other"
+  // while request uses numeric enum values.
+  type: CertificateType | string;
 
   reason: string;
 
@@ -41,13 +53,14 @@ export interface CertificateRequest {
 
   requestedAt: string;
 
-  updatedAt?: string;
+  updatedAt?: string | null;
 
 }
 
 
 // =====================================================
 // CREATE CERTIFICATE REQUEST
+// POST /api/certificate-requests
 // =====================================================
 
 export interface CreateCertificateRequest {
@@ -55,5 +68,17 @@ export interface CreateCertificateRequest {
   type: CertificateType;
 
   reason: string;
+
+}
+
+
+// =====================================================
+// UPDATE CERTIFICATE STATUS
+// PUT /api/certificate-requests/{id}/status
+// =====================================================
+
+export interface UpdateCertificateStatus {
+
+  status: number;
 
 }

@@ -17,20 +17,12 @@ import {
 })
 export class ComplaintService {
 
-  // =====================================================
-  // API URLs
-  // =====================================================
-
   private readonly categoryUrl =
     `${environment.apiUrl}/complaint-categories`;
 
   private readonly complaintUrl =
     `${environment.apiUrl}/complaints`;
 
-
-  // =====================================================
-  // CONSTRUCTOR
-  // =====================================================
 
   constructor(
     private http: HttpClient
@@ -39,7 +31,6 @@ export class ComplaintService {
 
   // =====================================================
   // GET COMPLAINT CATEGORIES
-  // GET: api/complaint-categories
   // =====================================================
 
   getCategories(): Observable<ComplaintCategory[]> {
@@ -53,7 +44,7 @@ export class ComplaintService {
 
   // =====================================================
   // GET CATEGORY BY ID
-  // GET: api/complaint-categories/{id}
+  // Keep for existing student code compatibility
   // =====================================================
 
   getCategoryById(
@@ -69,7 +60,6 @@ export class ComplaintService {
 
   // =====================================================
   // CREATE COMPLAINT
-  // POST: api/complaints
   // =====================================================
 
   createComplaint(
@@ -85,8 +75,7 @@ export class ComplaintService {
 
 
   // =====================================================
-  // GET MY COMPLAINTS
-  // GET: api/complaints/student/{studentId}
+  // GET STUDENT COMPLAINTS
   // =====================================================
 
   getMyComplaints(
@@ -102,7 +91,7 @@ export class ComplaintService {
 
   // =====================================================
   // GET COMPLAINT BY ID
-  // GET: api/complaints/{id}
+  // Keep for existing student code compatibility
   // =====================================================
 
   getComplaintById(
@@ -118,20 +107,23 @@ export class ComplaintService {
 
   // =====================================================
   // ADMIN - GET ALL COMPLAINTS
-  // GET: api/complaints
   // =====================================================
 
   getAllComplaints(
-    status?: string
+    status?: string | number
   ): Observable<Complaint[]> {
 
     let params = new HttpParams();
 
-    if (status) {
+    if (
+      status !== undefined &&
+      status !== null &&
+      status !== ''
+    ) {
 
       params = params.set(
         'status',
-        status
+        status.toString()
       );
 
     }
@@ -146,7 +138,6 @@ export class ComplaintService {
 
   // =====================================================
   // ADMIN - UPDATE COMPLAINT STATUS
-  // PUT: api/complaints/{id}/status
   // =====================================================
 
   updateComplaintStatus(

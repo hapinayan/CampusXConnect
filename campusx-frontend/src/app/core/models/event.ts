@@ -14,6 +14,33 @@ export interface Event {
 
 
 // =====================================================
+// CREATE EVENT
+// =====================================================
+
+export interface CreateEvent {
+  title: string;
+  description: string;
+  eventDate: string;
+  venue: string;
+  capacity: number;
+}
+
+
+// =====================================================
+// UPDATE EVENT
+// =====================================================
+
+export interface UpdateEvent {
+  title: string;
+  description: string;
+  eventDate: string;
+  venue: string;
+  capacity: number;
+  isActive: boolean;
+}
+
+
+// =====================================================
 // EVENT REGISTRATION
 // =====================================================
 

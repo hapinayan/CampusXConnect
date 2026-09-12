@@ -92,12 +92,7 @@ export class Complaints implements OnInit {
     );
 
 
-    // Load complaint categories
-
     this.loadCategories();
-
-
-    // Load student's complaints
 
     this.loadMyComplaints();
 
@@ -111,6 +106,7 @@ export class Complaints implements OnInit {
   loadCategories(): void {
 
     this.categoriesLoading = true;
+
 
     this.complaintService
       .getCategories()
@@ -126,10 +122,6 @@ export class Complaints implements OnInit {
 
       )
       .subscribe({
-
-        // ===============================================
-        // SUCCESS
-        // ===============================================
 
         next: (data) => {
 
@@ -150,10 +142,6 @@ export class Complaints implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -164,8 +152,10 @@ export class Complaints implements OnInit {
 
           this.categories = [];
 
+
           this.errorMessage =
             'Unable to load complaint categories.';
+
 
           this.cdr.detectChanges();
 
@@ -194,9 +184,9 @@ export class Complaints implements OnInit {
     );
 
 
-    // -----------------------------------------------
+    // ===================================================
     // STUDENT ID NOT FOUND
-    // -----------------------------------------------
+    // ===================================================
 
     if (!storedStudentId) {
 
@@ -215,9 +205,9 @@ export class Complaints implements OnInit {
       Number(storedStudentId);
 
 
-    // -----------------------------------------------
+    // ===================================================
     // INVALID STUDENT ID
-    // -----------------------------------------------
+    // ===================================================
 
     if (!studentId) {
 
@@ -232,9 +222,9 @@ export class Complaints implements OnInit {
     }
 
 
-    // -----------------------------------------------
-    // LOAD API DATA
-    // -----------------------------------------------
+    // ===================================================
+    // LOAD COMPLAINTS
+    // ===================================================
 
     this.complaintsLoading = true;
 
@@ -256,10 +246,6 @@ export class Complaints implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (data) => {
 
           console.log(
@@ -279,10 +265,6 @@ export class Complaints implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -293,8 +275,6 @@ export class Complaints implements OnInit {
 
           this.complaints = [];
 
-
-          // 404 can simply mean no records
 
           if (
             error.status !== 404
@@ -320,8 +300,6 @@ export class Complaints implements OnInit {
   // =====================================================
 
   submitComplaint(): void {
-
-    // Clear old messages
 
     this.errorMessage = '';
 
@@ -424,10 +402,6 @@ export class Complaints implements OnInit {
       )
       .subscribe({
 
-        // ===============================================
-        // SUCCESS
-        // ===============================================
-
         next: (response) => {
 
           console.log(
@@ -438,22 +412,19 @@ export class Complaints implements OnInit {
 
           this.errorMessage = '';
 
+
           this.successMessage =
             'Complaint submitted successfully.';
 
 
-          // ---------------------------------------------
-          // CLEAR FORM
-          // ---------------------------------------------
+          // Clear form
 
           this.selectedCategoryId = null;
 
           this.description = '';
 
 
-          // ---------------------------------------------
-          // REFRESH COMPLAINT HISTORY
-          // ---------------------------------------------
+          // Reload complaint history
 
           this.loadMyComplaints();
 
@@ -461,9 +432,7 @@ export class Complaints implements OnInit {
           this.cdr.detectChanges();
 
 
-          // ---------------------------------------------
-          // HIDE SUCCESS MESSAGE
-          // ---------------------------------------------
+          // Hide success message
 
           setTimeout(() => {
 
@@ -476,10 +445,6 @@ export class Complaints implements OnInit {
         },
 
 
-        // ===============================================
-        // ERROR
-        // ===============================================
-
         error: (error) => {
 
           console.error(
@@ -491,9 +456,7 @@ export class Complaints implements OnInit {
           this.successMessage = '';
 
 
-          // ---------------------------------------------
           // BAD REQUEST
-          // ---------------------------------------------
 
           if (
             error.status === 400
@@ -507,9 +470,7 @@ export class Complaints implements OnInit {
           }
 
 
-          // ---------------------------------------------
           // UNAUTHORIZED
-          // ---------------------------------------------
 
           else if (
             error.status === 401
@@ -521,9 +482,7 @@ export class Complaints implements OnInit {
           }
 
 
-          // ---------------------------------------------
           // NOT FOUND
-          // ---------------------------------------------
 
           else if (
             error.status === 404
@@ -536,9 +495,7 @@ export class Complaints implements OnInit {
           }
 
 
-          // ---------------------------------------------
           // OTHER
-          // ---------------------------------------------
 
           else {
 
@@ -572,30 +529,71 @@ export class Complaints implements OnInit {
       );
 
 
-    return category?.name ||
-      `Category #${categoryId}`;
+    return (
+      category?.name ||
+      `Category #${categoryId}`
+    );
 
   }
 
 
   // =====================================================
   // GET STATUS CLASS
+  // Supports both STRING and NUMBER status
   // =====================================================
 
   getStatusClass(
-    status: string
+    status: string | number
   ): string {
 
-    switch (status) {
+    // ===================================================
+    // NUMERIC STATUS
+    // 0 = Pending
+    // 1 = In Progress
+    // 2 = Resolved
+    // ===================================================
 
-      case 'Pending':
-        return 'status-pending';
+    if (
+      typeof status === 'number'
+    ) {
 
-      case 'InProgress':
+      switch (status) {
+
+        case 1:
+          return 'status-progress';
+
+        case 2:
+          return 'status-resolved';
+
+        case 0:
+        default:
+          return 'status-pending';
+
+      }
+
+    }
+
+
+    // ===================================================
+    // STRING STATUS
+    // ===================================================
+
+    const normalized =
+      status
+        .toLowerCase()
+        .replace(/\s/g, '');
+
+
+    switch (normalized) {
+
+      case 'inprogress':
         return 'status-progress';
 
-      case 'Resolved':
+      case 'resolved':
         return 'status-resolved';
+
+      case 'pending':
+        return 'status-pending';
 
       default:
         return 'status-default';
@@ -606,7 +604,65 @@ export class Complaints implements OnInit {
 
 
   // =====================================================
-  // REFRESH
+  // GET STATUS LABEL
+  // =====================================================
+
+  getStatusLabel(
+    status: string | number
+  ): string {
+
+    // Numeric status
+
+    if (
+      typeof status === 'number'
+    ) {
+
+      switch (status) {
+
+        case 1:
+          return 'In Progress';
+
+        case 2:
+          return 'Resolved';
+
+        case 0:
+        default:
+          return 'Pending';
+
+      }
+
+    }
+
+
+    // String status
+
+    const normalized =
+      status
+        .toLowerCase()
+        .replace(/\s/g, '');
+
+
+    switch (normalized) {
+
+      case 'inprogress':
+        return 'In Progress';
+
+      case 'resolved':
+        return 'Resolved';
+
+      case 'pending':
+        return 'Pending';
+
+      default:
+        return status;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // REFRESH COMPLAINTS
   // =====================================================
 
   refreshComplaints(): void {
@@ -614,6 +670,7 @@ export class Complaints implements OnInit {
     this.errorMessage = '';
 
     this.successMessage = '';
+
 
     this.loadCategories();
 

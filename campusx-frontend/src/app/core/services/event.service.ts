@@ -2,21 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
-
 import {
   Event,
+  CreateEvent,
+  UpdateEvent,
   EventRegistration,
   CreateEventRegistration
 } from '../models/event';
+
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
+  // =====================================================
+  // API URLS
+  // =====================================================
+
   private readonly eventUrl =
-    `${environment.apiUrl}/events`;
+    `${environment.apiUrl}/Events`;
 
   private readonly registrationUrl =
     `${environment.apiUrl}/event-registrations`;
@@ -29,7 +36,7 @@ export class EventService {
 
   // =====================================================
   // GET ALL EVENTS
-  // GET: api/events
+  // GET /api/Events
   // =====================================================
 
   getEvents(): Observable<Event[]> {
@@ -43,7 +50,7 @@ export class EventService {
 
   // =====================================================
   // GET EVENT BY ID
-  // GET: api/events/{id}
+  // GET /api/Events/{id}
   // =====================================================
 
   getEventById(
@@ -58,8 +65,117 @@ export class EventService {
 
 
   // =====================================================
+  // CREATE EVENT
+  // POST /api/Events
+  // ADMIN ONLY
+  // =====================================================
+
+  createEvent(
+    event: CreateEvent
+  ): Observable<Event> {
+
+    return this.http.post<Event>(
+      this.eventUrl,
+      event
+    );
+
+  }
+
+
+  // =====================================================
+  // UPDATE EVENT
+  // PUT /api/Events/{id}
+  // ADMIN ONLY
+  // =====================================================
+
+  updateEvent(
+    id: number,
+    event: UpdateEvent
+  ): Observable<Event> {
+
+    return this.http.put<Event>(
+      `${this.eventUrl}/${id}`,
+      event
+    );
+
+  }
+
+
+  // =====================================================
+  // ACTIVATE EVENT
+  // =====================================================
+
+  activateEvent(
+    event: Event
+  ): Observable<Event> {
+
+    const updatedEvent: UpdateEvent = {
+
+      title: event.title,
+      description: event.description,
+      eventDate: event.eventDate,
+      venue: event.venue,
+      capacity: event.capacity,
+      isActive: true
+
+    };
+
+
+    return this.updateEvent(
+      event.id,
+      updatedEvent
+    );
+
+  }
+
+
+  // =====================================================
+  // DEACTIVATE EVENT
+  // =====================================================
+
+  deactivateEvent(
+    event: Event
+  ): Observable<Event> {
+
+    const updatedEvent: UpdateEvent = {
+
+      title: event.title,
+      description: event.description,
+      eventDate: event.eventDate,
+      venue: event.venue,
+      capacity: event.capacity,
+      isActive: false
+
+    };
+
+
+    return this.updateEvent(
+      event.id,
+      updatedEvent
+    );
+
+  }
+
+
+  // =====================================================
+  // GET MY EVENT REGISTRATIONS
+  // GET /api/event-registrations/student/{studentId}
+  // =====================================================
+
+  getMyRegistrations(
+    studentId: number
+  ): Observable<EventRegistration[]> {
+
+    return this.http.get<EventRegistration[]>(
+      `${this.registrationUrl}/student/${studentId}`
+    );
+
+  }
+
+
+  // =====================================================
   // REGISTER FOR EVENT
-  // POST: api/event-registrations
+  // POST /api/event-registrations
   // =====================================================
 
   registerForEvent(
@@ -75,24 +191,8 @@ export class EventService {
 
 
   // =====================================================
-  // GET MY EVENT REGISTRATIONS
-  // GET: api/event-registrations/student/{studentId}
-  // =====================================================
-
-  getMyRegistrations(
-    studentId: number
-  ): Observable<EventRegistration[]> {
-
-    return this.http.get<EventRegistration[]>(
-      `${this.registrationUrl}/student/${studentId}`
-    );
-
-  }
-
-
-  // =====================================================
   // CANCEL EVENT REGISTRATION
-  // DELETE: api/event-registrations/{id}
+  // DELETE /api/event-registrations/{id}
   // =====================================================
 
   cancelRegistration(

@@ -33,6 +33,8 @@ export interface Complaint {
 
   studentId: number;
 
+  studentName?: string;
+
   categoryId: number;
 
   categoryName?: string;
@@ -41,11 +43,11 @@ export interface Complaint {
 
   status: ComplaintStatus;
 
-  resolutionNote?: string;
+  resolutionNote?: string | null;
 
   createdAt: string;
 
-  updatedAt?: string;
+  updatedAt?: string | null;
 
 }
 
@@ -82,7 +84,7 @@ export interface CreateComplaintCategory {
 
 export interface UpdateComplaintStatus {
 
-  status: ComplaintStatus;
+  status: number;
 
   resolutionNote?: string;
 

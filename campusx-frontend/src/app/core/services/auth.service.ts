@@ -87,6 +87,57 @@ export class AuthService {
 
 
   // =====================================================
+  // SAVE ROLE
+  // =====================================================
+
+  saveRole(
+    role: string
+  ): void {
+
+    localStorage.setItem(
+      'role',
+      role
+    );
+
+  }
+
+
+  // =====================================================
+  // GET ROLE
+  // =====================================================
+
+  getRole(): string | null {
+
+    return localStorage.getItem(
+      'role'
+    );
+
+  }
+
+
+  // =====================================================
+  // CHECK ADMIN
+  // =====================================================
+
+  isAdmin(): boolean {
+
+    return this.getRole() === 'Admin';
+
+  }
+
+
+  // =====================================================
+  // CHECK STUDENT
+  // =====================================================
+
+  isStudent(): boolean {
+
+    return this.getRole() === 'Student';
+
+  }
+
+
+  // =====================================================
   // CHECK LOGIN
   // =====================================================
 
@@ -167,13 +218,37 @@ export class AuthService {
 
 
   // =====================================================
-  // LOGOUT
+  // GET STUDENT ID
   // =====================================================
 
-  logout(): void {
+  getStudentId(): number | null {
+
+    const studentId =
+      localStorage.getItem('studentId');
+
+    if (!studentId) {
+
+      return null;
+
+    }
+
+    return Number(studentId);
+
+  }
+
+
+  // =====================================================
+  // CLEAR AUTH DATA
+  // =====================================================
+
+  clearAuthData(): void {
 
     localStorage.removeItem(
       'token'
+    );
+
+    localStorage.removeItem(
+      'role'
     );
 
     localStorage.removeItem(
@@ -183,6 +258,17 @@ export class AuthService {
     localStorage.removeItem(
       'student'
     );
+
+  }
+
+
+  // =====================================================
+  // LOGOUT
+  // =====================================================
+
+  logout(): void {
+
+    this.clearAuthData();
 
   }
 

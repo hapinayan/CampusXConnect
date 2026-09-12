@@ -1,0 +1,403 @@
+<app-admin-sidebar></app-admin-sidebar>
+
+<main class="admin-page-content">
+
+  <div class="notification-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+      <div>
+        <p class="eyebrow">
+          CAMPUSX ADMIN
+        </p>
+
+        <h1>
+          Notification Management
+        </h1>
+
+        <p class="subtitle">
+          Send important notifications directly to students.
+        </p>
+      </div>
+
+      <div class="sent-badge">
+        {{ sentCount }} Sent
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+    ====================================================== -->
+
+    <div
+      class="alert alert-success"
+      *ngIf="successMessage"
+    >
+      <span class="alert-icon">
+        ✓
+      </span>
+
+      <span>
+        {{ successMessage }}
+      </span>
+    </div>
+
+
+    <!-- =====================================================
+         ERROR MESSAGE
+    ====================================================== -->
+
+    <div
+      class="alert alert-error"
+      *ngIf="errorMessage"
+    >
+      <span class="alert-icon">
+        !
+      </span>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+    </div>
+
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
+    <div class="stats-grid">
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          🔔
+        </div>
+
+        <div>
+
+          <span class="stat-label">
+            Notifications Sent
+          </span>
+
+          <strong class="stat-value">
+            {{ sentCount }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          🎓
+        </div>
+
+        <div>
+
+          <span class="stat-label">
+            Target
+          </span>
+
+          <strong class="stat-value small">
+            Individual Student
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ⚡
+        </div>
+
+        <div>
+
+          <span class="stat-label">
+            Delivery
+          </span>
+
+          <strong class="stat-value small">
+            Instant
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CREATE NOTIFICATION CARD
+    ====================================================== -->
+
+    <div class="form-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h2>
+            Send Notification
+          </h2>
+
+          <p>
+            Enter the student details and notification message.
+          </p>
+
+        </div>
+
+        <div class="admin-chip">
+          Admin Only
+        </div>
+
+      </div>
+
+
+      <form
+        (ngSubmit)="sendNotification()"
+        #notificationForm="ngForm"
+      >
+
+        <!-- =================================================
+             STUDENT ID
+        ================================================== -->
+
+        <div class="form-group">
+
+          <label for="studentId">
+            Student ID
+          </label>
+
+          <input
+            id="studentId"
+            name="studentId"
+            type="number"
+            min="1"
+            [(ngModel)]="studentId"
+            placeholder="Example: 1"
+            required
+          />
+
+          <small>
+            Enter the ID of the student who should receive the notification.
+          </small>
+
+        </div>
+
+
+        <!-- =================================================
+             TITLE
+        ================================================== -->
+
+        <div class="form-group">
+
+          <div class="label-row">
+
+            <label for="title">
+              Notification Title
+            </label>
+
+            <span class="counter">
+              {{ titleLength }} characters
+            </span>
+
+          </div>
+
+          <input
+            id="title"
+            name="title"
+            type="text"
+            [(ngModel)]="title"
+            placeholder="Example: Lab Booking Update"
+            maxlength="100"
+            required
+          />
+
+        </div>
+
+
+        <!-- =================================================
+             TYPE
+        ================================================== -->
+
+        <div class="form-group">
+
+          <label for="type">
+            Notification Type
+          </label>
+
+          <select
+            id="type"
+            name="type"
+            [(ngModel)]="type"
+          >
+
+            <option [ngValue]="0">
+              General
+            </option>
+
+          </select>
+
+          <small>
+            Additional notification types can be added from the backend enum.
+          </small>
+
+        </div>
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div class="form-group">
+
+          <div class="label-row">
+
+            <label for="message">
+              Message
+            </label>
+
+            <span class="counter">
+              {{ messageLength }} characters
+            </span>
+
+          </div>
+
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            [(ngModel)]="message"
+            maxlength="500"
+            placeholder="Write the notification message here..."
+            required
+          ></textarea>
+
+        </div>
+
+
+        <!-- =================================================
+             PREVIEW
+        ================================================== -->
+
+        <div
+          class="preview-card"
+          *ngIf="title || message"
+        >
+
+          <div class="preview-header">
+
+            <div class="preview-icon">
+              🔔
+            </div>
+
+            <div>
+
+              <span class="preview-label">
+                Notification Preview
+              </span>
+
+              <strong>
+                Student #{{ studentId || '-' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="preview-content">
+
+            <h3>
+              {{ title || 'Notification Title' }}
+            </h3>
+
+            <p>
+              {{ message || 'Notification message will appear here.' }}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACTION BUTTONS
+        ================================================== -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="clearForm()"
+            [disabled]="sending"
+          >
+            Clear
+          </button>
+
+
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="sending"
+          >
+
+            <span *ngIf="!sending">
+              Send Notification
+            </span>
+
+            <span *ngIf="sending">
+              Sending...
+            </span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATION
+    ====================================================== -->
+
+    <div class="info-card">
+
+      <div class="info-icon">
+        ℹ
+      </div>
+
+      <div>
+
+        <h3>
+          How it works
+        </h3>
+
+        <p>
+          The notification will be stored in the CampusX database
+          and will appear in the selected student's Notifications page.
+          New notifications are initially marked as unread.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

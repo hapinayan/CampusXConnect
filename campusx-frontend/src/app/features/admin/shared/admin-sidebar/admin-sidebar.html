@@ -1,0 +1,90 @@
+<aside class="admin-sidebar">
+
+  <!-- ===============================================
+       BRAND
+  ================================================ -->
+
+  <div class="sidebar-brand">
+
+    <div class="brand-logo">
+      CX
+    </div>
+
+    <div class="brand-text">
+
+      <h2>
+        CampusX
+      </h2>
+
+      <span>
+        Admin Portal
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===============================================
+       ADMIN LABEL
+  ================================================ -->
+
+  <div class="menu-label">
+    ADMIN MANAGEMENT
+  </div>
+
+
+  <!-- ===============================================
+       NAVIGATION
+  ================================================ -->
+
+  <nav
+    class="sidebar-nav"
+    #sidebarNav
+  >
+
+    <a
+      *ngFor="let item of menuItems"
+      class="nav-item"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+    >
+
+      <span class="nav-icon">
+        {{ item.icon }}
+      </span>
+
+      <span class="nav-label">
+        {{ item.label }}
+      </span>
+
+    </a>
+
+  </nav>
+
+
+  <!-- ===============================================
+       FOOTER
+  ================================================ -->
+
+  <div class="sidebar-footer">
+
+    <div class="admin-avatar">
+      A
+    </div>
+
+    <div class="admin-info">
+
+      <strong>
+        Administrator
+      </strong>
+
+      <span>
+        CampusX Admin
+      </span>
+
+    </div>
+
+  </div>
+
+</aside>

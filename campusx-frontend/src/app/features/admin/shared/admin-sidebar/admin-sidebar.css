@@ -1,0 +1,437 @@
+/* =====================================================
+   SIDEBAR
+   ===================================================== */
+
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 250px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 22px 16px;
+  box-sizing: border-box;
+
+  background: linear-gradient(
+    180deg,
+    #073f35 0%,
+    #075c4b 100%
+  );
+
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #ffffff;
+
+  z-index: 1000;
+
+  box-shadow: 8px 0 30px rgba(5, 63, 51, 0.08);
+}
+
+
+/* =====================================================
+   BRAND
+   ===================================================== */
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 4px 6px 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #24d6a1,
+    #0caf81
+  );
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  box-shadow: 0 8px 20px rgba(24, 213, 158, 0.2);
+}
+
+
+.brand-text h2 {
+  margin: 0;
+
+  font-size: 18px;
+
+  color: #ffffff;
+}
+
+
+.brand-text span {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 10px;
+
+  color: rgba(255, 255, 255, 0.62);
+}
+
+
+/* =====================================================
+   MENU LABEL
+   ===================================================== */
+
+.menu-label {
+  margin: 24px 8px 10px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+
+  color: rgba(255, 255, 255, 0.45);
+}
+
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.nav-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-height: 46px;
+
+  padding: 0 13px;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 12px;
+  font-weight: 650;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 27px;
+
+  flex-shrink: 0;
+
+  font-size: 16px;
+}
+
+
+.nav-label {
+  white-space: nowrap;
+}
+
+
+.nav-item:hover {
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: translateX(2px);
+}
+
+
+/* =====================================================
+   ACTIVE ITEM
+   ===================================================== */
+
+.nav-item.active {
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    rgba(29, 208, 154, 0.35),
+    rgba(29, 208, 154, 0.15)
+  );
+
+  box-shadow: inset 3px 0 0 #26dfa9;
+}
+
+
+.nav-item.active .nav-icon {
+  transform: scale(1.06);
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 16px 7px 4px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+
+.admin-avatar {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+.admin-info strong {
+  display: block;
+
+  font-size: 11px;
+
+  color: #ffffff;
+}
+
+
+.admin-info span {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 9px;
+
+  color: rgba(255, 255, 255, 0.52);
+}
+
+
+/* =====================================================
+   TABLET / SMALL LAPTOP
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+  .admin-sidebar {
+    width: 205px;
+
+    padding: 20px 12px;
+  }
+
+
+  .nav-item {
+    padding: 0 10px;
+
+    font-size: 11px;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .admin-sidebar {
+    position: relative;
+
+    top: auto;
+    left: auto;
+    bottom: auto;
+
+    width: 100%;
+    height: auto;
+    min-height: auto;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    border-right: none;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow: 0 8px 22px rgba(5, 63, 51, 0.08);
+  }
+
+
+  .sidebar-brand {
+    padding: 6px 8px 14px;
+  }
+
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+  }
+
+
+  .brand-text h2 {
+    font-size: 16px;
+  }
+
+
+  .brand-text span {
+    font-size: 9px;
+  }
+
+
+  .menu-label {
+    display: none;
+  }
+
+
+  /* ===================================================
+     MOBILE HORIZONTAL MENU
+     =================================================== */
+
+  .sidebar-nav {
+    display: flex;
+
+    flex-direction: row;
+
+    flex: none;
+
+    gap: 8px;
+
+    width: 100%;
+
+    padding: 10px 4px 4px;
+
+    box-sizing: border-box;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    white-space: nowrap;
+
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+
+    -ms-overflow-style: none;
+  }
+
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .nav-item {
+    flex: 0 0 auto;
+
+    width: auto;
+
+    min-width: max-content;
+    min-height: 42px;
+
+    padding: 0 14px;
+
+    gap: 8px;
+
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    white-space: nowrap;
+
+    transform: none;
+  }
+
+
+  .nav-item:hover {
+    transform: none;
+
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+
+  .nav-icon {
+    width: auto;
+
+    flex-shrink: 0;
+
+    font-size: 15px;
+  }
+
+
+  .nav-label {
+    display: inline-block;
+
+    white-space: nowrap;
+  }
+
+
+  .nav-item.active {
+    color: #ffffff;
+
+    background: rgba(30, 218, 161, 0.28);
+
+    box-shadow: none;
+  }
+
+
+  .sidebar-footer {
+    display: none;
+  }
+
+}

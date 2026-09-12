@@ -6,7 +6,8 @@ import { environment } from '../../../environments/environment';
 
 import {
   CertificateRequest,
-  CreateCertificateRequest
+  CreateCertificateRequest,
+  UpdateCertificateStatus
 } from '../models/certificate';
 
 
@@ -33,8 +34,8 @@ export class CertificateService {
 
 
   // =====================================================
-  // CREATE CERTIFICATE REQUEST
-  // POST: api/certificate-requests
+  // STUDENT - CREATE CERTIFICATE REQUEST
+  // POST /api/certificate-requests
   // =====================================================
 
   createRequest(
@@ -50,22 +51,56 @@ export class CertificateService {
 
 
   // =====================================================
-  // GET MY CERTIFICATE REQUESTS
-  // GET: api/certificate-requests/student/{studentId}
+  // STUDENT - GET MY CERTIFICATE REQUESTS
+  // GET /api/certificate-requests/my
   // =====================================================
 
-  getMyRequests(): Observable<CertificateRequest[]> {
+  getMyRequests():
+    Observable<CertificateRequest[]> {
 
-  return this.http.get<CertificateRequest[]>(
-    `${this.certificateUrl}/my`
-  );
+    return this.http.get<CertificateRequest[]>(
+      `${this.certificateUrl}/my`
+    );
 
-}
+  }
 
 
   // =====================================================
-  // GET CERTIFICATE REQUEST BY ID
-  // GET: api/certificate-requests/{id}
+  // ADMIN - GET ALL CERTIFICATE REQUESTS
+  // GET /api/certificate-requests/admin
+  // =====================================================
+
+  getAdminRequests():
+    Observable<CertificateRequest[]> {
+
+    return this.http.get<CertificateRequest[]>(
+      `${this.certificateUrl}/admin`
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - UPDATE CERTIFICATE STATUS
+  // PUT /api/certificate-requests/{id}/status
+  // =====================================================
+
+  updateRequestStatus(
+    id: number,
+    data: UpdateCertificateStatus
+  ): Observable<CertificateRequest> {
+
+    return this.http.put<CertificateRequest>(
+      `${this.certificateUrl}/${id}/status`,
+      data
+    );
+
+  }
+
+
+  // =====================================================
+  // GET REQUEST BY ID
+  // EXISTING FRONTEND COMPATIBILITY
   // =====================================================
 
   getRequestById(
@@ -80,8 +115,8 @@ export class CertificateService {
 
 
   // =====================================================
-  // CANCEL CERTIFICATE REQUEST
-  // DELETE: api/certificate-requests/{id}
+  // CANCEL REQUEST
+  // EXISTING FRONTEND COMPATIBILITY
   // =====================================================
 
   cancelRequest(

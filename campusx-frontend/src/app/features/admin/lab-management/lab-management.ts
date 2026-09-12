@@ -15,14 +15,21 @@ import {
   UpdateLab
 } from '../../../core/models/lab';
 
+// ✅ ADMIN SIDEBAR
+import { AdminSidebar } from '../shared/admin-sidebar/admin-sidebar';
+
 
 @Component({
   selector: 'app-lab-management',
+
   standalone: true,
+
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    AdminSidebar
   ],
+
   templateUrl: './lab-management.html',
   styleUrl: './lab-management.css'
 })
@@ -114,7 +121,9 @@ export class LabManagement implements OnInit {
 
   ngOnInit(): void {
 
-    console.log('Lab Management loaded');
+    console.log(
+      'Lab Management loaded'
+    );
 
     this.loadLabs();
 
@@ -145,6 +154,7 @@ export class LabManagement implements OnInit {
             labs
           );
 
+
           this.labs = labs;
 
           this.isLoading = false;
@@ -161,8 +171,10 @@ export class LabManagement implements OnInit {
             error
           );
 
+
           this.errorMessage =
             'Unable to load laboratories.';
+
 
           this.isLoading = false;
 
@@ -201,7 +213,9 @@ export class LabManagement implements OnInit {
 
 
     this.labService
-      .createLab(this.newLab)
+      .createLab(
+        this.newLab
+      )
       .subscribe({
 
         next: () => {
@@ -233,9 +247,11 @@ export class LabManagement implements OnInit {
             error
           );
 
+
           this.errorMessage =
             error?.error?.message ||
             'Unable to create laboratory.';
+
 
           this.cdr.detectChanges();
 
@@ -337,9 +353,11 @@ export class LabManagement implements OnInit {
             error
           );
 
+
           this.errorMessage =
             error?.error?.message ||
             'Unable to update laboratory.';
+
 
           this.cdr.detectChanges();
 
@@ -427,9 +445,11 @@ export class LabManagement implements OnInit {
             error
           );
 
+
           this.errorMessage =
             error?.error?.message ||
             'Unable to update laboratory status.';
+
 
           this.cdr.detectChanges();
 

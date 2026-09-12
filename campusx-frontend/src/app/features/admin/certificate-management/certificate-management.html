@@ -1,0 +1,723 @@
+<app-admin-sidebar></app-admin-sidebar>
+
+<main class="admin-page-content">
+
+  <div class="certificate-page">
+
+    <!-- ==================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          CAMPUSX ADMIN
+        </p>
+
+        <h1>
+          Certificate Request Management
+        </h1>
+
+        <p class="subtitle">
+          Review and manage student certificate requests.
+        </p>
+
+      </div>
+
+
+      <div class="request-count">
+        {{ totalRequests }} Requests
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         SUCCESS MESSAGE
+    ================================================== -->
+
+    <div
+      class="message success-message"
+      *ngIf="successMessage"
+    >
+
+      {{ successMessage }}
+
+    </div>
+
+
+    <!-- ==================================================
+         ERROR MESSAGE
+    ================================================== -->
+
+    <div
+      class="message error-message"
+      *ngIf="errorMessage"
+    >
+
+      {{ errorMessage }}
+
+    </div>
+
+
+    <!-- ==================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="stats-grid">
+
+
+      <!-- TOTAL -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📄
+        </div>
+
+        <div>
+
+          <p>
+            Total Requests
+          </p>
+
+          <h2>
+            {{ totalRequests }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- PENDING -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon pending-icon">
+          !
+        </div>
+
+        <div>
+
+          <p>
+            Pending
+          </p>
+
+          <h2>
+            {{ pendingRequests }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- APPROVED -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon approved-icon">
+          ✓
+        </div>
+
+        <div>
+
+          <p>
+            Approved
+          </p>
+
+          <h2>
+            {{ approvedRequests }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- READY -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon ready-icon">
+          📦
+        </div>
+
+        <div>
+
+          <p>
+            Ready For Collection
+          </p>
+
+          <h2>
+            {{ readyRequests }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- REJECTED -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon rejected-icon">
+          ×
+        </div>
+
+        <div>
+
+          <p>
+            Rejected
+          </p>
+
+          <h2>
+            {{ rejectedRequests }}
+          </h2>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         REQUEST LIST
+    ================================================== -->
+
+    <div class="section-card">
+
+      <div class="section-top">
+
+        <div class="section-header">
+
+          <h2>
+            Certificate Requests
+          </h2>
+
+          <p>
+            View and update student certificate requests.
+          </p>
+
+        </div>
+
+
+        <!-- ==================================================
+             FILTER
+        ================================================== -->
+
+        <div class="filter-group">
+
+          <label>
+            Filter by Status
+          </label>
+
+          <select
+            [(ngModel)]="statusFilter"
+          >
+
+            <option value="">
+              All Requests
+            </option>
+
+            <option value="0">
+              Pending
+            </option>
+
+            <option value="1">
+              Approved
+            </option>
+
+            <option value="2">
+              Rejected
+            </option>
+
+            <option value="3">
+              Ready For Collection
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================
+           LOADING
+      ================================================== -->
+
+      <div
+        class="loading-state"
+        *ngIf="loading"
+      >
+
+        Loading certificate requests...
+
+      </div>
+
+
+      <!-- ==================================================
+           EMPTY
+      ================================================== -->
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !loading &&
+          filteredRequests.length === 0
+        "
+      >
+
+        No certificate requests found.
+
+      </div>
+
+
+      <!-- ==================================================
+           TABLE
+      ================================================== -->
+
+      <div
+        class="table-wrapper"
+        *ngIf="
+          !loading &&
+          filteredRequests.length > 0
+        "
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                ID
+              </th>
+
+              <th>
+                STUDENT
+              </th>
+
+              <th>
+                TYPE
+              </th>
+
+              <th>
+                REASON
+              </th>
+
+              <th>
+                REQUESTED DATE
+              </th>
+
+              <th>
+                STATUS
+              </th>
+
+              <th>
+                ACTIONS
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr
+              *ngFor="let request of filteredRequests"
+            >
+
+              <!-- ID -->
+
+              <td>
+
+                #{{ request.id }}
+
+              </td>
+
+
+              <!-- STUDENT -->
+
+              <td>
+
+                <div class="student-cell">
+
+                  <div class="student-avatar">
+
+                    {{
+                      request.studentName
+                        ? request.studentName.charAt(0).toUpperCase()
+                        : 'S'
+                    }}
+
+                  </div>
+
+
+                  <div>
+
+                    <strong>
+
+                      {{
+                        request.studentName
+                          || 'Student #' + request.studentId
+                      }}
+
+                    </strong>
+
+                    <small>
+
+                      Student ID:
+                      {{ request.studentId }}
+
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- TYPE -->
+
+              <td>
+
+                <span class="type-badge">
+
+                  {{
+                    getTypeLabel(
+                      request.type
+                    )
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- REASON -->
+
+              <td>
+
+                <div class="reason-cell">
+
+                  {{ request.reason }}
+
+                </div>
+
+              </td>
+
+
+              <!-- REQUEST DATE -->
+
+              <td>
+
+                {{
+                  request.requestedAt
+                    | date:'medium'
+                }}
+
+              </td>
+
+
+              <!-- STATUS -->
+
+              <td>
+
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(request.status)"
+                >
+
+                  {{
+                    getStatusLabel(
+                      request.status
+                    )
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- ACTIONS -->
+
+              <td>
+
+                <button
+                  type="button"
+                  class="manage-button"
+                  (click)="openUpdate(request)"
+                >
+
+                  Manage
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         UPDATE STATUS MODAL
+    ================================================== -->
+
+    <div
+      class="modal-backdrop"
+      *ngIf="selectedRequest"
+    >
+
+      <div class="modal">
+
+
+        <!-- ==================================================
+             MODAL HEADER
+        ================================================== -->
+
+        <div class="modal-header">
+
+          <div>
+
+            <p class="modal-eyebrow">
+
+              CERTIFICATE REQUEST
+              #{{ selectedRequest.id }}
+
+            </p>
+
+            <h2>
+              Update Certificate Request
+            </h2>
+
+            <p>
+              Review request information and update its status.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeUpdate()"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             REQUEST DETAILS
+        ================================================== -->
+
+        <div class="request-details">
+
+
+          <!-- STUDENT -->
+
+          <div class="detail-item">
+
+            <span>
+              Student
+            </span>
+
+            <strong>
+
+              {{
+                selectedRequest.studentName
+                  || 'Student #' + selectedRequest.studentId
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- CERTIFICATE TYPE -->
+
+          <div class="detail-item">
+
+            <span>
+              Certificate Type
+            </span>
+
+            <strong>
+
+              {{
+                getTypeLabel(
+                  selectedRequest.type
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- CURRENT STATUS -->
+
+          <div class="detail-item">
+
+            <span>
+              Current Status
+            </span>
+
+            <strong>
+
+              {{
+                getStatusLabel(
+                  selectedRequest.status
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- REQUEST DATE -->
+
+          <div class="detail-item">
+
+            <span>
+              Requested At
+            </span>
+
+            <strong>
+
+              {{
+                selectedRequest.requestedAt
+                  | date:'medium'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             REASON
+        ================================================== -->
+
+        <div class="request-reason">
+
+          <label>
+            Reason
+          </label>
+
+          <div class="reason-box">
+
+            {{ selectedRequest.reason }}
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             UPDATE FORM
+        ================================================== -->
+
+        <form
+          class="update-form"
+          (ngSubmit)="updateStatus()"
+        >
+
+          <div class="form-group">
+
+            <label>
+              Status
+            </label>
+
+            <select
+              name="selectedStatus"
+              [(ngModel)]="selectedStatus"
+              required
+            >
+
+              <option [ngValue]="0">
+                Pending
+              </option>
+
+              <option [ngValue]="1">
+                Approved
+              </option>
+
+              <option [ngValue]="2">
+                Rejected
+              </option>
+
+              <option [ngValue]="3">
+                Ready For Collection
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- ==================================================
+               MODAL BUTTONS
+          ================================================== -->
+
+          <div class="modal-actions">
+
+            <button
+              type="button"
+              class="cancel-button"
+              (click)="closeUpdate()"
+            >
+
+              Cancel
+
+            </button>
+
+
+            <button
+              type="submit"
+              class="save-button"
+              [disabled]="saving"
+            >
+
+              {{
+                saving
+                  ? 'Updating...'
+                  : 'Update Status'
+              }}
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

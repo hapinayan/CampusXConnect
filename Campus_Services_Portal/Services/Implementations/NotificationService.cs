@@ -16,11 +16,16 @@ namespace Campus_Services_Portal.Services.Implementations
             _notificationRepository = notificationRepository;
         }
 
+        // =====================================================
+        // GET STUDENT NOTIFICATIONS
+        // =====================================================
+
         public async Task<IEnumerable<NotificationResponseDto>>
             GetStudentNotificationsAsync(int studentId)
         {
             var notifications =
-                await _notificationRepository.GetByStudentIdAsync(studentId);
+                await _notificationRepository
+                    .GetByStudentIdAsync(studentId);
 
             return notifications.Select(notification =>
                 new NotificationResponseDto
@@ -35,12 +40,17 @@ namespace Campus_Services_Portal.Services.Implementations
                 });
         }
 
+        // =====================================================
+        // MARK AS READ
+        // =====================================================
+
         public async Task<bool> MarkAsReadAsync(
             int notificationId,
             int studentId)
         {
             var notification =
-                await _notificationRepository.GetByIdAsync(notificationId);
+                await _notificationRepository
+                    .GetByIdAsync(notificationId);
 
             if (notification == null)
             {
@@ -55,10 +65,15 @@ namespace Campus_Services_Portal.Services.Implementations
 
             notification.IsRead = true;
 
-            await _notificationRepository.UpdateAsync(notification);
+            await _notificationRepository
+                .UpdateAsync(notification);
 
             return true;
         }
+
+        // =====================================================
+        // CREATE NOTIFICATION
+        // =====================================================
 
         public async Task CreateNotificationAsync(
             int studentId,
@@ -76,7 +91,8 @@ namespace Campus_Services_Portal.Services.Implementations
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _notificationRepository.AddAsync(notification);
+            await _notificationRepository
+                .AddAsync(notification);
         }
     }
 }

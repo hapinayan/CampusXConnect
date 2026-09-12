@@ -1,0 +1,710 @@
+<app-admin-sidebar></app-admin-sidebar>
+
+<main class="admin-page-content">
+
+  <div class="event-page">
+
+    <!-- ==================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          CAMPUSX ADMIN
+        </p>
+
+        <h1>
+          Event Management
+        </h1>
+
+        <p class="subtitle">
+          Create, manage and update campus events.
+        </p>
+
+      </div>
+
+
+      <div class="event-count">
+        {{ totalEvents }} Events
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         MESSAGES
+    ================================================== -->
+
+    <div
+      class="message success-message"
+      *ngIf="successMessage"
+    >
+      {{ successMessage }}
+    </div>
+
+
+    <div
+      class="message error-message"
+      *ngIf="errorMessage"
+    >
+      {{ errorMessage }}
+    </div>
+
+
+    <!-- ==================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="stats-grid">
+
+      <!-- TOTAL -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📅
+        </div>
+
+        <div>
+
+          <p>
+            Total Events
+          </p>
+
+          <h2>
+            {{ totalEvents }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIVE -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon active-icon">
+          ✓
+        </div>
+
+        <div>
+
+          <p>
+            Active Events
+          </p>
+
+          <h2>
+            {{ activeEvents }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- INACTIVE -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon inactive-icon">
+          !
+        </div>
+
+        <div>
+
+          <p>
+            Inactive Events
+          </p>
+
+          <h2>
+            {{ inactiveEvents }}
+          </h2>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         ADD EVENT
+    ================================================== -->
+
+    <div class="section-card">
+
+      <div class="section-header">
+
+        <h2>
+          Add Event
+        </h2>
+
+        <p>
+          Create a new campus event for students.
+        </p>
+
+      </div>
+
+
+      <form
+        class="event-form"
+        (ngSubmit)="createEvent()"
+      >
+
+        <!-- TITLE -->
+
+        <div class="form-group">
+
+          <label>
+            Event Title
+          </label>
+
+          <input
+            type="text"
+            name="title"
+            [(ngModel)]="newEvent.title"
+            placeholder="Example: Tech Workshop 2026"
+            required
+          />
+
+        </div>
+
+
+        <!-- VENUE -->
+
+        <div class="form-group">
+
+          <label>
+            Venue
+          </label>
+
+          <input
+            type="text"
+            name="venue"
+            [(ngModel)]="newEvent.venue"
+            placeholder="Example: Main Auditorium"
+            required
+          />
+
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="form-group">
+
+          <label>
+            Event Date & Time
+          </label>
+
+          <input
+            type="datetime-local"
+            name="eventDate"
+            [(ngModel)]="newEvent.eventDate"
+            required
+          />
+
+        </div>
+
+
+        <!-- CAPACITY -->
+
+        <div class="form-group">
+
+          <label>
+            Capacity
+          </label>
+
+          <input
+            type="number"
+            name="capacity"
+            [(ngModel)]="newEvent.capacity"
+            min="1"
+            required
+          />
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group full-width">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            name="description"
+            [(ngModel)]="newEvent.description"
+            placeholder="Enter event description..."
+            rows="3"
+            required
+          ></textarea>
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <div class="form-actions full-width">
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="saving"
+          >
+
+            {{
+              saving
+                ? 'Adding...'
+                : '+ Add Event'
+            }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <!-- ==================================================
+         EVENT LIST
+    ================================================== -->
+
+    <div class="section-card">
+
+      <div class="section-header">
+
+        <h2>
+          Events
+        </h2>
+
+        <p>
+          View, edit, activate or deactivate campus events.
+        </p>
+
+      </div>
+
+
+      <!-- LOADING -->
+
+      <div
+        class="loading-state"
+        *ngIf="loading"
+      >
+
+        Loading events...
+
+      </div>
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !loading &&
+          events.length === 0
+        "
+      >
+
+        No events found.
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div
+        class="table-wrapper"
+        *ngIf="
+          !loading &&
+          events.length > 0
+        "
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                ID
+              </th>
+
+              <th>
+                EVENT
+              </th>
+
+              <th>
+                VENUE
+              </th>
+
+              <th>
+                DATE
+              </th>
+
+              <th>
+                CAPACITY
+              </th>
+
+              <th>
+                STATUS
+              </th>
+
+              <th>
+                ACTIONS
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr
+              *ngFor="let event of events"
+            >
+
+              <!-- ID -->
+
+              <td>
+                #{{ event.id }}
+              </td>
+
+
+              <!-- EVENT -->
+
+              <td>
+
+                <div class="event-title-cell">
+
+                  <div class="event-avatar">
+
+                    {{
+                      event.title
+                        ? event.title.charAt(0).toUpperCase()
+                        : 'E'
+                    }}
+
+                  </div>
+
+
+                  <div>
+
+                    <strong>
+                      {{ event.title }}
+                    </strong>
+
+                    <small>
+                      {{ event.description }}
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- VENUE -->
+
+              <td>
+                {{ event.venue }}
+              </td>
+
+
+              <!-- DATE -->
+
+              <td>
+
+                {{
+                  event.eventDate
+                    | date:'medium'
+                }}
+
+              </td>
+
+
+              <!-- CAPACITY -->
+
+              <td>
+                {{ event.capacity }}
+              </td>
+
+
+              <!-- STATUS -->
+
+              <td>
+
+                <span
+                  class="status-badge active"
+                  *ngIf="event.isActive"
+                >
+                  Active
+                </span>
+
+
+                <span
+                  class="status-badge inactive"
+                  *ngIf="!event.isActive"
+                >
+                  Inactive
+                </span>
+
+              </td>
+
+
+              <!-- ACTIONS -->
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    type="button"
+                    class="edit-button"
+                    (click)="openEdit(event)"
+                  >
+                    Edit
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="deactivate-button"
+                    *ngIf="event.isActive"
+                    (click)="deactivateEvent(event)"
+                  >
+                    Deactivate
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="activate-button"
+                    *ngIf="!event.isActive"
+                    (click)="activateEvent(event)"
+                  >
+                    Activate
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         EDIT EVENT MODAL
+    ================================================== -->
+
+    <div
+      class="modal-backdrop"
+      *ngIf="selectedEvent"
+    >
+
+      <div class="modal">
+
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+          <div>
+
+            <h2>
+              Edit Event
+            </h2>
+
+            <p>
+              Update event information.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeEdit()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <!-- EDIT FORM -->
+
+        <form
+          class="edit-form"
+          (ngSubmit)="updateEvent()"
+        >
+
+          <!-- TITLE -->
+
+          <div class="form-group">
+
+            <label>
+              Event Title
+            </label>
+
+            <input
+              type="text"
+              name="editTitle"
+              [(ngModel)]="editEventData.title"
+              required
+            />
+
+          </div>
+
+
+          <!-- VENUE -->
+
+          <div class="form-group">
+
+            <label>
+              Venue
+            </label>
+
+            <input
+              type="text"
+              name="editVenue"
+              [(ngModel)]="editEventData.venue"
+              required
+            />
+
+          </div>
+
+
+          <!-- DATE -->
+
+          <div class="form-group">
+
+            <label>
+              Event Date & Time
+            </label>
+
+            <input
+              type="datetime-local"
+              name="editEventDate"
+              [(ngModel)]="editEventData.eventDate"
+              required
+            />
+
+          </div>
+
+
+          <!-- CAPACITY -->
+
+          <div class="form-group">
+
+            <label>
+              Capacity
+            </label>
+
+            <input
+              type="number"
+              name="editCapacity"
+              [(ngModel)]="editEventData.capacity"
+              min="1"
+              required
+            />
+
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="form-group full-width">
+
+            <label>
+              Description
+            </label>
+
+            <textarea
+              name="editDescription"
+              [(ngModel)]="editEventData.description"
+              rows="4"
+              required
+            ></textarea>
+
+          </div>
+
+
+          <!-- ACTIVE -->
+
+          <div class="form-group full-width">
+
+            <label class="checkbox-label">
+
+              <input
+                type="checkbox"
+                name="editIsActive"
+                [(ngModel)]="editEventData.isActive"
+              />
+
+              Active Event
+
+            </label>
+
+          </div>
+
+
+          <!-- BUTTONS -->
+
+          <div class="modal-actions full-width">
+
+            <button
+              type="button"
+              class="cancel-button"
+              (click)="closeEdit()"
+            >
+              Cancel
+            </button>
+
+
+            <button
+              type="submit"
+              class="primary-button"
+              [disabled]="saving"
+            >
+
+              {{
+                saving
+                  ? 'Saving...'
+                  : 'Save Changes'
+              }}
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

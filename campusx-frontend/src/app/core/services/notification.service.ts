@@ -8,6 +8,27 @@ import {
   Notification
 } from '../models/notification.model';
 
+
+export interface CreateNotificationRequest {
+
+  studentId: number;
+
+  title: string;
+
+  message: string;
+
+  type: number;
+
+}
+
+
+export interface CreateNotificationResponse {
+
+  message: string;
+
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +52,9 @@ export class NotificationService {
 
   // =====================================================
   // GET STUDENT NOTIFICATIONS
-  // GET: api/notifications/student/{studentId}
+  //
+  // GET:
+  // /api/notifications/student/{studentId}
   // =====================================================
 
   getMyNotifications(
@@ -46,7 +69,6 @@ export class NotificationService {
 
         tap((notifications) => {
 
-          // Calculate unread notifications
           this.unreadCount =
             Array.isArray(notifications)
               ? notifications.filter(
@@ -54,6 +76,7 @@ export class NotificationService {
                     !notification.isRead
                 ).length
               : 0;
+
 
           console.log(
             'Shared unread count:',
@@ -69,7 +92,9 @@ export class NotificationService {
 
   // =====================================================
   // MARK NOTIFICATION AS READ
-  // PUT: api/notifications/{id}/read
+  //
+  // PUT:
+  // /api/notifications/{id}/read
   // =====================================================
 
   markAsRead(
@@ -85,16 +110,50 @@ export class NotificationService {
 
         tap(() => {
 
-          // Decrease unread count
           if (this.unreadCount > 0) {
 
             this.unreadCount--;
 
           }
 
+
           console.log(
             'Updated shared unread count:',
             this.unreadCount
+          );
+
+        })
+
+      );
+
+  }
+
+
+  // =====================================================
+  // CREATE NOTIFICATION
+  //
+  // ADMIN ONLY
+  //
+  // POST:
+  // /api/notifications
+  // =====================================================
+
+  createNotification(
+    data: CreateNotificationRequest
+  ): Observable<CreateNotificationResponse> {
+
+    return this.http
+      .post<CreateNotificationResponse>(
+        this.notificationUrl,
+        data
+      )
+      .pipe(
+
+        tap((response) => {
+
+          console.log(
+            'Notification created:',
+            response
           );
 
         })

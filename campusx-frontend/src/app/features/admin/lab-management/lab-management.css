@@ -524,6 +524,37 @@
   padding-top: 5px;
 }
 
+/* =====================================================
+   ADMIN SIDEBAR PAGE OFFSET
+===================================================== */
+
+.admin-page-content {
+  margin-left: 250px;
+  min-height: 100vh;
+}
+
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+
+  .admin-page-content {
+    margin-left: 205px;
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 720px) {
+
+  .admin-page-content {
+    margin-left: 0;
+  }
+
+}
+
 
 /* =====================================================
    RESPONSIVE

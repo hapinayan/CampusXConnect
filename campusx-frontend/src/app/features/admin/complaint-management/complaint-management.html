@@ -1,0 +1,730 @@
+<app-admin-sidebar></app-admin-sidebar>
+
+<main class="admin-page-content">
+
+  <div class="complaint-page">
+
+    <!-- ==================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          CAMPUSX ADMIN
+        </p>
+
+        <h1>
+          Complaint Management
+        </h1>
+
+        <p class="subtitle">
+          Review student complaints, update status and add resolution notes.
+        </p>
+
+      </div>
+
+
+      <div class="complaint-count">
+        {{ totalComplaints }} Complaints
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         MESSAGES
+    ================================================== -->
+
+    <div
+      class="message success-message"
+      *ngIf="successMessage"
+    >
+
+      {{ successMessage }}
+
+    </div>
+
+
+    <div
+      class="message error-message"
+      *ngIf="errorMessage"
+    >
+
+      {{ errorMessage }}
+
+    </div>
+
+
+    <!-- ==================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="stats-grid">
+
+
+      <!-- TOTAL -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📋
+        </div>
+
+        <div>
+
+          <p>
+            Total Complaints
+          </p>
+
+          <h2>
+            {{ totalComplaints }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- PENDING -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon pending-icon">
+          !
+        </div>
+
+        <div>
+
+          <p>
+            Pending
+          </p>
+
+          <h2>
+            {{ pendingComplaints }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- IN PROGRESS -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon progress-icon">
+          ⟳
+        </div>
+
+        <div>
+
+          <p>
+            In Progress
+          </p>
+
+          <h2>
+            {{ inProgressComplaints }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- RESOLVED -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon resolved-icon">
+          ✓
+        </div>
+
+        <div>
+
+          <p>
+            Resolved
+          </p>
+
+          <h2>
+            {{ resolvedComplaints }}
+          </h2>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         COMPLAINT LIST
+    ================================================== -->
+
+    <div class="section-card">
+
+
+      <!-- HEADER -->
+
+      <div class="section-top">
+
+        <div class="section-header">
+
+          <h2>
+            Complaints
+          </h2>
+
+          <p>
+            View and manage student complaints.
+          </p>
+
+        </div>
+
+
+        <!-- FILTER -->
+
+        <div class="filter-group">
+
+          <label>
+            Filter by Status
+          </label>
+
+          <select
+            [(ngModel)]="statusFilter"
+            (change)="onStatusFilterChange()"
+          >
+
+            <option value="">
+              All Complaints
+            </option>
+
+            <option value="0">
+              Pending
+            </option>
+
+            <option value="1">
+              In Progress
+            </option>
+
+            <option value="2">
+              Resolved
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================
+           LOADING
+      ================================================== -->
+
+      <div
+        class="loading-state"
+        *ngIf="loading"
+      >
+
+        Loading complaints...
+
+      </div>
+
+
+      <!-- ==================================================
+           EMPTY
+      ================================================== -->
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !loading &&
+          complaints.length === 0
+        "
+      >
+
+        No complaints found.
+
+      </div>
+
+
+      <!-- ==================================================
+           TABLE
+      ================================================== -->
+
+      <div
+        class="table-wrapper"
+        *ngIf="
+          !loading &&
+          complaints.length > 0
+        "
+      >
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                ID
+              </th>
+
+              <th>
+                STUDENT
+              </th>
+
+              <th>
+                CATEGORY
+              </th>
+
+              <th>
+                DESCRIPTION
+              </th>
+
+              <th>
+                DATE
+              </th>
+
+              <th>
+                STATUS
+              </th>
+
+              <th>
+                ACTIONS
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr
+              *ngFor="let complaint of complaints"
+            >
+
+
+              <!-- ID -->
+
+              <td>
+
+                #{{ complaint.id }}
+
+              </td>
+
+
+              <!-- STUDENT -->
+
+              <td>
+
+                <div class="student-cell">
+
+                  <div class="student-avatar">
+
+                    {{
+                      complaint.studentName
+                        ? complaint.studentName.charAt(0).toUpperCase()
+                        : 'S'
+                    }}
+
+                  </div>
+
+
+                  <div>
+
+                    <strong>
+
+                      {{
+                        complaint.studentName
+                          || 'Student #' + complaint.studentId
+                      }}
+
+                    </strong>
+
+                    <small>
+
+                      Student ID:
+                      {{ complaint.studentId }}
+
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- CATEGORY -->
+
+              <td>
+
+                <span class="category-badge">
+
+                  {{
+                    complaint.categoryName
+                      || 'Category #' + complaint.categoryId
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- DESCRIPTION -->
+
+              <td>
+
+                <div class="description-cell">
+
+                  {{ complaint.description }}
+
+                </div>
+
+              </td>
+
+
+              <!-- CREATED DATE -->
+
+              <td>
+
+                {{
+                  complaint.createdAt
+                    | date:'medium'
+                }}
+
+              </td>
+
+
+              <!-- STATUS -->
+
+              <td>
+
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(complaint.status)"
+                >
+
+                  {{
+                    getStatusLabel(
+                      complaint.status
+                    )
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- ACTIONS -->
+
+              <td>
+
+                <button
+                  type="button"
+                  class="manage-button"
+                  (click)="openUpdate(complaint)"
+                >
+
+                  Manage
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         UPDATE COMPLAINT MODAL
+    ================================================== -->
+
+    <div
+      class="modal-backdrop"
+      *ngIf="selectedComplaint"
+    >
+
+      <div class="modal">
+
+
+        <!-- ==================================================
+             HEADER
+        ================================================== -->
+
+        <div class="modal-header">
+
+          <div>
+
+            <p class="modal-eyebrow">
+
+              COMPLAINT
+              #{{ selectedComplaint.id }}
+
+            </p>
+
+            <h2>
+              Update Complaint
+            </h2>
+
+            <p>
+              Update complaint status and resolution details.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeUpdate()"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             COMPLAINT DETAILS
+        ================================================== -->
+
+        <div class="complaint-details">
+
+
+          <!-- STUDENT -->
+
+          <div class="detail-item">
+
+            <span>
+              Student
+            </span>
+
+            <strong>
+
+              {{
+                selectedComplaint.studentName
+                  || 'Student #' + selectedComplaint.studentId
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- CATEGORY -->
+
+          <div class="detail-item">
+
+            <span>
+              Category
+            </span>
+
+            <strong>
+
+              {{
+                selectedComplaint.categoryName
+                  || 'Category #' + selectedComplaint.categoryId
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- CURRENT STATUS -->
+
+          <div class="detail-item">
+
+            <span>
+              Current Status
+            </span>
+
+            <strong>
+
+              {{
+                getStatusLabel(
+                  selectedComplaint.status
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- CREATED -->
+
+          <div class="detail-item">
+
+            <span>
+              Created
+            </span>
+
+            <strong>
+
+              {{
+                selectedComplaint.createdAt
+                  | date:'medium'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             DESCRIPTION
+        ================================================== -->
+
+        <div class="complaint-description">
+
+          <label>
+            Complaint Description
+          </label>
+
+          <div class="description-box">
+
+            {{
+              selectedComplaint.description
+            }}
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             UPDATE FORM
+        ================================================== -->
+
+        <form
+          class="update-form"
+          (ngSubmit)="updateStatus()"
+        >
+
+
+          <!-- STATUS -->
+
+          <div class="form-group">
+
+            <label>
+              Status
+            </label>
+
+            <select
+              name="selectedStatus"
+              [(ngModel)]="selectedStatus"
+              required
+            >
+
+              <option [ngValue]="0">
+                Pending
+              </option>
+
+              <option [ngValue]="1">
+                In Progress
+              </option>
+
+              <option [ngValue]="2">
+                Resolved
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- RESOLUTION NOTE -->
+
+          <div class="form-group">
+
+            <label>
+              Resolution Note
+            </label>
+
+            <textarea
+              name="resolutionNote"
+              [(ngModel)]="resolutionNote"
+              rows="5"
+              placeholder="Enter resolution note or admin comment..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- CURRENT RESOLUTION -->
+
+          <div
+            class="existing-resolution"
+            *ngIf="selectedComplaint.resolutionNote"
+          >
+
+            <span>
+              Existing Resolution Note
+            </span>
+
+            <p>
+              {{ selectedComplaint.resolutionNote }}
+            </p>
+
+          </div>
+
+
+          <!-- ==================================================
+               ACTIONS
+          ================================================== -->
+
+          <div class="modal-actions">
+
+            <button
+              type="button"
+              class="cancel-button"
+              (click)="closeUpdate()"
+            >
+
+              Cancel
+
+            </button>
+
+
+            <button
+              type="submit"
+              class="save-button"
+              [disabled]="saving"
+            >
+
+              {{
+                saving
+                  ? 'Updating...'
+                  : 'Update Complaint'
+              }}
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

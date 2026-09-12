@@ -22,6 +22,10 @@ import { LoginRequest } from '../../../../core/models/auth';
 })
 export class Login {
 
+  // =====================================================
+  // LOGIN DATA
+  // =====================================================
+
   loginData: LoginRequest = {
     email: '',
     password: ''
@@ -47,6 +51,7 @@ export class Login {
 
   login(): void {
 
+    // Clear old messages
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -68,11 +73,12 @@ export class Login {
     }
 
 
+    // Start loading
     this.loading = true;
 
 
     // ===================================================
-    // LOGIN API
+    // CALL LOGIN API
     // ===================================================
 
     this.authService
@@ -80,38 +86,48 @@ export class Login {
       .subscribe({
 
         // ===============================================
-        // SUCCESS
+        // LOGIN SUCCESS
         // ===============================================
 
         next: (response) => {
 
           console.log(
-            'Login successful:',
+            'Login response:',
             response
           );
+
+
+          // =============================================
+          // CHECK TOKEN
+          // =============================================
+
+          if (!response.token) {
+
+            this.loading = false;
+
+            this.errorMessage =
+              'Token was not received from server.';
+
+            return;
+
+          }
 
 
           // =============================================
           // SAVE TOKEN
           // =============================================
 
-          if (response.token) {
-
-            this.authService.saveToken(
-              response.token
-            );
-
-          }
+          this.authService.saveToken(
+            response.token
+          );
 
 
           // =============================================
-          // GET ROLE FROM JWT TOKEN
+          // GET ROLE DIRECTLY FROM BACKEND RESPONSE
           // =============================================
 
           const role =
-            this.getRoleFromToken(
-              response.token
-            );
+            response.role?.trim();
 
 
           console.log(
@@ -121,11 +137,36 @@ export class Login {
 
 
           // =============================================
+          // CHECK ROLE
+          // =============================================
+
+          if (!role) {
+
+            this.loading = false;
+
+            this.errorMessage =
+              'User role was not received from server.';
+
+            return;
+
+          }
+
+
+          // =============================================
+          // SAVE ROLE
+          // =============================================
+
+          this.authService.saveRole(
+            role
+          );
+
+
+          // =============================================
           // ADMIN LOGIN
           // =============================================
 
           if (
-            role?.toLowerCase() === 'admin'
+            role.toLowerCase() === 'admin'
           ) {
 
             this.loading = false;
@@ -134,13 +175,14 @@ export class Login {
               'Admin login successful!';
 
 
-            setTimeout(() => {
+            console.log(
+              'Redirecting admin to labs...'
+            );
 
-              this.router.navigate([
-                '/admin/labs'
-              ]);
 
-            }, 500);
+            this.router.navigate([
+              '/admin/labs'
+            ]);
 
 
             return;
@@ -152,71 +194,25 @@ export class Login {
           // STUDENT LOGIN
           // =============================================
 
-          this.authService
-            .getCurrentStudent()
-            .subscribe({
+          if (
+            role.toLowerCase() === 'student'
+          ) {
 
-              next: (student) => {
+            this.loadStudentProfile();
 
-                console.log(
-                  'Current student:',
-                  student
-                );
+            return;
 
-
-                // =======================================
-                // SAVE STUDENT
-                // =======================================
-
-                this.authService.saveStudent(
-                  student
-                );
+          }
 
 
-                console.log(
-                  'Student ID saved:',
-                  student.id
-                );
+          // =============================================
+          // UNKNOWN ROLE
+          // =============================================
 
+          this.loading = false;
 
-                this.loading = false;
-
-                this.successMessage =
-                  'Login successful!';
-
-
-                // =======================================
-                // GO DASHBOARD
-                // =======================================
-
-                setTimeout(() => {
-
-                  this.router.navigate([
-                    '/dashboard'
-                  ]);
-
-                }, 500);
-
-              },
-
-
-              error: (error) => {
-
-                console.error(
-                  'Failed to get student profile:',
-                  error
-                );
-
-
-                this.loading = false;
-
-
-                this.errorMessage =
-                  'Login successful, but student profile could not be loaded.';
-
-              }
-
-            });
+          this.errorMessage =
+            'Unknown user role: ' + role;
 
         },
 
@@ -248,56 +244,74 @@ export class Login {
 
 
   // =====================================================
-  // GET ROLE FROM JWT
+  // LOAD STUDENT PROFILE
   // =====================================================
 
-  private getRoleFromToken(
-    token: string | undefined
-  ): string | null {
+  private loadStudentProfile(): void {
 
-    if (!token) {
+    this.authService
+      .getCurrentStudent()
+      .subscribe({
 
-      return null;
+        // ===============================================
+        // STUDENT PROFILE SUCCESS
+        // ===============================================
 
-    }
+        next: (student) => {
 
-
-    try {
-
-      const payload =
-        token.split('.')[1];
-
-
-      const decodedPayload =
-        JSON.parse(
-          atob(
-            payload
-              .replace(/-/g, '+')
-              .replace(/_/g, '/')
-          )
-        );
+          console.log(
+            'Current student:',
+            student
+          );
 
 
-      return (
-        decodedPayload.role ||
-        decodedPayload[
-          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ] ||
-        null
-      );
-
-    }
-    catch (error) {
-
-      console.error(
-        'Unable to decode JWT token:',
-        error
-      );
+          // Save student
+          this.authService.saveStudent(
+            student
+          );
 
 
-      return null;
+          console.log(
+            'Student ID saved:',
+            student.id
+          );
 
-    }
+
+          this.loading = false;
+
+          this.successMessage =
+            'Login successful!';
+
+
+          // Go to student dashboard
+          this.router.navigate([
+            '/dashboard'
+          ]);
+
+        },
+
+
+        // ===============================================
+        // STUDENT PROFILE ERROR
+        // ===============================================
+
+        error: (error) => {
+
+          console.error(
+            'Failed to get student profile:',
+            error
+          );
+
+
+          this.loading = false;
+
+
+          this.errorMessage =
+            'Login successful, but student profile could not be loaded.';
+
+        }
+
+      });
 
   }
 
