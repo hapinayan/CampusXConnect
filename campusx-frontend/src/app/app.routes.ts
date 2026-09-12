@@ -4,11 +4,20 @@ import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
 
+  // =====================================================
+  // DEFAULT
+  // =====================================================
+
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
+
+  // =====================================================
+  // AUTH
+  // =====================================================
 
   {
     path: 'login',
@@ -24,6 +33,11 @@ export const routes: Routes = [
         .then(m => m.Register)
   },
 
+
+  // =====================================================
+  // STUDENT DASHBOARD
+  // =====================================================
+
   {
     path: 'dashboard',
     canActivate: [authGuard],
@@ -31,6 +45,11 @@ export const routes: Routes = [
       import('./features/dashboard/pages/dashboard/dashboard')
         .then(m => m.Dashboard)
   },
+
+
+  // =====================================================
+  // STUDENT PROFILE
+  // =====================================================
 
   {
     path: 'profile',
@@ -40,6 +59,11 @@ export const routes: Routes = [
         .then(m => m.Profile)
   },
 
+
+  // =====================================================
+  // STUDENT HOSTEL
+  // =====================================================
+
   {
     path: 'hostel',
     canActivate: [authGuard],
@@ -47,6 +71,11 @@ export const routes: Routes = [
       import('./features/hostel/pages/hostel/hostel')
         .then(m => m.HostelPage)
   },
+
+
+  // =====================================================
+  // STUDENT LAB BOOKING
+  // =====================================================
 
   {
     path: 'lab-booking',
@@ -56,13 +85,23 @@ export const routes: Routes = [
         .then(m => m.LabBookingPage)
   },
 
+
+  // =====================================================
+  // STUDENT LABS
+  // =====================================================
+
   {
-    path: 'events',
+    path: 'labs',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./pages/student/events/events')
-        .then(m => m.Events)
+      import('./features/labs/pages/labs/labs')
+        .then(m => m.Labs)
   },
+
+
+  // =====================================================
+  // STUDENT NOTIFICATIONS
+  // =====================================================
 
   {
     path: 'notifications',
@@ -72,6 +111,11 @@ export const routes: Routes = [
         .then(m => m.Notifications)
   },
 
+
+  // =====================================================
+  // STUDENT COMPLAINTS
+  // =====================================================
+
   {
     path: 'complaints',
     canActivate: [authGuard],
@@ -80,6 +124,11 @@ export const routes: Routes = [
         .then(m => m.Complaints)
   },
 
+
+  // =====================================================
+  // STUDENT CERTIFICATES
+  // =====================================================
+
   {
     path: 'certificates',
     canActivate: [authGuard],
@@ -87,6 +136,11 @@ export const routes: Routes = [
       import('./features/certificates/pages/certificates/certificates')
         .then(m => m.Certificates)
   },
+
+
+  // =====================================================
+  // STUDENT PAYMENTS
+  // =====================================================
 
   {
     path: 'payments',
@@ -98,7 +152,7 @@ export const routes: Routes = [
 
 
   // =====================================================
-  // ADMIN ROUTES
+  // ADMIN
   // =====================================================
 
   {
@@ -111,11 +165,20 @@ export const routes: Routes = [
 
     children: [
 
+      // =================================================
+      // ADMIN DEFAULT
+      // =================================================
+
       {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
       },
+
+
+      // =================================================
+      // ADMIN DASHBOARD
+      // =================================================
 
       {
         path: 'dashboard',
@@ -124,12 +187,46 @@ export const routes: Routes = [
             .then(m => m.AdminDashboard)
       },
 
+
+      // =================================================
+      // ADMIN STUDENTS
+      // =================================================
+
       {
         path: 'students',
         loadComponent: () =>
           import('./features/admin/pages/admin-students/admin-students')
             .then(m => m.AdminStudents)
       },
+
+
+      // =================================================
+      // ADMIN HOSTELS
+      // =================================================
+
+      {
+        path: 'hostels',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-hostels/admin-hostels')
+            .then(m => m.AdminHostels)
+      },
+
+
+      // =================================================
+      // ADMIN FEES
+      // =================================================
+
+      {
+        path: 'fees',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-fees/admin-fees')
+            .then(m => m.AdminFees)
+      },
+
+
+      // =================================================
+      // ADMIN LABS
+      // =================================================
 
       {
         path: 'labs',
@@ -138,12 +235,46 @@ export const routes: Routes = [
             .then(m => m.AdminLabs)
       },
 
+
+      // =================================================
+      // ADMIN EVENTS
+      // =================================================
+
       {
         path: 'events',
         loadComponent: () =>
           import('./features/admin/pages/admin-events/admin-events')
             .then(m => m.AdminEvents)
       },
+
+
+      // =================================================
+      // ADMIN COMPLAINTS
+      // =================================================
+
+      {
+        path: 'complaints',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-complaints/admin-complaints')
+            .then(m => m.AdminComplaints)
+      },
+
+
+      // =================================================
+      // ADMIN CERTIFICATES
+      // =================================================
+
+      {
+        path: 'certificates',
+        loadComponent: () =>
+          import('./features/admin/pages/admin-certificates/admin-certificates')
+            .then(m => m.AdminCertificates)
+      },
+
+
+      // =================================================
+      // ADMIN NOTIFICATIONS
+      // =================================================
 
       {
         path: 'notifications',

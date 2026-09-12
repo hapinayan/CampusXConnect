@@ -1,18 +1,62 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const authInterceptor: HttpInterceptorFn = (
+  req,
+  next
+) => {
 
-  const token = localStorage.getItem('token');
+  // =====================================================
+  // DO NOT ATTACH TOKEN FOR LOGIN / REGISTER
+  // =====================================================
 
-  if (token) {
-    const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  const isAuthRequest =
+    req.url.toLowerCase().includes('/auth/login') ||
+    req.url.toLowerCase().includes('/auth/register');
 
-    return next(authReq);
+
+  if (isAuthRequest) {
+
+    return next(req);
+
   }
 
+
+  // =====================================================
+  // GET SAVED TOKEN
+  // =====================================================
+
+  const token =
+    localStorage.getItem('token');
+
+
+  // =====================================================
+  // ATTACH TOKEN
+  // =====================================================
+
+  if (token) {
+
+    const authReq =
+      req.clone({
+
+        setHeaders: {
+
+          Authorization:
+            `Bearer ${token}`
+
+        }
+
+      });
+
+
+    return next(authReq);
+
+  }
+
+
+  // =====================================================
+  // NO TOKEN
+  // =====================================================
+
   return next(req);
+
 };

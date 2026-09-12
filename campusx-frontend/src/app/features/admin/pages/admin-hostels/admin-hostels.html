@@ -1,0 +1,288 @@
+<div class="hostels-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <p class="page-label">
+        CAMPUSX ADMINISTRATION
+      </p>
+
+      <h1>
+        Hostel Management
+      </h1>
+
+      <p class="page-description">
+        Review and manage student hostel applications.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- SUMMARY CARDS -->
+  <div class="hostel-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        HA
+      </div>
+
+      <div>
+        <p>
+          Total Applications
+        </p>
+
+        <h2>
+          {{ totalApplications() }}
+        </h2>
+
+        <span>
+          All hostel applications
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        PE
+      </div>
+
+      <div>
+        <p>
+          Pending
+        </p>
+
+        <h2>
+          {{ pendingApplications() }}
+        </h2>
+
+        <span>
+          Waiting for review
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        AP
+      </div>
+
+      <div>
+        <p>
+          Approved
+        </p>
+
+        <h2>
+          {{ approvedApplications() }}
+        </h2>
+
+        <span>
+          Approved applications
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        RA
+      </div>
+
+      <div>
+        <p>
+          Room Assigned
+        </p>
+
+        <h2>
+          {{ roomAssignedApplications() }}
+        </h2>
+
+        <span>
+          Students with rooms
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- APPLICATIONS TABLE -->
+  <div class="hostels-card">
+
+    <div class="table-header">
+      <div>
+        <h2>
+          Hostel Applications
+        </h2>
+
+        <p>
+          Student hostel application records
+        </p>
+      </div>
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="isLoading()"
+      class="message"
+    >
+      Loading hostel applications...
+    </div>
+
+
+    <!-- ERROR -->
+    <div
+      *ngIf="
+        errorMessage() &&
+        !isLoading()
+      "
+      class="message error"
+    >
+      {{ errorMessage() }}
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        applications().length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>STUDENT</th>
+            <th>HOSTEL</th>
+            <th>PREFERENCES</th>
+            <th>ROOM</th>
+            <th>APPLIED DATE</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let application
+              of applications()
+            "
+          >
+
+            <td>
+              #{{ application.id }}
+            </td>
+
+
+            <td>
+              <div class="student-info">
+
+                <div class="student-avatar">
+                  {{
+                    application.studentName
+                      ?.charAt(0) || 'S'
+                  }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{ application.studentName }}
+                  </strong>
+
+                  <span>
+                    {{ application.indexNumber }}
+                  </span>
+
+                  <span>
+                    {{ application.email }}
+                  </span>
+                </div>
+
+              </div>
+            </td>
+
+
+            <td>
+              {{ application.hostelName }}
+            </td>
+
+
+            <td>
+              {{
+                application.preferences
+                  || 'No preference'
+              }}
+            </td>
+
+
+            <td>
+              {{
+                application.roomNumber
+                  || 'Not assigned'
+              }}
+            </td>
+
+
+            <td>
+              {{
+                application.appliedAt
+                  | date:'mediumDate'
+              }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="status"
+                [class.pending]="
+                  application.status === 'Pending'
+                "
+                [class.approved]="
+                  application.status === 'Approved'
+                "
+                [class.assigned]="
+                  application.status === 'RoomAssigned'
+                "
+                [class.rejected]="
+                  application.status === 'Rejected'
+                "
+              >
+                {{ application.status }}
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        applications().length === 0
+      "
+      class="message"
+    >
+      No hostel applications found.
+    </div>
+
+  </div>
+
+</div>

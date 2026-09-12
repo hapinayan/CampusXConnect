@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
 import {
   CertificateRequest,
+  CertificateStatus,
   CreateCertificateRequest
 } from '../models/certificate';
 
@@ -33,7 +37,7 @@ export class CertificateService {
 
 
   // =====================================================
-  // CREATE CERTIFICATE REQUEST
+  // STUDENT - CREATE CERTIFICATE REQUEST
   // POST: api/certificate-requests
   // =====================================================
 
@@ -50,17 +54,18 @@ export class CertificateService {
 
 
   // =====================================================
-  // GET MY CERTIFICATE REQUESTS
-  // GET: api/certificate-requests/student/{studentId}
+  // STUDENT - GET MY CERTIFICATE REQUESTS
+  // GET: api/certificate-requests/my
   // =====================================================
 
-  getMyRequests(): Observable<CertificateRequest[]> {
+  getMyRequests():
+    Observable<CertificateRequest[]> {
 
-  return this.http.get<CertificateRequest[]>(
-    `${this.certificateUrl}/my`
-  );
+    return this.http.get<CertificateRequest[]>(
+      `${this.certificateUrl}/my`
+    );
 
-}
+  }
 
 
   // =====================================================
@@ -90,6 +95,54 @@ export class CertificateService {
 
     return this.http.delete<any>(
       `${this.certificateUrl}/${id}`
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - GET ALL CERTIFICATE REQUESTS
+  // GET: api/certificate-requests/admin
+  // =====================================================
+
+  getAllRequests(
+    status?: CertificateStatus
+  ): Observable<CertificateRequest[]> {
+
+    let params = new HttpParams();
+
+    if (status) {
+
+      params = params.set(
+        'status',
+        status
+      );
+
+    }
+
+    return this.http.get<CertificateRequest[]>(
+      `${this.certificateUrl}/admin`,
+      { params }
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - UPDATE CERTIFICATE STATUS
+  // PUT: api/certificate-requests/{id}/status
+  // =====================================================
+
+  updateStatus(
+    id: number,
+    status: CertificateStatus
+  ): Observable<CertificateRequest> {
+
+    return this.http.put<CertificateRequest>(
+      `${this.certificateUrl}/${id}/status`,
+      {
+        status: status
+      }
     );
 
   }

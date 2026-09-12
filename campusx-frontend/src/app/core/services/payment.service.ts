@@ -21,8 +21,9 @@ export class PaymentService {
     private http: HttpClient
   ) {}
 
+
   // =====================================================
-  // GET MY PAYMENT HISTORY
+  // STUDENT - GET MY PAYMENT HISTORY
   // =====================================================
 
   getMyPayments(): Observable<Payment[]> {
@@ -35,7 +36,7 @@ export class PaymentService {
 
 
   // =====================================================
-  // MAKE PAYMENT
+  // STUDENT - MAKE PAYMENT
   // =====================================================
 
   pay(
@@ -44,12 +45,10 @@ export class PaymentService {
   ): Observable<PaymentResponse> {
 
     const params = new HttpParams()
-
       .set(
         'feeType',
         feeType
       )
-
       .set(
         'amount',
         amount.toString()
@@ -61,6 +60,20 @@ export class PaymentService {
       {
         params
       }
+    );
+
+  }
+
+
+  // =====================================================
+  // ADMIN - GET ALL PAYMENTS
+  // GET: api/FeePayment/admin/all
+  // =====================================================
+
+  getAllPayments(): Observable<any[]> {
+
+    return this.http.get<any[]>(
+      `${this.paymentUrl}/admin/all`
     );
 
   }
