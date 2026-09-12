@@ -1,0 +1,363 @@
+<div class="complaints-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+
+    <div>
+      <p class="page-label">
+        CAMPUSX ADMINISTRATION
+      </p>
+
+      <h1>
+        Complaint Management
+      </h1>
+
+      <p class="page-description">
+        View and manage student complaints.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- SUMMARY CARDS -->
+  <div class="complaint-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        ALL
+      </div>
+
+      <div>
+        <p>
+          Total Complaints
+        </p>
+
+        <h2>
+          {{ totalComplaints() }}
+        </h2>
+
+        <span>
+          All submitted complaints
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon pending-icon">
+        P
+      </div>
+
+      <div>
+        <p>
+          Pending
+        </p>
+
+        <h2>
+          {{ pendingComplaints() }}
+        </h2>
+
+        <span>
+          Waiting for action
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon progress-icon">
+        IP
+      </div>
+
+      <div>
+        <p>
+          In Progress
+        </p>
+
+        <h2>
+          {{ inProgressComplaints() }}
+        </h2>
+
+        <span>
+          Currently being handled
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon resolved-icon">
+        R
+      </div>
+
+      <div>
+        <p>
+          Resolved
+        </p>
+
+        <h2>
+          {{ resolvedComplaints() }}
+        </h2>
+
+        <span>
+          Successfully resolved
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- MAIN CARD -->
+  <div class="complaints-card">
+
+    <div class="table-header">
+
+      <div>
+        <h2>
+          Complaint Records
+        </h2>
+
+        <p>
+          Review and update complaint status.
+        </p>
+      </div>
+
+
+      <!-- FILTER -->
+      <div class="filter-group">
+
+        <button
+          type="button"
+          [class.active]="selectedStatus === 'All'"
+          (click)="changeFilter('All')"
+        >
+          All
+        </button>
+
+        <button
+          type="button"
+          [class.active]="selectedStatus === 'Pending'"
+          (click)="changeFilter('Pending')"
+        >
+          Pending
+        </button>
+
+        <button
+          type="button"
+          [class.active]="selectedStatus === 'InProgress'"
+          (click)="changeFilter('InProgress')"
+        >
+          In Progress
+        </button>
+
+        <button
+          type="button"
+          [class.active]="selectedStatus === 'Resolved'"
+          (click)="changeFilter('Resolved')"
+        >
+          Resolved
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="isLoading()"
+      class="message"
+    >
+      Loading complaints...
+    </div>
+
+
+    <!-- ERROR -->
+    <div
+      *ngIf="
+        errorMessage() &&
+        !isLoading()
+      "
+      class="message error"
+    >
+      {{ errorMessage() }}
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        filteredComplaints().length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>STUDENT ID</th>
+            <th>CATEGORY</th>
+            <th>DESCRIPTION</th>
+            <th>CREATED</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let complaint
+              of filteredComplaints()
+            "
+          >
+
+            <td>
+              #{{ complaint.id }}
+            </td>
+
+
+            <td>
+              {{ complaint.studentId }}
+            </td>
+
+
+            <td>
+              <span class="category-badge">
+                {{
+                  complaint.categoryName
+                  || ('Category ' + complaint.categoryId)
+                }}
+              </span>
+            </td>
+
+
+            <td>
+              <div class="description-cell">
+
+                <strong>
+                  {{ complaint.description }}
+                </strong>
+
+                <span
+                  *ngIf="complaint.resolutionNote"
+                >
+                  Resolution:
+                  {{ complaint.resolutionNote }}
+                </span>
+
+              </div>
+            </td>
+
+
+            <td>
+              {{
+                complaint.createdAt
+                  | date:'medium'
+              }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="status"
+                [class.pending]="
+                  complaint.status === 'Pending'
+                "
+                [class.progress]="
+                  complaint.status === 'InProgress'
+                "
+                [class.resolved]="
+                  complaint.status === 'Resolved'
+                "
+              >
+                {{ complaint.status }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  type="button"
+                  class="action-btn progress-btn"
+                  *ngIf="
+                    complaint.status === 'Pending'
+                  "
+                  (click)="
+                    updateStatus(
+                      complaint,
+                      'InProgress'
+                    )
+                  "
+                >
+                  Start
+                </button>
+
+
+                <button
+                  type="button"
+                  class="action-btn resolve-btn"
+                  *ngIf="
+                    complaint.status !== 'Resolved'
+                  "
+                  (click)="
+                    updateStatus(
+                      complaint,
+                      'Resolved'
+                    )
+                  "
+                >
+                  Resolve
+                </button>
+
+
+                <span
+                  class="completed-text"
+                  *ngIf="
+                    complaint.status === 'Resolved'
+                  "
+                >
+                  Completed
+                </span>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        filteredComplaints().length === 0
+      "
+      class="message"
+    >
+      No complaints found.
+    </div>
+
+  </div>
+
+</div>

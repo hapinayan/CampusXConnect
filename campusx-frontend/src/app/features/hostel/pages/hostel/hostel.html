@@ -1,0 +1,977 @@
+<div class="hostel-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <header class="top-header">
+
+    <div class="brand-area">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+      <!-- ================= NOTIFICATION ================= -->
+
+      <div
+        class="notification"
+        routerLink="/notifications"
+        title="Notifications"
+      >
+
+        🔔
+
+      </div>
+
+
+      <!-- ================= STUDENT PROFILE ================= -->
+
+      <div
+        class="student-mini"
+        routerLink="/profile"
+        title="View Profile"
+      >
+
+        <div class="avatar">
+
+          {{ student?.fullName?.charAt(0)?.toUpperCase() || 'S' }}
+
+        </div>
+
+
+        <div class="student-mini-info">
+
+          <strong>
+            {{ student?.fullName || 'Student' }}
+          </strong>
+
+          <small>
+            Student
+          </small>
+
+        </div>
+
+
+        <span class="profile-arrow">
+          →
+        </span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="sidebar">
+
+    <!-- ================= SIDEBAR BRAND ================= -->
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+
+        <h2>
+          CampusX
+        </h2>
+
+        <span>
+          Student Portal
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= NAVIGATION ================= -->
+
+    <nav>
+
+
+      <!-- DASHBOARD -->
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
+
+      </a>
+
+
+
+      <!-- HOSTEL -->
+
+      <a
+        class="nav-item active"
+        routerLink="/hostel"
+      >
+
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
+
+      </a>
+
+
+
+      <!-- LAB BOOKING -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
+
+      </a>
+
+
+
+      <!-- EVENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
+
+        <span class="nav-icon">
+          📅
+        </span>
+
+        <span>
+          Events
+        </span>
+
+      </a>
+
+
+
+      <!-- COMPLAINTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+
+      </a>
+
+
+
+      <!-- CERTIFICATES -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
+
+      </a>
+
+
+
+      <!-- PAYMENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+
+        <span class="nav-icon">
+          💳
+        </span>
+
+        <span>
+          Payments
+        </span>
+
+      </a>
+
+
+
+      <!-- NOTIFICATIONS -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+        <span class="notification-count">
+          3
+        </span>
+
+      </a>
+
+
+
+      <!-- PROFILE -->
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
+
+    </nav>
+
+
+
+    <!-- ================= SIDEBAR BOTTOM ================= -->
+
+    <div class="sidebar-bottom">
+
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="main-content">
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+      <div class="hero-overlay">
+
+
+        <div class="hero-content">
+
+          <p>
+            Campus Accommodation
+          </p>
+
+
+          <h1>
+            Hostel Accommodation
+          </h1>
+
+
+          <span>
+            Comfortable living. Brighter tomorrow.
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="dashboard-button"
+          routerLink="/dashboard"
+        >
+
+          ← Dashboard
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="feature-row">
+
+
+      <!-- FEATURE 1 -->
+
+      <div class="feature-card">
+
+        <div class="feature-icon">
+          🏠
+        </div>
+
+        <div>
+
+          <strong>
+            Safe & Secure
+          </strong>
+
+          <span>
+            24/7 campus security
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- FEATURE 2 -->
+
+      <div class="feature-card">
+
+        <div class="feature-icon">
+          🛏️
+        </div>
+
+        <div>
+
+          <strong>
+            Modern Facilities
+          </strong>
+
+          <span>
+            Comfortable student rooms
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- FEATURE 3 -->
+
+      <div class="feature-card">
+
+        <div class="feature-icon purple">
+          🎓
+        </div>
+
+        <div>
+
+          <strong>
+            Better Community
+          </strong>
+
+          <span>
+            Learn and grow together
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================= STATUS ================= -->
+
+    <section class="status-card">
+
+
+      <div class="status-left">
+
+
+        <div class="status-icon">
+          🏨
+        </div>
+
+
+        <div>
+
+          <span class="status-label">
+            CURRENT HOSTEL STATUS
+          </span>
+
+
+          @if (application) {
+
+            <h2>
+              {{ application.status }}
+            </h2>
+
+
+            <p>
+
+              Your hostel application is currently
+              {{ application.status.toLowerCase() }}.
+
+            </p>
+
+          }
+
+          @else {
+
+            <h2>
+              Not Allocated
+            </h2>
+
+
+            <p>
+              You currently do not have a hostel
+              room allocated.
+            </p>
+
+          }
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STATUS BADGE -->
+
+      @if (application) {
+
+        <span class="status-badge">
+
+          {{ application.status }}
+
+        </span>
+
+      }
+
+      @else {
+
+        <span class="status-badge">
+
+          No Application
+
+        </span>
+
+      }
+
+    </section>
+
+
+
+    <!-- ================= ERROR ================= -->
+
+    @if (errorMessage) {
+
+      <div class="message error">
+
+        ⚠️
+
+        {{ errorMessage }}
+
+      </div>
+
+    }
+
+
+
+    <!-- ================= SUCCESS ================= -->
+
+    @if (successMessage) {
+
+      <div class="message success">
+
+        ✓
+
+        {{ successMessage }}
+
+      </div>
+
+    }
+
+
+
+    <!-- ================= MAIN GRID ================= -->
+
+    <div class="content-grid">
+
+
+
+      <!-- ================= APPLICATION CARD ================= -->
+
+      <section class="application-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="card-heading">
+
+
+          <div class="heading-icon">
+            📝
+          </div>
+
+
+          <div>
+
+            <h2>
+              Submit Hostel Application
+            </h2>
+
+            <p>
+              Apply for comfortable campus accommodation.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ================= FORM GRID ================= -->
+
+        <div class="form-grid">
+
+
+          <!-- ================= PREFERRED HOSTEL ================= -->
+
+          <div class="form-group">
+
+
+            <label>
+              Preferred Hostel
+            </label>
+
+
+            <select
+              [(ngModel)]="selectedHostelId"
+              [disabled]="hostelsLoading"
+            >
+
+
+              @if (hostelsLoading) {
+
+                <option
+                  [ngValue]="null"
+                >
+
+                  Loading hostels...
+
+                </option>
+
+              }
+
+              @else {
+
+                <option
+                  [ngValue]="null"
+                >
+
+                  Select hostel
+
+                </option>
+
+
+                @for (
+                  hostel of hostels;
+                  track hostel.id
+                ) {
+
+                  <option
+                    [ngValue]="hostel.id"
+                  >
+
+                    {{ hostel.name }}
+                    -
+                    {{ hostel.location }}
+
+                  </option>
+
+                }
+
+              }
+
+            </select>
+
+          </div>
+
+
+
+          <!-- ================= ACADEMIC TERM ================= -->
+
+          <div class="form-group">
+
+
+            <label>
+              Academic Term
+            </label>
+
+
+            <select>
+
+              <option value="">
+                Select term
+              </option>
+
+
+              <option value="2026-S1">
+                2026 - Semester 1
+              </option>
+
+
+              <option value="2026-S2">
+                2026 - Semester 2
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <!-- ================= PREFERENCES ================= -->
+
+          <div class="form-group full">
+
+
+            <label>
+              Special Requirements / Preferences
+            </label>
+
+
+            <textarea
+              rows="4"
+              [(ngModel)]="preferences"
+              placeholder="Enter any special accommodation requirements..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ================= APPLICATION FOOTER ================= -->
+
+        <div class="application-footer">
+
+
+          <p>
+
+            Your application will initially be marked as
+
+            <strong>
+              Pending
+            </strong>.
+
+          </p>
+
+
+          <button
+            type="button"
+            class="apply-button"
+            (click)="submitApplication()"
+            [disabled]="submitting || hostelsLoading"
+          >
+
+            @if (submitting) {
+
+              <span class="spinner white"></span>
+
+              Submitting...
+
+            }
+
+            @else {
+
+              ✈ Submit Application
+
+            }
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ================= MY APPLICATION ================= -->
+
+      <section class="my-application-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="card-heading">
+
+
+          <div class="heading-icon">
+            📋
+          </div>
+
+
+          <div>
+
+            <h2>
+              My Application
+            </h2>
+
+            <p>
+              Track your hostel application.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ================= APPLICATION EXISTS ================= -->
+
+        @if (application) {
+
+
+          <div class="application-details">
+
+
+            <!-- HOSTEL NAME -->
+
+            <div class="detail-row">
+
+              <span>
+                Hostel Name
+              </span>
+
+
+              <strong>
+                {{ application.hostelName }}
+              </strong>
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div class="detail-row">
+
+              <span>
+                Status
+              </span>
+
+
+              <strong class="pending">
+
+                {{ application.status }}
+
+              </strong>
+
+            </div>
+
+
+
+            <!-- PREFERENCES -->
+
+            @if (application.preferences) {
+
+              <div class="detail-row">
+
+                <span>
+                  Preferences
+                </span>
+
+
+                <strong>
+                  {{ application.preferences }}
+                </strong>
+
+              </div>
+
+            }
+
+
+
+            <!-- ROOM NUMBER -->
+
+            <div class="detail-row">
+
+              <span>
+                Room Number
+              </span>
+
+
+              <strong>
+
+                {{ application.roomNumber || 'Not assigned yet' }}
+
+              </strong>
+
+            </div>
+
+
+
+            <!-- APPLIED DATE -->
+
+            <div class="detail-row">
+
+              <span>
+                Applied On
+              </span>
+
+
+              <strong>
+
+                {{ application.appliedAt | date:'dd MMM yyyy' }}
+
+              </strong>
+
+            </div>
+
+
+
+            <!-- UPDATED DATE -->
+
+            @if (application.updatedAt) {
+
+              <div class="detail-row">
+
+                <span>
+                  Last Updated
+                </span>
+
+
+                <strong>
+
+                  {{ application.updatedAt | date:'dd MMM yyyy' }}
+
+                </strong>
+
+              </div>
+
+            }
+
+          </div>
+
+
+
+          <!-- ================= APPLICATION NOTE ================= -->
+
+          <div class="application-note">
+
+            🏠
+
+
+            <div>
+
+              <strong>
+
+                A comfortable stay leads to
+                a successful tomorrow.
+
+              </strong>
+
+
+              <span>
+
+                Your application is being reviewed.
+
+              </span>
+
+            </div>
+
+          </div>
+
+        }
+
+
+
+        <!-- ================= EMPTY STATE ================= -->
+
+        @else {
+
+          <div class="empty-state">
+
+
+            <div class="empty-icon">
+              🏠
+            </div>
+
+
+            <h3>
+              No Application Yet
+            </h3>
+
+
+            <p>
+              Submit your hostel application
+              to get started.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>

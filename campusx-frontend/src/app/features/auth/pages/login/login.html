@@ -1,0 +1,204 @@
+<div class="login-page">
+
+  <!-- Campus Hero Section -->
+  <section class="hero-section">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+      <div class="brand">
+        <div class="brand-logo">CX</div>
+
+        <div>
+          <h2>CampusX</h2>
+          <span>Student Services Portal</span>
+        </div>
+      </div>
+
+      <div class="hero-text">
+
+        <p class="welcome-label">WELCOME TO CAMPUSX</p>
+
+        <h1>
+          Your Campus.<br>
+          <span>Your Future.</span>
+        </h1>
+
+        <p class="hero-description">
+          Access university services, resources and
+          opportunities — all in one secure place.
+        </p>
+
+      </div>
+
+      <div class="hero-features">
+
+        <div class="feature">
+          <span class="feature-icon">🎓</span>
+          <span>Learn</span>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">👥</span>
+          <span>Connect</span>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">🚀</span>
+          <span>Grow</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Login Section -->
+  <section class="login-section">
+
+    <div class="login-container">
+
+      <div class="login-heading">
+
+        <h1>Welcome Back</h1>
+
+        <p>
+          Login to continue to your CampusX account.
+        </p>
+
+      </div>
+
+
+      <!-- Error -->
+      <div
+        *ngIf="errorMessage"
+        class="message error">
+
+        {{ errorMessage }}
+
+      </div>
+
+
+      <!-- Success -->
+      <div
+        *ngIf="successMessage"
+        class="message success">
+
+        {{ successMessage }}
+
+      </div>
+
+
+      <!-- Login Form -->
+      <form
+        (ngSubmit)="login()"
+        #loginForm="ngForm">
+
+        <!-- Email -->
+        <div class="form-group">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="loginData.email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required>
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            name="password"
+            [(ngModel)]="loginData.password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required>
+
+        </div>
+
+
+        <!-- Options -->
+        <div class="login-options">
+
+          <label class="remember">
+
+            <input
+              type="checkbox"
+              name="rememberMe">
+
+            <span>Remember me</span>
+
+          </label>
+
+          <a href="#">
+            Forgot Password?
+          </a>
+
+        </div>
+
+
+        <!-- Login Button -->
+        <button
+          type="submit"
+          class="login-btn"
+          [disabled]="loading">
+
+          <span *ngIf="!loading">
+            Login
+          </span>
+
+          <span *ngIf="loading">
+            Logging in...
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <!-- Register -->
+      <div class="register-link">
+
+        <span>Don't have an account?</span>
+
+        <a routerLink="/register">
+          Create Account
+        </a>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="login-footer">
+
+        <span>© 2026 CampusX</span>
+
+        <span>•</span>
+
+        <span>Student Services Portal</span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

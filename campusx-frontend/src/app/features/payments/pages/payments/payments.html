@@ -1,0 +1,921 @@
+<div class="payments-page">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+      <!-- Dashboard -->
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+
+      <!-- Hostel -->
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">🏨</span>
+        <span>Hostel</span>
+      </a>
+
+
+      <!-- Lab Booking -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+        <span class="nav-icon">🧪</span>
+        <span>Lab Booking</span>
+      </a>
+
+
+      <!-- Events -->
+
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+      </a>
+
+
+      <!-- Complaints -->
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">💬</span>
+        <span>Complaints</span>
+      </a>
+
+
+      <!-- Certificates -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">📄</span>
+        <span>Certificates</span>
+      </a>
+
+
+      <!-- Payments -->
+
+      <a
+        class="nav-item active"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">💳</span>
+        <span>Payments</span>
+      </a>
+
+
+      <!-- Notifications -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+      </a>
+
+
+      <!-- Profile -->
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
+
+    </nav>
+
+
+    <!-- =================================================
+         LOGOUT
+    ================================================== -->
+
+    <div class="sidebar-bottom">
+
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          FINANCIAL SERVICES
+        </span>
+
+      </div>
+
+
+      <div class="topbar-right">
+
+        <!-- Notification -->
+
+        <button
+          type="button"
+          class="notification-btn"
+          routerLink="/notifications"
+        >
+
+          🔔
+
+        </button>
+
+
+        <!-- Student Profile -->
+
+        <div class="student-profile">
+
+          <div class="profile-avatar">
+            S
+          </div>
+
+          <div class="profile-info">
+
+            <strong>
+              Student
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+          <span>
+            ⌄
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           HERO
+      ================================================== -->
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <p>
+            FINANCIAL SERVICES
+          </p>
+
+          <h1>
+            Payments
+          </h1>
+
+          <span>
+            Make your university fee payments and view your payment history.
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="back-button"
+          routerLink="/dashboard"
+        >
+
+          ← Dashboard
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           FEATURE CARDS
+      ================================================== -->
+
+      <section class="feature-row">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            💳
+          </div>
+
+          <div>
+
+            <strong>
+              Secure Payments
+            </strong>
+
+            <span>
+              Pay your university fees
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FEATURE 2 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🧾
+          </div>
+
+          <div>
+
+            <strong>
+              Digital Receipts
+            </strong>
+
+            <span>
+              Keep track of payment receipts
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon purple">
+            📊
+          </div>
+
+          <div>
+
+            <strong>
+              Payment History
+            </strong>
+
+            <span>
+              View your previous payments
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           ERROR MESSAGE
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="message error">
+
+          <span>
+            ⚠️
+          </span>
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           SUCCESS MESSAGE
+      ================================================== -->
+
+      @if (successMessage) {
+
+        <div class="message success">
+
+          <span>
+            ✓
+          </span>
+
+          <span>
+            {{ successMessage }}
+          </span>
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           PAYMENT FORM
+      ================================================== -->
+
+      <section class="payment-card">
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            💳
+          </div>
+
+          <div>
+
+            <h2>
+              Make a Payment
+            </h2>
+
+            <p>
+              Enter your fee details to complete a payment.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <form
+          [formGroup]="paymentForm"
+          (ngSubmit)="makePayment()"
+        >
+
+          <div class="payment-form-grid">
+
+
+            <!-- FEE TYPE -->
+
+            <div class="form-group">
+
+              <label for="feeType">
+                Fee Type
+              </label>
+
+              <input
+                id="feeType"
+                type="text"
+                formControlName="feeType"
+                placeholder="e.g. Registration Fee"
+              />
+
+
+              @if (
+                paymentForm.get('feeType')?.touched &&
+                paymentForm.get('feeType')?.invalid
+              ) {
+
+                <small class="field-error">
+                  Please enter the fee type.
+                </small>
+
+              }
+
+            </div>
+
+
+
+            <!-- AMOUNT -->
+
+            <div class="form-group">
+
+              <label for="amount">
+                Amount (LKR)
+              </label>
+
+              <input
+                id="amount"
+                type="number"
+                formControlName="amount"
+                min="1"
+                placeholder="Enter amount"
+              />
+
+
+              @if (
+                paymentForm.get('amount')?.touched &&
+                paymentForm.get('amount')?.invalid
+              ) {
+
+                <small class="field-error">
+                  Please enter an amount greater than 0.
+                </small>
+
+              }
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================================
+               PAYMENT INFORMATION
+          ================================================== -->
+
+          <div class="payment-note">
+
+            <span>
+              ℹ️
+            </span>
+
+            <div>
+
+              <strong>
+                Payment Information
+              </strong>
+
+              <p>
+                Please verify the fee type and amount before submitting your payment.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================================
+               SUBMIT
+          ================================================== -->
+
+          <div class="form-actions">
+
+            <button
+              type="submit"
+              class="submit-button"
+              [disabled]="submitting"
+            >
+
+              @if (submitting) {
+
+                <span class="spinner white"></span>
+
+                Processing...
+
+              }
+
+              @else {
+
+                💳 Make Payment
+
+              }
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+
+
+      <!-- =================================================
+           LAST PAYMENT RECEIPT
+      ================================================== -->
+
+      @if (lastPayment) {
+
+        <section class="receipt-card">
+
+          <div class="receipt-header">
+
+            <div class="receipt-icon">
+              ✓
+            </div>
+
+            <div>
+
+              <h2>
+                Payment Successful
+              </h2>
+
+              <p>
+                Your payment has been completed successfully.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="receipt-details">
+
+            <!-- PAYMENT ID -->
+
+            <div class="receipt-item">
+
+              <span>
+                Payment ID
+              </span>
+
+              <strong>
+                #{{ lastPayment.id }}
+              </strong>
+
+            </div>
+
+
+            <!-- FEE TYPE -->
+
+            <div class="receipt-item">
+
+              <span>
+                Fee Type
+              </span>
+
+              <strong>
+                {{ lastPayment.feeType }}
+              </strong>
+
+            </div>
+
+
+            <!-- AMOUNT -->
+
+            <div class="receipt-item">
+
+              <span>
+                Amount
+              </span>
+
+              <strong>
+                LKR {{ formatAmount(lastPayment.amount) }}
+              </strong>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="receipt-item">
+
+              <span>
+                Status
+              </span>
+
+              <strong class="receipt-status">
+                {{ lastPayment.status }}
+              </strong>
+
+            </div>
+
+
+            <!-- RECEIPT NUMBER -->
+
+            <div class="receipt-item">
+
+              <span>
+                Receipt Number
+              </span>
+
+              <strong>
+                {{ lastPayment.receiptNumber }}
+              </strong>
+
+            </div>
+
+
+            <!-- PAID AT -->
+
+            <div class="receipt-item">
+
+              <span>
+                Paid At
+              </span>
+
+              <strong>
+                {{ lastPayment.paidAt | date:'dd MMM yyyy, h:mm a' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+
+      <!-- =================================================
+           PAYMENT HISTORY
+      ================================================== -->
+
+      <section class="history-card">
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            📋
+          </div>
+
+          <div>
+
+            <h2>
+              My Payment History
+            </h2>
+
+            <p>
+              View your previous university fee payments.
+            </p>
+
+          </div>
+
+
+          <!-- REFRESH -->
+
+          <button
+            type="button"
+            class="refresh-button"
+            (click)="refreshPayments()"
+            [disabled]="paymentsLoading"
+          >
+
+            🔄 Refresh
+
+          </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (paymentsLoading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading your payment history...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             PAYMENT LIST
+        ================================================== -->
+
+        @else if (payments.length > 0) {
+
+          <div class="payment-list">
+
+            @for (
+              payment of payments;
+              track payment.id
+            ) {
+
+              <div class="payment-item">
+
+
+                <!-- PAYMENT ICON -->
+
+                <div class="payment-icon">
+                  💳
+                </div>
+
+
+                <!-- PAYMENT INFO -->
+
+                <div class="payment-info">
+
+                  <div class="payment-top">
+
+                    <div>
+
+                      <h3>
+                        {{ payment.feeType }}
+                      </h3>
+
+                      <span class="payment-id">
+                        Payment #{{ payment.id }}
+                      </span>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <span
+                      class="status-badge"
+                      [class]="getPaymentStatusClass(payment.status)"
+                    >
+
+                      @if (
+                        payment.status === 'Paid'
+                      ) {
+
+                        ✓
+
+                      }
+
+                      @else if (
+                        payment.status === 'Pending'
+                      ) {
+
+                        🕐
+
+                      }
+
+                      @else if (
+                        payment.status === 'Failed'
+                      ) {
+
+                        ✕
+
+                      }
+
+                      @else {
+
+                        📦
+
+                      }
+
+                      {{ getPaymentStatusLabel(payment.status) }}
+
+                    </span>
+
+                  </div>
+
+
+                  <!-- AMOUNT -->
+
+                  <div class="payment-amount">
+
+                    <span>
+                      Amount Paid
+                    </span>
+
+                    <strong>
+                      LKR {{ formatAmount(payment.amount) }}
+                    </strong>
+
+                  </div>
+
+
+                  <!-- META -->
+
+                  <div class="payment-meta">
+
+                    <span>
+
+                      📅 Paid:
+
+                      {{ payment.paidAt | date:'dd MMM yyyy, h:mm a' }}
+
+                    </span>
+
+
+                    <span>
+
+                      🧾 Receipt:
+
+                      {{ getReceiptNumber(payment) }}
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              💳
+            </div>
+
+            <h3>
+              No Payment History
+            </h3>
+
+            <p>
+              You haven't made any payments yet.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    </section>
+
+  </main>
+
+</div>

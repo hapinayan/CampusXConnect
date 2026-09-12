@@ -3,8 +3,12 @@ using Campus_Services_Portal.DTOs.Auth;
 using Campus_Services_Portal.Models.Entities;
 using Campus_Services_Portal.Models.Enums;
 using Campus_Services_Portal.Security;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+using System.Security.Claims;
 
 namespace Campus_Services_Portal.Controllers
 {
@@ -23,6 +27,10 @@ namespace Campus_Services_Portal.Controllers
             _jwtTokenService = jwtTokenService;
         }
 
+        // =========================
+        // REGISTER STUDENT
+        // POST: api/Auth/register
+        // =========================
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterStudentDto dto)
         {
@@ -66,6 +74,7 @@ namespace Campus_Services_Portal.Controllers
             };
 
             _context.Students.Add(student);
+
             await _context.SaveChangesAsync();
 
             return Ok(new
@@ -74,6 +83,10 @@ namespace Campus_Services_Portal.Controllers
             });
         }
 
+        // =========================
+        // LOGIN
+        // POST: api/Auth/login
+        // =========================
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
@@ -81,7 +94,9 @@ namespace Campus_Services_Portal.Controllers
                 .FirstOrDefaultAsync(u => u.Email == dto.Email);
 
             if (user == null ||
-                !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+                !BCrypt.Net.BCrypt.Verify(
+                    dto.Password,
+                    user.PasswordHash))
             {
                 return Unauthorized(new
                 {
@@ -104,6 +119,57 @@ namespace Campus_Services_Portal.Controllers
                 message = "Login successful.",
                 token,
                 role = user.Role.ToString()
+            });
+        }
+
+        // =========================
+        // CURRENT LOGGED-IN STUDENT
+        // GET: api/Auth/me
+        // =========================
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentStudent()
+        {
+            var userIdClaim =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized(new
+                {
+                    message = "User ID not found in token."
+                });
+            }
+
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized(new
+                {
+                    message = "Invalid user ID."
+                });
+            }
+
+            var student = await _context.Students
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+
+            if (student == null)
+            {
+                return NotFound(new
+                {
+                    message = "Student not found."
+                });
+            }
+
+            return Ok(new
+            {
+                id = student.Id,
+                userId = student.UserId,
+                indexNumber = student.IndexNumber,
+                fullName = student.FullName,
+                email = student.User.Email,
+                faculty = student.Faculty,
+                contactNumber = student.ContactNumber
             });
         }
     }

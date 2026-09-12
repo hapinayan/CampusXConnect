@@ -1,0 +1,418 @@
+<div class="admin-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">
+        CampusX Admin
+      </p>
+
+      <h1>
+        Certificate Requests
+      </h1>
+
+      <p class="subtitle">
+        Review and manage student certificate requests.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       SUMMARY CARDS
+  ====================================================== -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        📄
+      </div>
+
+      <div>
+        <p class="stat-label">
+          Total Requests
+        </p>
+
+        <h2>
+          {{ totalRequests() }}
+        </h2>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        ⏳
+      </div>
+
+      <div>
+        <p class="stat-label">
+          Pending
+        </p>
+
+        <h2>
+          {{ pendingRequests() }}
+        </h2>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        ✓
+      </div>
+
+      <div>
+        <p class="stat-label">
+          Approved
+        </p>
+
+        <h2>
+          {{ approvedRequests() }}
+        </h2>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        📦
+      </div>
+
+      <div>
+        <p class="stat-label">
+          Ready
+        </p>
+
+        <h2>
+          {{ readyRequests() }}
+        </h2>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        ✕
+      </div>
+
+      <div>
+        <p class="stat-label">
+          Rejected
+        </p>
+
+        <h2>
+          {{ rejectedRequests() }}
+        </h2>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       REQUESTS SECTION
+  ====================================================== -->
+
+  <div class="content-card">
+
+    <div class="section-header">
+
+      <div>
+        <h2>
+          Certificate Requests
+        </h2>
+
+        <p>
+          View requests and update their current status.
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="filter-bar">
+
+      <button
+        type="button"
+        [class.active]="selectedStatus === 'All'"
+        (click)="changeFilter('All')"
+      >
+        All
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedStatus === 'Pending'"
+        (click)="changeFilter('Pending')"
+      >
+        Pending
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedStatus === 'Approved'"
+        (click)="changeFilter('Approved')"
+      >
+        Approved
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedStatus === 'ReadyForCollection'"
+        (click)="changeFilter('ReadyForCollection')"
+      >
+        Ready
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedStatus === 'Rejected'"
+        (click)="changeFilter('Rejected')"
+      >
+        Rejected
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         ERROR MESSAGE
+    ====================================================== -->
+
+    <div
+      class="error-message"
+      *ngIf="errorMessage()"
+    >
+      {{ errorMessage() }}
+    </div>
+
+
+    <!-- =====================================================
+         LOADING
+    ====================================================== -->
+
+    <div
+      class="loading-state"
+      *ngIf="isLoading()"
+    >
+      Loading certificate requests...
+    </div>
+
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="!isLoading() && filteredRequests().length > 0"
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Certificate
+            </th>
+
+            <th>
+              Reason
+            </th>
+
+            <th>
+              Requested
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let request of filteredRequests()"
+          >
+
+            <td>
+              #{{ request.id }}
+            </td>
+
+
+            <td>
+
+              <div class="student-cell">
+
+                <strong>
+                  {{ request.studentName || 'Student' }}
+                </strong>
+
+                <span>
+                  ID {{ request.studentId }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <span class="certificate-type">
+                {{ getTypeName(request.type) }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="reason-cell">
+                {{ request.reason }}
+              </div>
+
+            </td>
+
+
+            <td>
+
+              {{ request.requestedAt | date:'MMM d, y, h:mm a' }}
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.pending]="request.status === 'Pending'"
+                [class.approved]="request.status === 'Approved'"
+                [class.rejected]="request.status === 'Rejected'"
+                [class.ready]="request.status === 'ReadyForCollection'"
+              >
+
+                {{
+                  request.status === 'ReadyForCollection'
+                    ? 'Ready for Collection'
+                    : request.status
+                }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  type="button"
+                  class="action-btn approve"
+                  *ngIf="request.status === 'Pending'"
+                  (click)="updateStatus(request, 'Approved')"
+                >
+                  Approve
+                </button>
+
+
+                <button
+                  type="button"
+                  class="action-btn reject"
+                  *ngIf="request.status === 'Pending'"
+                  (click)="updateStatus(request, 'Rejected')"
+                >
+                  Reject
+                </button>
+
+
+                <button
+                  type="button"
+                  class="action-btn ready"
+                  *ngIf="request.status === 'Approved'"
+                  (click)="updateStatus(request, 'ReadyForCollection')"
+                >
+                  Mark Ready
+                </button>
+
+
+                <span
+                  class="completed-label"
+                  *ngIf="
+                    request.status === 'Rejected' ||
+                    request.status === 'ReadyForCollection'
+                  "
+                >
+                  Completed
+                </span>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !isLoading() &&
+        filteredRequests().length === 0
+      "
+    >
+
+      <div class="empty-icon">
+        📄
+      </div>
+
+      <h3>
+        No certificate requests found
+      </h3>
+
+      <p>
+        There are no requests matching the selected status.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,982 @@
+<div class="events-page">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <aside class="sidebar">
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         NAVIGATION
+    ==================================================== -->
+
+    <nav class="sidebar-nav">
+
+      <!-- DASHBOARD -->
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
+      </a>
+
+
+      <!-- HOSTEL -->
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
+      </a>
+
+
+      <!-- LAB BOOKING -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+      >
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
+      </a>
+
+
+      <!-- EVENTS -->
+
+      <a
+        class="nav-item active"
+        routerLink="/events"
+      >
+        <span class="nav-icon">
+          📅
+        </span>
+
+        <span>
+          Events
+        </span>
+      </a>
+
+
+      <!-- COMPLAINTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+      </a>
+
+
+      <!-- CERTIFICATES -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
+      </a>
+
+
+      <!-- PAYMENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">
+          💳
+        </span>
+
+        <span>
+          Payments
+        </span>
+      </a>
+
+
+      <!-- NOTIFICATIONS -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+      </a>
+
+
+      <!-- PROFILE -->
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+      </a>
+
+    </nav>
+
+
+    <!-- ===================================================
+         SIDEBAR BOTTOM
+    ==================================================== -->
+
+    <div class="sidebar-bottom">
+
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
+
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </a>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <!-- PAGE TITLE -->
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          CAMPUS EVENTS
+        </span>
+
+      </div>
+
+
+      <!-- TOPBAR RIGHT -->
+
+      <div class="topbar-right">
+
+
+        <!-- =================================================
+             NOTIFICATION
+        ================================================== -->
+
+        <button
+          type="button"
+          class="notification-btn"
+          routerLink="/notifications"
+          title="Notifications"
+        >
+
+          🔔
+
+        </button>
+
+
+
+        <!-- =================================================
+             STUDENT PROFILE
+             SAME STYLE AS DASHBOARD
+        ================================================== -->
+
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
+
+
+          <!-- AVATAR -->
+
+          <div class="profile-avatar">
+
+            {{ getStudentInitial() }}
+
+          </div>
+
+
+          <!-- STUDENT INFO -->
+
+          <div class="profile-info">
+
+            <strong>
+              {{ studentName }}
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+
+          <!-- ARROW -->
+
+          <span class="profile-arrow">
+            ⌄
+          </span>
+
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           HERO
+      ================================================== -->
+
+      <section class="hero">
+
+
+        <div class="hero-content">
+
+          <p>
+            CAMPUS EVENTS
+          </p>
+
+          <h1>
+            Events
+          </h1>
+
+          <span>
+            Discover campus events and register for activities.
+          </span>
+
+        </div>
+
+
+        <!-- BACK TO DASHBOARD -->
+
+        <button
+          type="button"
+          class="back-button"
+          routerLink="/dashboard"
+        >
+
+          ← Dashboard
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           FEATURES
+      ================================================== -->
+
+      <section class="feature-row">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            📅
+          </div>
+
+          <div>
+
+            <strong>
+              Campus Events
+            </strong>
+
+            <span>
+              Discover upcoming activities
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FEATURE 2 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🎓
+          </div>
+
+          <div>
+
+            <strong>
+              Student Activities
+            </strong>
+
+            <span>
+              Join university activities
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon purple">
+            🤝
+          </div>
+
+          <div>
+
+            <strong>
+              Connect & Learn
+            </strong>
+
+            <span>
+              Meet and learn together
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           ERROR MESSAGE
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="message error">
+
+          ⚠️
+
+          {{ errorMessage }}
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           SUCCESS MESSAGE
+      ================================================== -->
+
+      @if (successMessage) {
+
+        <div class="message success">
+
+          ✓
+
+          {{ successMessage }}
+
+        </div>
+
+      }
+
+
+
+      <!-- =================================================
+           EVENTS SECTION
+      ================================================== -->
+
+      <section class="events-card">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            📅
+          </div>
+
+          <div>
+
+            <h2>
+              Upcoming Events
+            </h2>
+
+            <p>
+              Explore and register for campus events.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (eventsLoading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading events...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EVENTS
+        ================================================== -->
+
+        @else if (events.length > 0) {
+
+          <div class="events-grid">
+
+
+            @for (
+              event of events;
+              track event.id
+            ) {
+
+
+              <div class="event-card">
+
+
+                <!-- EVENT ICON -->
+
+                <div class="event-icon">
+                  📅
+                </div>
+
+
+
+                <!-- EVENT DETAILS -->
+
+                <div class="event-content">
+
+
+                  <!-- TITLE -->
+
+                  <h3>
+                    {{ event.title }}
+                  </h3>
+
+
+
+                  <!-- DESCRIPTION -->
+
+                  <p class="event-description">
+                    {{ event.description }}
+                  </p>
+
+
+
+                  <!-- DATE -->
+
+                  <div class="event-detail">
+
+                    <span>
+                      📅
+                    </span>
+
+                    <span>
+                      {{ event.eventDate | date:'dd MMM yyyy' }}
+                    </span>
+
+                  </div>
+
+
+
+                  <!-- VENUE -->
+
+                  <div class="event-detail">
+
+                    <span>
+                      📍
+                    </span>
+
+                    <span>
+                      {{ event.venue }}
+                    </span>
+
+                  </div>
+
+
+
+                  <!-- CAPACITY -->
+
+                  <div class="event-detail">
+
+                    <span>
+                      👥
+                    </span>
+
+                    <span>
+                      Capacity:
+                      {{ event.capacity }}
+                    </span>
+
+                  </div>
+
+
+
+                  <!-- INACTIVE EVENT -->
+
+                  @if (!event.isActive) {
+
+                    <div class="event-inactive">
+
+                      Event is currently unavailable.
+
+                    </div>
+
+                  }
+
+
+
+                  <!-- ALREADY REGISTERED -->
+
+                  @else if (isRegistered(event.id)) {
+
+                    <button
+                      type="button"
+                      class="registered-button"
+                      disabled
+                    >
+
+                      ✓ Registered
+
+                    </button>
+
+                  }
+
+
+
+                  <!-- REGISTER -->
+
+                  @else {
+
+                    <button
+                      type="button"
+                      class="register-button"
+                      [disabled]="registeringEventId === event.id"
+                      (click)="registerForEvent(event.id)"
+                    >
+
+                      @if (
+                        registeringEventId === event.id
+                      ) {
+
+                        <span class="spinner white"></span>
+
+                        Registering...
+
+                      }
+
+                      @else {
+
+                        🎟️ Register Now
+
+                      }
+
+                    </button>
+
+                  }
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             NO EVENTS
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              📅
+            </div>
+
+            <h3>
+              No Events Available
+            </h3>
+
+            <p>
+              There are currently no campus events available.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+
+
+      <!-- =================================================
+           MY REGISTRATIONS
+      ================================================== -->
+
+      <section class="registrations-card">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-header">
+
+          <div class="section-icon">
+            🎟️
+          </div>
+
+          <div>
+
+            <h2>
+              My Event Registrations
+            </h2>
+
+            <p>
+              View and manage your registered events.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        @if (registrationsLoading) {
+
+          <div class="loading-box">
+
+            <span class="spinner"></span>
+
+            Loading your registrations...
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             REGISTRATIONS
+        ================================================== -->
+
+        @else if (registrations.length > 0) {
+
+          <div class="registration-list">
+
+
+            @for (
+              registration of registrations;
+              track registration.id
+            ) {
+
+
+              <div class="registration-item">
+
+
+                <!-- ICON -->
+
+                <div class="registration-icon">
+                  🎟️
+                </div>
+
+
+
+                <!-- DETAILS -->
+
+                <div class="registration-info">
+
+
+                  <h3>
+
+                    @if (registration.eventTitle) {
+
+                      {{ registration.eventTitle }}
+
+                    }
+
+                    @else {
+
+                      Event #{{ registration.eventId }}
+
+                    }
+
+                  </h3>
+
+
+                  <!-- REGISTRATION ID -->
+
+                  <p>
+
+                    🎟️
+
+                    Registration ID:
+                    {{ registration.id }}
+
+                  </p>
+
+
+                  <!-- REGISTERED DATE -->
+
+                  <p>
+
+                    📅
+
+                    Registered:
+
+                    {{ registration.registeredAt | date:'dd MMM yyyy, h:mm a' }}
+
+                  </p>
+
+                </div>
+
+
+
+                <!-- CANCEL -->
+
+                <button
+                  type="button"
+                  class="cancel-button"
+                  (click)="cancelRegistration(registration.id)"
+                >
+
+                  Cancel
+
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        @else {
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              🎟️
+            </div>
+
+            <h3>
+              No Event Registrations
+            </h3>
+
+            <p>
+              You haven't registered for any event yet.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================================
+       CANCEL REGISTRATION POPUP
+  ====================================================== -->
+
+  @if (showCancelPopup) {
+
+    <div
+      class="popup-overlay"
+      (click)="closeCancelPopup()"
+    >
+
+      <div
+        class="cancel-popup"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- POPUP ICON -->
+
+        <div class="popup-icon">
+          ⚠️
+        </div>
+
+
+
+        <!-- TITLE -->
+
+        <h2>
+          Cancel Registration?
+        </h2>
+
+
+
+        <!-- MESSAGE -->
+
+        <p>
+          Are you sure you want to cancel
+          this event registration?
+        </p>
+
+
+
+        <!-- WARNING -->
+
+        <span class="popup-warning">
+          This action cannot be undone.
+        </span>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="popup-actions">
+
+
+          <!-- KEEP -->
+
+          <button
+            type="button"
+            class="popup-cancel"
+            (click)="closeCancelPopup()"
+          >
+
+            Keep Registration
+
+          </button>
+
+
+
+          <!-- CONFIRM -->
+
+          <button
+            type="button"
+            class="popup-confirm"
+            (click)="confirmCancelRegistration()"
+          >
+
+            Yes, Cancel
+
+          </button>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

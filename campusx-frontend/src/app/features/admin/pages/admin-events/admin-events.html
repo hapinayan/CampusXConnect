@@ -1,0 +1,167 @@
+<div class="events-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <p class="page-label">CAMPUSX ADMINISTRATION</p>
+      <h1>Event Management</h1>
+      <p class="page-description">
+        View and manage university events.
+      </p>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="event-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon">EV</div>
+      <div>
+        <p>Total Events</p>
+        <h2>{{ totalEvents() }}</h2>
+        <span>Registered events</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">AC</div>
+      <div>
+        <p>Active Events</p>
+        <h2>{{ activeEvents() }}</h2>
+        <span>Currently active</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">IN</div>
+      <div>
+        <p>Inactive Events</p>
+        <h2>{{ inactiveEvents() }}</h2>
+        <span>Inactive events</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENTS TABLE -->
+  <div class="events-card">
+
+    <div class="table-header">
+      <div>
+        <h2>Events</h2>
+        <p>All CampusX events</p>
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div
+      *ngIf="isLoading()"
+      class="message"
+    >
+      Loading events...
+    </div>
+
+    <!-- ERROR -->
+    <div
+      *ngIf="errorMessage() && !isLoading()"
+      class="message error"
+    >
+      {{ errorMessage() }}
+    </div>
+
+    <!-- TABLE -->
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        events().length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>EVENT</th>
+            <th>DATE</th>
+            <th>VENUE</th>
+            <th>CAPACITY</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let event of events()">
+
+            <td>
+              #{{ event.id }}
+            </td>
+
+            <td>
+              <div class="event-info">
+
+                <div class="event-avatar">
+                  {{ event.title?.charAt(0) || 'E' }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{ event.title }}
+                  </strong>
+
+                  <span>
+                    {{ event.description }}
+                  </span>
+                </div>
+
+              </div>
+            </td>
+
+            <td>
+              {{ event.eventDate | date:'mediumDate' }}
+            </td>
+
+            <td>
+              {{ event.venue }}
+            </td>
+
+            <td>
+              {{ event.capacity }}
+            </td>
+
+            <td>
+              <span
+                class="status"
+                [class.active]="event.isActive"
+                [class.inactive]="!event.isActive"
+              >
+                {{ event.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- NO EVENTS -->
+    <div
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        events().length === 0
+      "
+      class="message"
+    >
+      No events found.
+    </div>
+
+  </div>
+
+</div>

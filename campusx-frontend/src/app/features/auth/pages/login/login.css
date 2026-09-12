@@ -1,0 +1,758 @@
+/* =========================================================
+   CAMPUSX LOGIN
+   OPTION 5 — CLEAN MODERN GREEN PREMIUM UI
+========================================================= */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.login-page {
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+
+  background: #f5fbf8;
+
+  color: #173e37;
+}
+
+
+/* =========================================================
+   HERO SECTION
+========================================================= */
+
+.hero-section {
+  position: relative;
+
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+
+  padding: 60px 9%;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(52, 211, 153, 0.18),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #064e3b 0%,
+      #075b46 48%,
+      #033f32 100%
+    );
+}
+
+
+/* =========================================================
+   HERO DECORATION
+========================================================= */
+
+.hero-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  right: -150px;
+  top: -120px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 0 0 70px rgba(255, 255, 255, 0.025),
+    0 0 0 140px rgba(255, 255, 255, 0.018);
+}
+
+.hero-section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  left: -140px;
+  bottom: -130px;
+
+  border-radius: 50%;
+
+  background: rgba(52, 211, 153, 0.07);
+}
+
+
+/* =========================================================
+   HERO OVERLAY
+========================================================= */
+
+.hero-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.08),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-content {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  max-width: 650px;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 90px;
+}
+
+.brand-logo {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background: linear-gradient(
+    135deg,
+    #34d399,
+    #059669
+  );
+
+  color: #fff;
+
+  font-size: 25px;
+  font-weight: 850;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.brand h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.brand span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #bde4d7;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   HERO TEXT
+========================================================= */
+
+.welcome-label {
+  margin: 0 0 15px;
+
+  color: #6ee7b7;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+.hero-text h1 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(48px, 5vw, 72px);
+
+  font-weight: 800;
+
+  line-height: 1.08;
+
+  letter-spacing: -2px;
+}
+
+.hero-text h1 span {
+  color: #6ee7b7;
+}
+
+.hero-description {
+  max-width: 530px;
+
+  margin: 24px 0 0;
+
+  color: #c9e5dd;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   HERO FEATURES
+========================================================= */
+
+.hero-features {
+  display: flex;
+
+  gap: 14px;
+
+  margin-top: 55px;
+}
+
+.feature {
+  min-width: 110px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 10px 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(10px);
+
+  color: #e7f8f2;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feature-icon {
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   LOGIN SECTION
+========================================================= */
+
+.login-section {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 50px 7%;
+
+  background: #f8fcfa;
+}
+
+
+/* =========================================================
+   LOGIN CONTAINER
+========================================================= */
+
+.login-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+
+/* =========================================================
+   LOGIN HEADING
+========================================================= */
+
+.login-heading {
+  margin-bottom: 32px;
+}
+
+.login-heading h1 {
+  margin: 0 0 9px;
+
+  color: #173e37;
+
+  font-size: 32px;
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+}
+
+.login-heading p {
+  margin: 0;
+
+  color: #718680;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.message {
+  display: flex;
+  align-items: center;
+
+  min-height: 45px;
+
+  margin-bottom: 20px;
+
+  padding: 11px 14px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.message.error {
+  border: 1px solid #fecaca;
+
+  background: #fff5f5;
+
+  color: #b91c1c;
+}
+
+.message.success {
+  border: 1px solid #bbf7d0;
+
+  background: #f0fdf4;
+
+  color: #15803d;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+form {
+  width: 100%;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+  margin-bottom: 21px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #294a43;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form-group input {
+  width: 100%;
+  height: 51px;
+
+  padding: 0 15px;
+
+  border: 1px solid #d7e8e2;
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #183b35;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #a2b2ad;
+}
+
+.form-group input:hover {
+  border-color: #b7d9ce;
+}
+
+.form-group input:focus {
+  border-color: #10b981;
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 4px rgba(16, 185, 129, 0.09);
+}
+
+
+/* =========================================================
+   LOGIN OPTIONS
+========================================================= */
+
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 4px 0 25px;
+
+  font-size: 12px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #667d76;
+
+  cursor: pointer;
+}
+
+.remember input {
+  width: 15px;
+  height: 15px;
+
+  accent-color: #059669;
+
+  cursor: pointer;
+}
+
+.login-options a {
+  color: #059669;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.login-options a:hover {
+  color: #047857;
+
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-btn {
+  width: 100%;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    #10b981,
+    #059669
+  );
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 9px 20px rgba(5, 150, 105, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 13px 26px rgba(5, 150, 105, 0.27);
+}
+
+.login-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   REGISTER LINK
+========================================================= */
+
+.register-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 26px;
+
+  color: #7b8e88;
+
+  font-size: 13px;
+}
+
+.register-link a {
+  color: #059669;
+
+  font-weight: 750;
+
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  color: #047857;
+
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.login-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 50px;
+
+  color: #9aa9a5;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section {
+    min-height: 430px;
+
+    padding: 45px 8%;
+  }
+
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .brand {
+    margin-bottom: 45px;
+  }
+
+  .hero-text h1 {
+    font-size: 52px;
+  }
+
+  .login-section {
+    min-height: auto;
+
+    padding: 60px 30px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .hero-section {
+    min-height: 410px;
+
+    padding: 35px 25px;
+  }
+
+  .brand {
+    margin-bottom: 45px;
+  }
+
+  .brand-logo {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 14px;
+
+    font-size: 20px;
+  }
+
+  .brand h2 {
+    font-size: 20px;
+  }
+
+  .brand span {
+    font-size: 11px;
+  }
+
+  .welcome-label {
+    font-size: 10px;
+  }
+
+  .hero-text h1 {
+    font-size: 42px;
+
+    letter-spacing: -1.3px;
+  }
+
+  .hero-description {
+    font-size: 13px;
+  }
+
+  .hero-features {
+    gap: 8px;
+
+    margin-top: 35px;
+  }
+
+  .feature {
+    min-width: auto;
+
+    padding: 8px 10px;
+
+    font-size: 11px;
+  }
+
+  .feature-icon {
+    font-size: 14px;
+  }
+
+  .login-section {
+    padding: 45px 22px;
+  }
+
+  .login-heading h1 {
+    font-size: 28px;
+  }
+
+  .login-footer {
+    margin-top: 38px;
+
+    font-size: 10px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .hero-section {
+    min-height: 390px;
+
+    padding: 30px 20px;
+  }
+
+  .hero-text h1 {
+    font-size: 36px;
+  }
+
+  .hero-description {
+    font-size: 12px;
+  }
+
+  .hero-features {
+    flex-wrap: wrap;
+  }
+
+  .feature {
+    flex: 1;
+  }
+
+  .login-section {
+    padding: 38px 18px;
+  }
+
+  .login-options {
+    font-size: 11px;
+  }
+}

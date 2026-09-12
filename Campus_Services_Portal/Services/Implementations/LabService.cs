@@ -18,6 +18,11 @@ namespace Campus_Services_Portal.Services.Implementations
             _labBookingRepository = labBookingRepository;
         }
 
+
+        // =====================================================
+        // GET ALL LABS
+        // =====================================================
+
         public async Task<IEnumerable<LabResponseDto>> GetAllLabsAsync()
         {
             var labs = await _labRepository.GetAllAsync();
@@ -31,6 +36,11 @@ namespace Campus_Services_Portal.Services.Implementations
                 IsActive = lab.IsActive
             });
         }
+
+
+        // =====================================================
+        // GET LAB BY ID
+        // =====================================================
 
         public async Task<LabResponseDto?> GetLabByIdAsync(int id)
         {
@@ -51,7 +61,13 @@ namespace Campus_Services_Portal.Services.Implementations
             };
         }
 
-        public async Task<LabResponseDto> CreateLabAsync(CreateLabDto dto)
+
+        // =====================================================
+        // CREATE LAB
+        // =====================================================
+
+        public async Task<LabResponseDto> CreateLabAsync(
+            CreateLabDto dto)
         {
             var lab = new Lab
             {
@@ -73,11 +89,17 @@ namespace Campus_Services_Portal.Services.Implementations
             };
         }
 
+
+        // =====================================================
+        // UPDATE LAB
+        // =====================================================
+
         public async Task<bool> UpdateLabAsync(
             int id,
             UpdateLabDto dto)
         {
-            var lab = await _labRepository.GetByIdAsync(id);
+            var lab =
+                await _labRepository.GetByIdAsync(id);
 
             if (lab == null)
             {
@@ -94,35 +116,135 @@ namespace Campus_Services_Portal.Services.Implementations
             return true;
         }
 
-        public async Task<IEnumerable<LabBookingResponseDto>>
+
+        // =====================================================
+        // GET AVAILABLE TIME SLOTS
+        // =====================================================
+
+        public async Task<IEnumerable<AvailableSlotDto>>
             GetLabSlotsAsync(
                 int labId,
                 DateTime date)
         {
-            var lab = await _labRepository.GetByIdAsync(labId);
+            // -------------------------------------------------
+            // FIND LAB
+            // -------------------------------------------------
+
+            var lab =
+                await _labRepository.GetByIdAsync(labId);
 
             if (lab == null)
             {
                 throw new Exception("Lab not found.");
             }
 
-            var bookings =
-                await _labBookingRepository.GetByLabAndDateAsync(
-                    labId,
-                    date);
 
-            return bookings.Select(booking =>
-                new LabBookingResponseDto
+            // -------------------------------------------------
+            // GET BOOKINGS FOR SELECTED DATE
+            // -------------------------------------------------
+
+            var bookings =
+                await _labBookingRepository
+                    .GetByLabAndDateAsync(
+                        labId,
+                        date);
+
+
+            // -------------------------------------------------
+            // STANDARD LAB TIME SLOTS
+            // -------------------------------------------------
+
+            var slots = new[]
+            {
+                new
                 {
-                    Id = booking.Id,
-                    LabId = booking.LabId,
-                    LabName = lab.Name,
-                    StudentId = booking.StudentId,
-                    BookingDate = booking.BookingDate,
-                    StartTime = booking.StartTime,
-                    EndTime = booking.EndTime,
-                    CreatedAt = booking.CreatedAt
-                });
+                    Start = new TimeSpan(9, 0, 0),
+                    End = new TimeSpan(10, 0, 0)
+                },
+
+                new
+                {
+                    Start = new TimeSpan(10, 0, 0),
+                    End = new TimeSpan(11, 0, 0)
+                },
+
+                new
+                {
+                    Start = new TimeSpan(11, 0, 0),
+                    End = new TimeSpan(12, 0, 0)
+                },
+
+                new
+                {
+                    Start = new TimeSpan(12, 0, 0),
+                    End = new TimeSpan(13, 0, 0)
+                },
+
+                new
+                {
+                    Start = new TimeSpan(13, 0, 0),
+                    End = new TimeSpan(14, 0, 0)
+                },
+
+                new
+                {
+                    Start = new TimeSpan(14, 0, 0),
+                    End = new TimeSpan(15, 0, 0)
+                }
+            };
+
+
+            // -------------------------------------------------
+            // CREATE SLOT AVAILABILITY
+            // -------------------------------------------------
+
+            var result =
+                new List<AvailableSlotDto>();
+
+
+            foreach (var slot in slots)
+            {
+                // Count bookings overlapping this slot
+                var bookedCount =
+                    bookings.Count(booking =>
+                        booking.StartTime < slot.End &&
+                        booking.EndTime > slot.Start);
+
+
+                // Calculate remaining capacity
+                var remainingCapacity =
+                    Math.Max(
+                        0,
+                        lab.Capacity - bookedCount);
+
+
+                // Check availability
+                var isAvailable =
+                    lab.IsActive &&
+                    bookedCount < lab.Capacity;
+
+
+                result.Add(
+                    new AvailableSlotDto
+                    {
+                        StartTime = slot.Start,
+
+                        EndTime = slot.End,
+
+                        BookedCount = bookedCount,
+
+                        Capacity = lab.Capacity,
+
+                        RemainingCapacity =
+                            remainingCapacity,
+
+                        IsAvailable =
+                            isAvailable
+                    });
+            }
+
+
+            return result;
         }
     }
 }

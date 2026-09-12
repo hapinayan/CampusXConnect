@@ -1,0 +1,298 @@
+<div class="register-page">
+
+  <!-- Left Branding Section -->
+  <section class="register-hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+      <div class="brand">
+        <div class="brand-logo">CX</div>
+
+        <div>
+          <h2>CampusX</h2>
+          <span>Student Services Portal</span>
+        </div>
+      </div>
+
+      <div class="hero-text">
+
+        <p class="welcome-label">
+          JOIN CAMPUSX
+        </p>
+
+        <h1>
+          Start Your<br>
+          <span>Campus Journey.</span>
+        </h1>
+
+        <p class="hero-description">
+          Create your student account and access
+          university services from one secure portal.
+        </p>
+
+      </div>
+
+      <div class="hero-features">
+
+        <div class="feature">
+          <span class="feature-icon">🎓</span>
+          <span>Learn</span>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">👥</span>
+          <span>Connect</span>
+        </div>
+
+        <div class="feature">
+          <span class="feature-icon">🚀</span>
+          <span>Grow</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Register Section -->
+  <section class="register-section">
+
+    <div class="register-container">
+
+      <div class="register-heading">
+
+        <h1>Create Account</h1>
+
+        <p>
+          Register as a student to get started.
+        </p>
+
+      </div>
+
+
+      <!-- Error -->
+      <div
+        *ngIf="errorMessage"
+        class="message error">
+
+        {{ errorMessage }}
+
+      </div>
+
+
+      <!-- Success -->
+      <div
+        *ngIf="successMessage"
+        class="message success">
+
+        {{ successMessage }}
+
+      </div>
+
+
+      <!-- Register Form -->
+      <form
+        (ngSubmit)="register()"
+        #registerForm="ngForm">
+
+
+        <!-- Index Number -->
+        <div class="form-group">
+
+          <label for="indexNumber">
+            Index Number
+          </label>
+
+          <input
+            id="indexNumber"
+            type="text"
+            name="indexNumber"
+            [(ngModel)]="registerData.indexNumber"
+            placeholder="Enter your index number"
+            required>
+
+        </div>
+
+
+        <!-- Full Name -->
+        <div class="form-group">
+
+          <label for="fullName">
+            Full Name
+          </label>
+
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            [(ngModel)]="registerData.fullName"
+            placeholder="Enter your full name"
+            required>
+
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="registerData.email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required>
+
+        </div>
+
+
+        <!-- Faculty -->
+        <div class="form-group">
+
+          <label for="faculty">
+            Faculty
+          </label>
+
+          <select
+            id="faculty"
+            name="faculty"
+            [(ngModel)]="registerData.faculty"
+            required>
+
+            <option value="" disabled>
+              Select your faculty
+            </option>
+
+            <option value="Computing">
+              Computing
+            </option>
+
+            <option value="Business">
+              Business
+            </option>
+
+            <option value="Engineering">
+              Engineering
+            </option>
+
+            <option value="Science">
+              Science
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Contact Number -->
+        <div class="form-group">
+
+          <label for="contactNumber">
+            Contact Number
+          </label>
+
+          <input
+            id="contactNumber"
+            type="tel"
+            name="contactNumber"
+            [(ngModel)]="registerData.contactNumber"
+            placeholder="Enter your contact number"
+            required>
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            name="password"
+            [(ngModel)]="registerData.password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            required>
+
+        </div>
+
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            Confirm Password
+          </label>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            placeholder="Confirm your password"
+            autocomplete="new-password"
+            required>
+
+        </div>
+
+
+        <!-- Register Button -->
+        <button
+          type="submit"
+          class="register-btn"
+          [disabled]="loading">
+
+          <span *ngIf="!loading">
+            Create Account
+          </span>
+
+          <span *ngIf="loading">
+            Creating Account...
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <!-- Login Link -->
+      <div class="login-link">
+
+        <span>Already have an account?</span>
+
+        <a routerLink="/login">
+          Login
+        </a>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="register-footer">
+
+        <span>© 2026 CampusX</span>
+
+        <span>•</span>
+
+        <span>Student Services Portal</span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

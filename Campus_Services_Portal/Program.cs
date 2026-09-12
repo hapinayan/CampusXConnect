@@ -65,6 +65,20 @@ namespace Campus_Services_Portal
             });
 
             // =========================
+            // CORS
+            // =========================
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngular", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+            // =========================
             // CONTROLLERS
             // =========================
             builder.Services.AddControllers();
@@ -168,7 +182,9 @@ namespace Campus_Services_Portal
                 var dbContext = scope.ServiceProvider
                     .GetRequiredService<CampusXDbContext>();
 
-                DbSeeder.SeedAsync(dbContext).GetAwaiter().GetResult();
+                DbSeeder.SeedAsync(dbContext)
+                    .GetAwaiter()
+                    .GetResult();
             }
 
             // =========================
@@ -180,7 +196,15 @@ namespace Campus_Services_Portal
                 app.UseSwaggerUI();
             }
 
+            // =========================
+            // HTTPS
+            // =========================
             app.UseHttpsRedirection();
+
+            // =========================
+            // CORS
+            // =========================
+            app.UseCors("AllowAngular");
 
             // =========================
             // AUTHENTICATION
@@ -188,6 +212,9 @@ namespace Campus_Services_Portal
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // =========================
+            // CONTROLLERS
+            // =========================
             app.MapControllers();
 
             app.Run();

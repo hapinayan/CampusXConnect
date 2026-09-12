@@ -10,9 +10,11 @@ namespace Campus_Services_Portal.Data
         {
             await context.Database.MigrateAsync();
 
+
             // =========================
             // SEED ADMIN USER
             // =========================
+
             if (!await context.Users.AnyAsync(u => u.Role == UserRole.Admin))
             {
                 var adminUser = new User
@@ -25,12 +27,15 @@ namespace Campus_Services_Portal.Data
                 };
 
                 context.Users.Add(adminUser);
+
                 await context.SaveChangesAsync();
             }
+
 
             // =========================
             // SEED HOSTEL + ROOMS
             // =========================
+
             if (!await context.Hostels.AnyAsync())
             {
                 var hostel = new Hostel
@@ -58,9 +63,50 @@ namespace Campus_Services_Portal.Data
                 await context.SaveChangesAsync();
             }
 
+
+            // =========================
+            // SEED LABS
+            // =========================
+
+            if (!await context.Labs.AnyAsync())
+            {
+                var labs = new List<Lab>
+                {
+                    new Lab
+                    {
+                        Name = "Computer Laboratory 01",
+                        Location = "Computing Faculty",
+                        Capacity = 30,
+                        IsActive = true
+                    },
+
+                    new Lab
+                    {
+                        Name = "Computer Laboratory 02",
+                        Location = "Computing Faculty",
+                        Capacity = 25,
+                        IsActive = true
+                    },
+
+                    new Lab
+                    {
+                        Name = "Engineering Laboratory",
+                        Location = "Engineering Faculty",
+                        Capacity = 20,
+                        IsActive = true
+                    }
+                };
+
+                context.Labs.AddRange(labs);
+
+                await context.SaveChangesAsync();
+            }
+
+
             // =========================
             // SEED COMPLAINT CATEGORIES
             // =========================
+
             if (!await context.ComplaintCategories.AnyAsync())
             {
                 var categories = new List<ComplaintCategory>
@@ -69,18 +115,22 @@ namespace Campus_Services_Portal.Data
                     {
                         Name = "Academic"
                     },
+
                     new ComplaintCategory
                     {
                         Name = "Hostel"
                     },
+
                     new ComplaintCategory
                     {
                         Name = "Laboratory"
                     },
+
                     new ComplaintCategory
                     {
                         Name = "Facilities"
                     },
+
                     new ComplaintCategory
                     {
                         Name = "Other"

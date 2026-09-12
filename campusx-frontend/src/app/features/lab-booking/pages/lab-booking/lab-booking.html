@@ -1,0 +1,1003 @@
+<div class="lab-page">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <aside class="sidebar">
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+      <div class="brand-logo">
+        CX
+      </div>
+
+      <div>
+        <h2>CampusX</h2>
+        <span>Student Portal</span>
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         NAVIGATION
+    ==================================================== -->
+
+    <nav class="sidebar-nav">
+
+      <!-- DASHBOARD -->
+
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+      >
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span>
+          Dashboard
+        </span>
+      </a>
+
+
+      <!-- HOSTEL -->
+
+      <a
+        class="nav-item"
+        routerLink="/hostel"
+      >
+        <span class="nav-icon">
+          🏨
+        </span>
+
+        <span>
+          Hostel
+        </span>
+      </a>
+
+
+      <!-- LAB BOOKING -->
+
+      <a
+        class="nav-item"
+        routerLink="/lab-booking"
+        routerLinkActive="active"
+      >
+        <span class="nav-icon">
+          🧪
+        </span>
+
+        <span>
+          Lab Booking
+        </span>
+      </a>
+
+
+      <!-- EVENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/events"
+      >
+        <span class="nav-icon">
+          📅
+        </span>
+
+        <span>
+          Events
+        </span>
+      </a>
+
+
+      <!-- COMPLAINTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/complaints"
+      >
+        <span class="nav-icon">
+          💬
+        </span>
+
+        <span>
+          Complaints
+        </span>
+      </a>
+
+
+      <!-- CERTIFICATES -->
+
+      <a
+        class="nav-item"
+        routerLink="/certificates"
+      >
+        <span class="nav-icon">
+          📄
+        </span>
+
+        <span>
+          Certificates
+        </span>
+      </a>
+
+
+      <!-- PAYMENTS -->
+
+      <a
+        class="nav-item"
+        routerLink="/payments"
+      >
+        <span class="nav-icon">
+          💳
+        </span>
+
+        <span>
+          Payments
+        </span>
+      </a>
+
+
+      <!-- NOTIFICATIONS -->
+
+      <a
+        class="nav-item"
+        routerLink="/notifications"
+      >
+        <span class="nav-icon">
+          🔔
+        </span>
+
+        <span>
+          Notifications
+        </span>
+      </a>
+
+
+      <!-- PROFILE -->
+
+      <a
+        class="nav-item"
+        routerLink="/profile"
+      >
+        <span class="nav-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+      </a>
+
+    </nav>
+
+
+    <!-- ===================================================
+         SIDEBAR BOTTOM
+    ==================================================== -->
+
+    <div class="sidebar-bottom">
+
+      <a
+        class="nav-item logout"
+        routerLink="/login"
+      >
+        <span class="nav-icon">
+          ↪
+        </span>
+
+        <span>
+          Logout
+        </span>
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <header class="topbar">
+
+      <!-- PAGE TITLE -->
+
+      <div class="topbar-title">
+
+        <span class="page-label">
+          CAMPUS LABORATORIES
+        </span>
+
+      </div>
+
+
+      <!-- TOPBAR RIGHT -->
+
+      <div class="topbar-right">
+
+
+        <!-- NOTIFICATION -->
+
+        <button
+          type="button"
+          class="notification-btn"
+          routerLink="/notifications"
+          title="Notifications"
+        >
+          🔔
+        </button>
+
+
+        <!-- =================================================
+             STUDENT PROFILE
+        ================================================== -->
+
+        <div
+          class="student-profile"
+          routerLink="/profile"
+          title="View Profile"
+        >
+
+          <!-- AVATAR -->
+
+          <div class="profile-avatar">
+
+            {{
+              student?.fullName?.charAt(0)?.toUpperCase()
+              || 'S'
+            }}
+
+          </div>
+
+
+          <!-- NAME + ROLE -->
+
+          <div class="profile-info">
+
+            <strong>
+
+              {{
+                student?.fullName
+                || 'Student'
+              }}
+
+            </strong>
+
+            <small>
+              Student
+            </small>
+
+          </div>
+
+
+          <!-- ARROW -->
+
+          <span class="profile-arrow">
+            →
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ===================================================
+         CONTENT
+    ==================================================== -->
+
+    <section class="content">
+
+
+      <!-- =================================================
+           HERO
+      ================================================== -->
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <p>
+            CAMPUS LABORATORIES
+          </p>
+
+          <h1>
+            Lab Booking
+          </h1>
+
+          <span>
+            Find an available laboratory and reserve a time slot.
+          </span>
+
+        </div>
+
+
+        <!-- BACK BUTTON -->
+
+        <button
+          type="button"
+          class="back-button"
+          routerLink="/dashboard"
+        >
+          ← Dashboard
+        </button>
+
+      </section>
+
+
+      <!-- =================================================
+           FEATURES
+      ================================================== -->
+
+      <section class="feature-row">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🧪
+          </div>
+
+          <div>
+
+            <strong>
+              Modern Laboratories
+            </strong>
+
+            <span>
+              Well-equipped campus labs
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- FEATURE 2 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🖥️
+          </div>
+
+          <div>
+
+            <strong>
+              Advanced Facilities
+            </strong>
+
+            <span>
+              Quality learning environment
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="feature-card">
+
+          <div class="feature-icon purple">
+            🎓
+          </div>
+
+          <div>
+
+            <strong>
+              Better Learning
+            </strong>
+
+            <span>
+              Learn and experiment together
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           ERROR MESSAGE
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="message error">
+
+          {{ errorMessage }}
+
+        </div>
+
+      }
+
+
+      <!-- =================================================
+           SUCCESS MESSAGE
+      ================================================== -->
+
+      @if (successMessage) {
+
+        <div class="message success">
+
+          ✓ {{ successMessage }}
+
+        </div>
+
+      }
+
+
+      <!-- =================================================
+           MAIN GRID
+      ================================================== -->
+
+      <div class="content-grid">
+
+
+        <!-- =================================================
+             BOOK LABORATORY
+        ================================================== -->
+
+        <section class="booking-card">
+
+
+          <!-- SECTION HEADER -->
+
+          <div class="section-header">
+
+            <div class="section-icon">
+              🧪
+            </div>
+
+            <div>
+
+              <h2>
+                Reserve a Laboratory
+              </h2>
+
+              <p>
+                Select a lab, date and available time.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               BOOKING FORM
+          ================================================== -->
+
+          <div class="form-grid">
+
+
+            <!-- LABORATORY -->
+
+            <div class="form-group">
+
+              <label>
+                Laboratory
+              </label>
+
+              <select
+                [(ngModel)]="selectedLabId"
+                (ngModelChange)="onLabChange()"
+              >
+
+                <option [ngValue]="null">
+                  Select laboratory
+                </option>
+
+
+                @for (
+                  lab of labs;
+                  track lab.id
+                ) {
+
+                  <option
+                    [ngValue]="lab.id"
+                  >
+
+                    {{ lab.name }}
+                    -
+                    {{ lab.location }}
+
+                  </option>
+
+                }
+
+              </select>
+
+            </div>
+
+
+            <!-- BOOKING DATE -->
+
+            <div class="form-group">
+
+              <label>
+                Booking Date
+              </label>
+
+              <input
+                type="date"
+                [(ngModel)]="bookingDate"
+                (ngModelChange)="onDateChange()"
+              />
+
+            </div>
+
+
+            <!-- START TIME -->
+
+            <div class="form-group">
+
+              <label>
+                Start Time
+              </label>
+
+              <input
+                type="time"
+                [(ngModel)]="startTime"
+              />
+
+            </div>
+
+
+            <!-- END TIME -->
+
+            <div class="form-group">
+
+              <label>
+                End Time
+              </label>
+
+              <input
+                type="time"
+                [(ngModel)]="endTime"
+              />
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               AVAILABLE TIME SLOTS
+          ================================================== -->
+
+          <div class="slots-section">
+
+            <div class="slots-header">
+
+              <div>
+
+                <h3>
+                  Available Time Slots
+                </h3>
+
+                <p>
+                  Choose an available laboratory time slot.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- LOADING -->
+
+            @if (slotsLoading) {
+
+              <div class="slot-message">
+
+                <span class="spinner"></span>
+
+                Loading available slots...
+
+              </div>
+
+            }
+
+
+            <!-- AVAILABLE SLOTS -->
+
+            @else if (
+              availableSlots.length > 0
+            ) {
+
+              <div class="slots-grid">
+
+                @for (
+                  slot of availableSlots;
+                  track $index
+                ) {
+
+                  <button
+                    type="button"
+                    class="slot-button"
+                    [class.full]="slot.isAvailable === false"
+                    [disabled]="slot.isAvailable === false"
+                    (click)="selectSlot(slot)"
+                  >
+
+                    <span class="slot-time">
+
+                      🕐
+
+                      {{ slot.startTime | slice:0:5 }}
+
+                      -
+
+                      {{ slot.endTime | slice:0:5 }}
+
+                    </span>
+
+
+                    @if (
+                      slot.capacity !== undefined
+                    ) {
+
+                      <span class="slot-capacity">
+
+                        👥
+
+                        {{ slot.bookedCount || 0 }}
+                        /
+                        {{ slot.capacity }}
+
+                      </span>
+
+                    }
+
+
+                    @if (
+                      slot.isAvailable === false
+                    ) {
+
+                      <span class="slot-full">
+                        FULL
+                      </span>
+
+                    }
+
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+
+            <!-- NO SLOTS -->
+
+            @else if (
+              selectedLabId &&
+              bookingDate
+            ) {
+
+              <div class="slot-message warning">
+
+                ⚠️
+
+                <span>
+                  No available time slots for this date.
+                </span>
+
+              </div>
+
+            }
+
+
+            <!-- DEFAULT -->
+
+            @else {
+
+              <div class="slot-placeholder">
+
+                <span class="placeholder-icon">
+                  🕐
+                </span>
+
+                <span>
+
+                  Select a laboratory and booking date
+                  to view available time slots.
+
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- =================================================
+               BOOKING FOOTER
+          ================================================== -->
+
+          <div class="booking-footer">
+
+            <p>
+              Your booking will be confirmed after successful submission.
+            </p>
+
+
+            <button
+              type="button"
+              class="book-button"
+              (click)="bookLab()"
+              [disabled]="submitting"
+            >
+
+              @if (submitting) {
+
+                <span class="spinner white"></span>
+
+                Booking...
+
+              }
+
+              @else {
+
+                🧪 Book Laboratory
+
+              }
+
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MY BOOKINGS
+        ================================================== -->
+
+        <section class="bookings-card">
+
+
+          <!-- HEADER -->
+
+          <div class="section-header">
+
+            <div class="section-icon">
+              📋
+            </div>
+
+            <div>
+
+              <h2>
+                My Lab Bookings
+              </h2>
+
+              <p>
+                View and manage your laboratory reservations.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- LOADING -->
+
+          @if (bookingsLoading) {
+
+            <div class="loading-box">
+
+              <span class="spinner"></span>
+
+              Loading your bookings...
+
+            </div>
+
+          }
+
+
+          <!-- BOOKINGS -->
+
+          @else if (
+            bookings.length > 0
+          ) {
+
+            <div class="booking-list">
+
+              @for (
+                booking of bookings;
+                track booking.id
+              ) {
+
+                <div class="booking-item">
+
+
+                  <!-- ICON -->
+
+                  <div class="booking-item-icon">
+                    🧪
+                  </div>
+
+
+                  <!-- INFO -->
+
+                  <div class="booking-info">
+
+                    <h3>
+
+                      @if (booking.labName) {
+
+                        {{ booking.labName }}
+
+                      }
+
+                      @else {
+
+                        Lab #{{ booking.labId }}
+
+                      }
+
+                    </h3>
+
+
+                    <p>
+
+                      📅
+
+                      {{ booking.bookingDate | date:'dd MMM yyyy' }}
+
+                    </p>
+
+
+                    <p>
+
+                      🕐
+
+                      {{ booking.startTime | slice:0:5 }}
+
+                      -
+
+                      {{ booking.endTime | slice:0:5 }}
+
+                    </p>
+
+                  </div>
+
+
+                  <!-- CANCEL -->
+
+                  <button
+                    type="button"
+                    class="cancel-button"
+                    (click)="cancelBooking(booking.id)"
+                  >
+
+                    Cancel
+
+                  </button>
+
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+
+          <!-- EMPTY -->
+
+          @else {
+
+            <div class="empty-state">
+
+              <div class="empty-icon">
+                🧪
+              </div>
+
+              <h3>
+                No Lab Bookings
+              </h3>
+
+              <p>
+                You haven't booked a laboratory yet.
+              </p>
+
+            </div>
+
+          }
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       CANCEL CONFIRMATION POPUP
+  ====================================================== -->
+
+  @if (showCancelPopup) {
+
+    <div
+      class="popup-overlay"
+      (click)="closeCancelPopup()"
+    >
+
+      <div
+        class="cancel-popup"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="popup-icon">
+          ⚠️
+        </div>
+
+        <h2>
+          Cancel Booking?
+        </h2>
+
+        <p>
+          Are you sure you want to cancel this
+          laboratory booking?
+        </p>
+
+        <span class="popup-warning">
+          This action cannot be undone.
+        </span>
+
+        <div class="popup-actions">
+
+          <button
+            type="button"
+            class="popup-cancel"
+            (click)="closeCancelPopup()"
+          >
+
+            Keep Booking
+
+          </button>
+
+          <button
+            type="button"
+            class="popup-confirm"
+            (click)="confirmCancelBooking()"
+          >
+
+            Yes, Cancel
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

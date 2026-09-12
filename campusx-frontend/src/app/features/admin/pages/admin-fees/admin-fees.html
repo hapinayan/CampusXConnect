@@ -1,0 +1,264 @@
+<div class="fees-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <p class="page-label">
+        CAMPUSX ADMINISTRATION
+      </p>
+
+      <h1>
+        Fee Management
+      </h1>
+
+      <p class="page-description">
+        View and monitor student fee payment records.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- SUMMARY CARDS -->
+  <div class="fee-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        FP
+      </div>
+
+      <div>
+        <p>
+          Total Payments
+        </p>
+
+        <h2>
+          {{ totalPayments() }}
+        </h2>
+
+        <span>
+          All payment records
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        PD
+      </div>
+
+      <div>
+        <p>
+          Paid Payments
+        </p>
+
+        <h2>
+          {{ paidPayments() }}
+        </h2>
+
+        <span>
+          Successfully paid
+        </span>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        RS
+      </div>
+
+      <div>
+        <p>
+          Total Collected
+        </p>
+
+        <h2>
+          Rs. {{ totalAmount() | number:'1.2-2' }}
+        </h2>
+
+        <span>
+          Total fee collection
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- PAYMENT TABLE -->
+  <div class="fees-card">
+
+    <div class="table-header">
+      <div>
+        <h2>
+          Payment Records
+        </h2>
+
+        <p>
+          All CampusX student payments
+        </p>
+      </div>
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="isLoading()"
+      class="message"
+    >
+      Loading payment records...
+    </div>
+
+
+    <!-- ERROR -->
+    <div
+      *ngIf="
+        errorMessage() &&
+        !isLoading()
+      "
+      class="message error"
+    >
+      {{ errorMessage() }}
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        payments().length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>STUDENT</th>
+            <th>FEE TYPE</th>
+            <th>AMOUNT</th>
+            <th>PAID DATE</th>
+            <th>RECEIPT</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let payment
+              of payments()
+            "
+          >
+
+            <td>
+              #{{ payment.id }}
+            </td>
+
+
+            <td>
+
+              <div class="student-info">
+
+                <div class="student-avatar">
+                  {{
+                    payment.studentName
+                      ?.charAt(0) || 'S'
+                  }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{ payment.studentName }}
+                  </strong>
+
+                  <span>
+                    {{ payment.indexNumber }}
+                  </span>
+
+                  <span>
+                    Student ID:
+                    {{ payment.studentId }}
+                  </span>
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              <span class="fee-type">
+                {{ payment.feeType }}
+              </span>
+            </td>
+
+
+            <td class="amount">
+              Rs.
+              {{
+                payment.amount
+                  | number:'1.2-2'
+              }}
+            </td>
+
+
+            <td>
+              {{
+                payment.paidAt
+                  | date:'medium'
+              }}
+            </td>
+
+
+            <td>
+              {{
+                payment.receiptNumber
+                  || 'N/A'
+              }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="status"
+                [class.paid]="
+                  payment.status === 'Paid'
+                "
+              >
+                {{ payment.status }}
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      *ngIf="
+        !isLoading() &&
+        !errorMessage() &&
+        payments().length === 0
+      "
+      class="message"
+    >
+      No payment records found.
+    </div>
+
+  </div>
+
+</div>
