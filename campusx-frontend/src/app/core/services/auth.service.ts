@@ -129,6 +129,11 @@ export class AuthService {
       JSON.stringify(student)
     );
 
+    localStorage.setItem(
+      'studentName',
+      student.fullName
+    );
+
   }
 
 
@@ -140,7 +145,9 @@ export class AuthService {
     StudentProfile | null {
 
     const student =
-      localStorage.getItem('student');
+      localStorage.getItem(
+        'student'
+      );
 
 
     if (!student) {
@@ -182,6 +189,10 @@ export class AuthService {
 
     localStorage.removeItem(
       'student'
+    );
+
+    localStorage.removeItem(
+      'studentName'
     );
 
   }

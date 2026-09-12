@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
+
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -76,7 +81,8 @@ export class HostelPage implements OnInit {
   // =========================
 
   constructor(
-    private hostelService: HostelService
+    private hostelService: HostelService,
+    private cdr: ChangeDetectorRef
   ) {}
 
 
@@ -100,14 +106,6 @@ export class HostelPage implements OnInit {
   // =========================
 
   loadStudent(): void {
-
-    /*
-     * Get logged-in student information
-     * from localStorage.
-     *
-     * This supports different possible
-     * storage names used by the project.
-     */
 
     const storedStudent =
       localStorage.getItem('student');
@@ -163,6 +161,9 @@ export class HostelPage implements OnInit {
             data
           );
 
+          // Force UI refresh
+          this.cdr.detectChanges();
+
         },
 
         error: (error) => {
@@ -176,6 +177,9 @@ export class HostelPage implements OnInit {
 
           this.errorMessage =
             'Unable to load hostel information.';
+
+          // Force UI refresh
+          this.cdr.detectChanges();
 
         }
 
@@ -203,15 +207,19 @@ export class HostelPage implements OnInit {
             data
           );
 
+          this.cdr.detectChanges();
+
         },
 
-        error: (error) => {
+        error: () => {
 
           console.log(
             'No hostel application found.'
           );
 
           this.application = null;
+
+          this.cdr.detectChanges();
 
         }
 
@@ -226,16 +234,10 @@ export class HostelPage implements OnInit {
 
   submitApplication(): void {
 
-    // Clear previous messages
-
     this.errorMessage = '';
 
     this.successMessage = '';
 
-
-    // =========================
-    // CHECK HOSTEL
-    // =========================
 
     if (!this.selectedHostelId) {
 
@@ -247,10 +249,6 @@ export class HostelPage implements OnInit {
     }
 
 
-    // =========================
-    // PREVENT DOUBLE CLICK
-    // =========================
-
     if (this.submitting) {
 
       return;
@@ -258,16 +256,8 @@ export class HostelPage implements OnInit {
     }
 
 
-    // =========================
-    // START SUBMITTING
-    // =========================
-
     this.submitting = true;
 
-
-    // =========================
-    // API CALL
-    // =========================
 
     this.hostelService
       .applyForHostel(
@@ -276,10 +266,6 @@ export class HostelPage implements OnInit {
       )
       .subscribe({
 
-        // =========================
-        // SUCCESS
-        // =========================
-
         next: (response) => {
 
           console.log(
@@ -287,35 +273,20 @@ export class HostelPage implements OnInit {
             response
           );
 
-
-          // Stop submitting
-
           this.submitting = false;
-
-
-          // Success message
 
           this.successMessage =
             'Hostel application submitted successfully.';
 
-
-          // Reload latest application
-
           this.loadMyApplication();
-
-
-          // Clear form
 
           this.selectedHostelId = null;
 
           this.preferences = '';
 
+          this.cdr.detectChanges();
+
         },
-
-
-        // =========================
-        // ERROR
-        // =========================
 
         error: (error) => {
 
@@ -324,13 +295,8 @@ export class HostelPage implements OnInit {
             error
           );
 
-
-          // Stop submitting
-
           this.submitting = false;
 
-
-          // 400
 
           if (error.status === 400) {
 
@@ -340,18 +306,12 @@ export class HostelPage implements OnInit {
 
           }
 
-
-          // 401
-
           else if (error.status === 401) {
 
             this.errorMessage =
               'Your session has expired. Please login again.';
 
           }
-
-
-          // 409
 
           else if (error.status === 409) {
 
@@ -361,15 +321,14 @@ export class HostelPage implements OnInit {
 
           }
 
-
-          // Other errors
-
           else {
 
             this.errorMessage =
               'Something went wrong. Please try again.';
 
           }
+
+          this.cdr.detectChanges();
 
         }
 
@@ -389,7 +348,6 @@ export class HostelPage implements OnInit {
       return 'No Application';
 
     }
-
 
     return this.application.status || 'Pending';
 

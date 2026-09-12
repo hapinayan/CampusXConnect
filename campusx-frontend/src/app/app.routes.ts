@@ -87,6 +87,19 @@ export const routes: Routes = [
 
 
   // =====================================================
+  // STUDENT EVENTS
+  // =====================================================
+
+  {
+    path: 'events',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/student/events/events')
+        .then(m => m.Events)
+  },
+
+
+  // =====================================================
   // STUDENT LABS
   // =====================================================
 
